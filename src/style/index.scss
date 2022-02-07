@@ -1,0 +1,46 @@
+@import "sweetalert2/src/sweetalert2.scss";
+
+@tailwind base;
+
+@layer base {
+  h1 {
+    @apply text-2xl mt-3 mb-3;
+  }
+
+  h2 {
+    @apply text-xl mt-2 mt-2;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  p {
+    @apply mt-3 mb-3;
+  }
+  ol {
+    @apply list-decimal pl-3;
+  }
+  ul {
+    @apply list-disc pl-3;
+  }
+  li {
+    @apply mt-1 mb-1;
+  }
+  a {
+    cursor: pointer;
+  }
+  button {
+    @apply bg-gradient-to-tl dark:bg-secondary-500 dark:from-secondary-200 p-3 rounded-md shadow-lg dark:shadow-primary-900;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  font-family: "Helvetica Neue", arial, sans-serif;
+  font-weight: 400;
+  color: #444;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

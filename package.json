@@ -1,14 +1,15 @@
 {
   "private": true,
-  "name": "splitzies",
+  "name": "next-dorm",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "build": "preact build",
-    "serve": "sirv build --port 8080 --cors --single",
-    "dev": "preact watch",
+    "serve": "sirv build --port 3000 --cors --single",
+    "dev": "preact watch --port 3000",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "test": "jest ./tests"
+    "test": "jest ./tests",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
@@ -21,24 +22,55 @@
     ]
   },
   "dependencies": {
+    "@headlessui/react": "^1.5.0",
+    "@heroicons/react": "^1.0.6",
+    "dotenv-safe": "^8.2.0",
+    "firebase": "^9.6.8",
+    "firebaseui": "^6.0.1",
     "preact": "^10.3.1",
     "preact-render-to-string": "^5.1.4",
-    "preact-router": "^3.2.1"
+    "preact-router": "^3.2.1",
+    "react-firebaseui": "^6.0.0",
+    "react-infinite-scroller": "^1.2.5",
+    "react-lazy-load-image-component": "^1.5.1",
+    "rxjs": "^7.5.4",
+    "sweetalert2": "^11.4.0"
   },
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^4.1.3",
     "@types/enzyme": "^3.10.5",
-    "@types/jest": "^26.0.8",
-    "@typescript-eslint/eslint-plugin": "^2.25.0",
-    "@typescript-eslint/parser": "^2.25.0",
+    "@types/jest": "^26.0.24",
+    "@types/react-infinite-scroller": "^1.2.3",
+    "@types/react-lazy-load-image-component": "^1.5.2",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-preact-pure": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-preact": "^1.1.1",
+    "eslint-plugin-compat": "^4.0.2",
+    "eslint-plugin-jest": "^26.1.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^7.0.4",
     "jest": "^27.2.5",
     "jest-preset-preact": "^4.0.2",
+    "lint-staged": "^12.3.3",
     "preact-cli": "^3.0.0",
+    "prettier": "^2.5.1",
+    "sass": "^1.49.7",
+    "sass-loader": "^10.2.1",
     "sirv-cli": "^1.0.0-next.3",
-    "typescript": "^4.5.2"
+    "tailwindcss": "^3.0.18",
+    "typescript": "^4.5.5"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "src/**/*": [
+      "prettier --write --ignore-unknown"
+    ]
   },
   "jest": {
     "preset": "jest-preset-preact",

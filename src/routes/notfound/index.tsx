@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from 'preact';
 import { Link } from 'preact-router/match';
 import style from './style.css';
 
-const Notfound: FunctionalComponent = () => {
+const NotfoundScreen: FunctionalComponent = () => {
     return (
         <div class={style.notfound}>
             <h1>Error 404</h1>
@@ -14,4 +14,4 @@ const Notfound: FunctionalComponent = () => {
     );
 };
 
-export default Notfound;
+export default NotfoundScreen;
