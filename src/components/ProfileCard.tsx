@@ -1,7 +1,7 @@
 import { FunctionalComponent, h } from "preact";
-import { DisplayableUserRes } from "../model/types";
+import { DisplayableUserRes } from "../types/types";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { toDisplayableUser, DisplayableUser } from "../model/user";
+import { toDisplayableUser, DisplayableUser } from "src/model/DisplayableUser";
 
 const Avatar = ({
   user,

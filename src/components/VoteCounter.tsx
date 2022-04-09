@@ -1,9 +1,8 @@
 import { FunctionalComponent, h } from "preact";
 
-import { Comment, ContentMetadata, Post } from "../model/types";
+import { Comment, ContentMetadata, Post } from "../types/types";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/solid";
 import { useCallback, useContext, useState } from "preact/compat";
-import { UserContext } from "../contexts";
 import { vote } from "../actions/Post";
 import { classNames } from "../utils/styling";
 
@@ -12,14 +11,10 @@ type Props = {
   onVote: (vote: number) => Promise<void>;
 };
 const VoteCounter: FunctionalComponent<Props> = ({ content, onVote }) => {
-  const user = useContext(UserContext);
   const [voteCount, setVoteCount] = useState(content.voteTotal);
   const [userVote, setUserVote] = useState(content.userVote?.value ?? 0);
   const voteCb = useCallback(
     async (voteValue: number) => {
-      if (!user) {
-        return;
-      }
       voteValue = content.userVote?.value == voteValue ? 0 : voteValue;
       await onVote(voteValue);
       content.voteTotal += voteValue - (content.userVote?.value ?? 0);

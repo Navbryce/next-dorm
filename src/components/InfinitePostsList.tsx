@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from "preact";
 import InfiniteScroll from "react-infinite-scroller";
 import { useCallback, useEffect, useRef, useState } from "preact/compat";
 import { getPosts, PostCursor } from "../actions/Post";
-import { Post, StateProps } from "../model/types";
+import { Post, StateProps } from "../types/types";
 import PostsList from "./PostsList";
 
 type Props<CURSOR_TYPE extends PostCursor> = {

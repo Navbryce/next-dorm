@@ -1,6 +1,6 @@
 import { FunctionalComponent, h } from "preact";
 import { ListBox } from "./ListBox";
-import { OnChangeProps, Visibility } from "../../model/types";
+import { OnChangeProps, Visibility } from "../../types/types";
 
 const VisibilitySelect = ({ value, onChange }: OnChangeProps<Visibility>) => {
   return (

@@ -1,4 +1,4 @@
-import { Community } from "../model/types";
+import { Community } from "../types/types";
 import { URLS } from "../urls";
 import { execInternalReq, HttpMethod } from "../utils/request";
 

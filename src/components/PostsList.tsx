@@ -1,11 +1,11 @@
 import { FunctionalComponent, h } from "preact";
 import { useEffect, useState } from "preact/compat";
-import type { Post } from "../model/types";
+import type { Post } from "../types/types";
 import { getPosts } from "../actions/Post";
 import PostComponent from "./Post";
 import { classNames } from "../utils/styling";
 import { PostVoteCounter } from "./VoteCounter";
-import { toDisplayableUser } from "../model/user";
+import { toDisplayableUser } from "src/model/DisplayableUser";
 
 type Props = {
   posts: Post[];

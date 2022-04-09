@@ -31,6 +31,12 @@
   button {
     @apply bg-gradient-to-tl dark:bg-secondary-500 dark:from-secondary-200 p-3 rounded-md shadow-lg dark:shadow-primary-900;
   }
+  form {
+    @apply rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit;
+  }
+  .form {
+    @apply rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit;
+  }
 }
 
 @tailwind components;

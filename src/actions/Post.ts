@@ -1,15 +1,11 @@
 import { URLS } from "../urls";
 import { execInternalReq, HttpMethod } from "../utils/request";
-import { Post } from "../model/types";
+import { Post, PostCursor, PostPage } from "../types/types";
 import { currentUserToDisplayable } from "../utils/auth";
 
 const postsPath = URLS.api.posts;
 
-export type PostCursor = any;
-
-export async function getPosts(
-  cursor?: PostCursor
-): Promise<{ posts: Post[]; nextCursor: PostCursor }> {
+export async function getPosts(cursor?: PostCursor): Promise<PostPage> {
   return execInternalReq(postsPath, {
     method: HttpMethod.POST,
     body: {

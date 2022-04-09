@@ -1,12 +1,20 @@
-import {SignInConfig} from "../routes/signin";
-import {URLS} from "../urls";
-import {route} from "preact-router";
+import { URLS } from "../urls";
+import { execInternalReq, HttpMethod } from "src/utils/request";
+import { Profile } from "src/types/types";
 
-export function signIn(signInConfig: SignInConfig) {
-  const urlParams = new URLSearchParams();
-  if (signInConfig.redirectUrl) {
-    urlParams.append("redirect", signInConfig.redirectUrl)
-  }
-  const urlParamsString = `?${urlParams.toString()}`;
-  route(`${URLS.pages.signIn}${urlParamsString.length > 0 ? urlParamsString : "" }`, false);
+// TODO: Rename profile to AppUser and User to FirebaseUser
+export async function getProfile(): Promise<Profile | null> {
+  return execInternalReq(URLS.api.users, {
+    method: HttpMethod.GET,
+  });
+}
+
+export async function createProfile(req: {
+  displayName: string;
+  avatar?: string;
+}): Promise<Profile | null> {
+  return execInternalReq(URLS.api.users, {
+    method: HttpMethod.PUT,
+    body: req,
+  });
 }

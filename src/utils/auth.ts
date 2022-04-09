@@ -1,5 +1,5 @@
 import { getAuth, User as FirebaseUser } from "firebase/auth";
-import { DisplayableUserRes } from "../model/types";
+import { DisplayableUserRes } from "../types/types";
 
 export function currentUserToDisplayable(): DisplayableUserRes {
   const { uid, displayName, photoURL } = getAuth().currentUser as FirebaseUser;

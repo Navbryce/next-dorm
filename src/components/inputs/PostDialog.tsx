@@ -1,8 +1,9 @@
 import { FunctionalComponent, h } from "preact";
 
-import { Post, Visibility } from "../../model/types";
+import { Post, Visibility } from "../../types/types";
 import VisibilitySelect from "./VisibilitySelect";
 import { useCallback, useState } from "preact/compat";
+import { Input, Label, TextArea } from "./Input";
 
 export type Values = Pick<Post, "title" | "content" | "visibility">;
 
@@ -23,22 +24,22 @@ const PostDialog = ({ onSubmit }: Props) => {
   return (
     <div>
       <div>
-        <label class="block font-bold" htmlFor="title">
+        <Label class="block font-bold" htmlFor="title">
           Title
-        </label>
-        <input
-          class="bg-slate-800 w-3/5 max-w-prose"
+        </Label>
+        <Input
+          className="w-3/5 max-w-prose"
           name="title"
           value={title}
           onChange={(e) => setTitle((e.target as HTMLInputElement).value)}
         />
       </div>
       <div>
-        <label class="block font-bold" htmlFor="content">
+        <Label class="block font-bold" htmlFor="content">
           Content
-        </label>
-        <textarea
-          class="bg-slate-800 w-3/5 max-w-prose"
+        </Label>
+        <TextArea
+          className="w-3/5 max-w-prose"
           name="content"
           value={content}
           onChange={(e) => setContent((e.target as HTMLInputElement).value)}

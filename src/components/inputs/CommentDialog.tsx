@@ -3,7 +3,8 @@ import { FunctionalComponent, h } from "preact";
 import { useCallback, useState } from "preact/compat";
 import { ReplyIcon } from "@heroicons/react/outline";
 import VisibilitySelect from "./VisibilitySelect";
-import { Comment, Visibility } from "../../model/types";
+import { Comment, Visibility } from "../../types/types";
+import { Input } from "./Input";
 
 export type Values = Pick<Comment, "content" | "visibility">;
 
@@ -20,8 +21,8 @@ const CommentDialog = ({ onSubmit }: Props) => {
 
   return (
     <div class="border-b border-secondary-100">
-      <textarea
-        class="bg-slate-800 w-4/5"
+      <Input
+        class="w-4/5"
         value={content}
         onChange={(e) => setContent((e.target as HTMLTextAreaElement).value)}
       />

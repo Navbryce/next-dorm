@@ -1,15 +1,23 @@
 import { FunctionalComponent, h } from "preact";
 import { useEffect, useState } from "preact/compat";
-import { Community } from "../model/types";
+import { Community } from "../types/types";
 import { getCommunities } from "../actions/Community";
-import { genLinkToCommunity } from "../urls";
+import { genLinkToCommunity, URLS } from "../urls";
 
 const CommunitiesList = () => {
   // TODO: Change to only show child communities
   const [communities, setCommunities] = useState<Community[]>();
 
   useEffect(() => {
-    getCommunities().then(setCommunities);
+    getCommunities().then((communities) =>
+      setCommunities([
+        {
+          id: -1,
+          name: "All",
+        },
+        ...communities,
+      ])
+    );
   }, []);
   return (
     <div>

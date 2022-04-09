@@ -1,6 +1,6 @@
 import { FunctionalComponent, h } from "preact";
 
-import type { Comment } from "../model/types";
+import type { Comment } from "../types/types";
 import { CommentVoteCounter } from "./VoteCounter";
 import { CommentProfileCard } from "./ProfileCard";
 import { ReplyIcon } from "@heroicons/react/outline";

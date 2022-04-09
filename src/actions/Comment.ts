@@ -1,6 +1,6 @@
 import { URLS } from "../urls";
 import { execInternalReq, HttpMethod } from "../utils/request";
-import { Comment } from "../model/types";
+import { Comment } from "../types/types";
 import { currentUserToDisplayable } from "../utils/auth";
 
 // TODO: Update how this calculated
