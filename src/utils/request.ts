@@ -69,7 +69,7 @@ export async function execInternalReq<T>(
   const result = await fetch(
     URLS.api.base + path + genQueryParamStr(queryParams),
     {
-      method: method,
+      method,
       body: JSON.stringify(body),
       headers,
     }

@@ -15,7 +15,7 @@ const PostsList = ({ posts }: Props) => {
   const [selected, setSelected] = useState<Post | null>(null);
 
   return (
-    <div class={"divide-y-2 divide-secondary-400"}>
+    <div class="divide-y-2 divide-secondary-400">
       <div>
         {posts.map((post) => (
           <div

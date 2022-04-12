@@ -1,4 +1,4 @@
-import { FunctionalComponent, h } from "preact";
+import { h } from "preact";
 import { Input, Label } from "src/components/inputs/Input";
 import { useCallback, useContext, useState } from "preact/compat";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -11,22 +11,26 @@ const SignInScreen = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useContext(UserContext);
 
-  const onSignInCb = useCallback(() => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        await new AuthService(user, setUser).setFirebaseUserAndUpdateProfile(
-          userCredential.user
-        );
-        route("/");
-      })
-      .catch(({ message, code }) => {
-        // TODO: Catch login errors
-      });
-  }, [email, password]);
+  const onSignInCb = useCallback(
+    (e: Event) => {
+      e.preventDefault();
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+          await new AuthService(user, setUser).setFirebaseUserAndUpdateProfile(
+            userCredential.user
+          );
+          route("/");
+        })
+        .catch(({ message, code }) => {
+          // TODO: Catch login errors
+        });
+    },
+    [email, password]
+  );
   return (
     <div class="fixed w-full h-full flex justify-center items-center">
-      <div class="form">
+      <form onSubmit={onSignInCb}>
         <div>
           <Label htmlFor="email" className="block">
             Email
@@ -49,12 +53,12 @@ const SignInScreen = () => {
           />
         </div>
         <div class="py-2 space-x-2">
-          <button onClick={onSignInCb}>Sign In</button>
-          <button onClick={() => route(URLS.pages.user.register)}>
+          <button type="submit">Sign In</button>
+          <button type="button" onClick={() => route(URLS.pages.user.register)}>
             Register
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

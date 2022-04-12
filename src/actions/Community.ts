@@ -1,16 +1,18 @@
-import { Community } from "../types/types";
-import { URLS } from "../urls";
-import { execInternalReq, HttpMethod } from "../utils/request";
+import { CommunityWithSubStatus } from "src/types/types";
+import { URLS } from "src/urls";
+import { execInternalReq, HttpMethod } from "src/utils/request";
 
 const basePath = URLS.api.communities;
 
-export async function getCommunity(id: number): Promise<Community> {
+export async function getCommunity(
+  id: number
+): Promise<CommunityWithSubStatus> {
   return execInternalReq(`${basePath}/${id}`, {
     method: HttpMethod.GET,
   });
 }
 
-export async function getCommunities(): Promise<Community[]> {
+export async function getCommunities(): Promise<CommunityWithSubStatus[]> {
   return execInternalReq(`${basePath}`, {
     method: HttpMethod.GET,
   });

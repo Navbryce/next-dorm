@@ -68,7 +68,7 @@ const Comments = ({ comments, postId }: CommentsProps) => {
     <div>
       <div class="space-y-4">
         {comments.map((comment) => (
-          <div>
+          <div key={comment.id}>
             <CommentComponent comment={comment} postId={postId} />
           </div>
         ))}

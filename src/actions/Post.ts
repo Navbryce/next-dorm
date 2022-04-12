@@ -10,7 +10,7 @@ export async function getPosts(cursor?: PostCursor): Promise<PostPage> {
     method: HttpMethod.POST,
     body: {
       orderBy: "MOST_RECENT",
-      cursor: cursor,
+      cursor,
     },
   });
 }
@@ -25,7 +25,7 @@ export async function createPost(req: CreatePostReq): Promise<Post> {
     body: req,
   });
   return {
-    id: id,
+    id,
     creator: currentUserToDisplayable(),
     voteTotal: 0,
     userVote: {
@@ -39,6 +39,6 @@ export async function createPost(req: CreatePostReq): Promise<Post> {
 export async function vote(id: number, value: number): Promise<void> {
   return execInternalReq(`${postsPath}/${id}/votes`, {
     method: HttpMethod.PUT,
-    body: { value: value },
+    body: { value },
   });
 }

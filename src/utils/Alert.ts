@@ -10,7 +10,7 @@ export interface Alert {
 export class AlertService {
   private alertSubject = new ReplaySubject<{
     alert: Alert;
-    callback: () => void;
+    callback:() => void;
   }>();
 
   constructor() {

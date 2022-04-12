@@ -19,11 +19,12 @@ const CommunitiesList = () => {
       ])
     );
   }, []);
+
   return (
     <div>
       {communities &&
         communities.map((community) => (
-          <div>
+          <div key={community.id}>
             <a
               href={genLinkToCommunity(community)}
               class="

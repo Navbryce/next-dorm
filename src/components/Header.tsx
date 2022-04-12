@@ -1,6 +1,6 @@
 import { FunctionalComponent, h } from "preact";
 import { useContext } from "preact/compat";
-import { UserContext } from "../contexts";
+import { UserContext } from "src/contexts";
 import DropdownMenu, { MenuItem } from "./DropdownMenu";
 import { getAuth, signOut } from "firebase/auth";
 import { route } from "preact-router";
@@ -19,7 +19,21 @@ const Header: FunctionalComponent = () => {
       )}
       {user && (
         <div>
-          <DropdownMenu title={user?.profile?.displayName ?? "No profile"}>
+          <DropdownMenu
+            title={
+              <div class="flex items-center">
+                {user.profile && (
+                  <img
+                    class="inline"
+                    src={user.profile.avatar}
+                    width={25}
+                    height={25}
+                  />
+                )}
+                {user?.profile?.displayName ?? "No profile"}
+              </div>
+            }
+          >
             <MenuItem href="/">View Profile</MenuItem>
             <MenuItem onClick={() => signOut(getAuth())}>Logout</MenuItem>
           </DropdownMenu>

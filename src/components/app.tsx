@@ -1,28 +1,29 @@
-import { AnyComponent, FunctionalComponent, h } from "preact";
+import { FunctionalComponent, h } from "preact";
 import { RouteProps, Router } from "preact-router";
 
-import CommunityScreen from "../routes/communities";
+import CommunityScreen from "src/routes/communities/[id]/index";
 import NotFoundPage from "../routes/notfound";
 import Header from "./Header";
-import { useCallback, useContext, useEffect, useState } from "preact/compat";
-import { AlertContext, UserContext, AuthService } from "../contexts";
+import { useEffect, useState } from "preact/compat";
+import { AuthService, UserContext } from "src/contexts";
 import Footer from "./Footer";
-import "../utils/firebase";
+import "src/utils/firebase";
 import SignInScreen from "src/routes/user/sign-in";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import AllScreen from "../routes/communities/AllScreen";
-import CommunitiesList from "./CommunitiesList";
-import FeedScreen from "../routes/FeedScreen";
+import AllScreen from "src/routes/communities/AllScreen";
+import CommunitiesList from "src/components/CommunitiesList";
+import FeedScreen from "src/routes/FeedScreen";
 import RegisterScreen from "src/routes/user/register";
 import CreateProfileScreen from "src/routes/user/create-profile";
 import { URLS } from "src/urls";
-import { Profile, User } from "src/types/types";
-import { getProfile } from "src/actions/User";
+import { User } from "src/types/types";
 import Route from "src/components/Route";
+import AddPostScreen from "src/routes/communities/[id]/add-post";
 
 // TODO: Absolute imports
 function withStandardPageElements<T>(
-  component: RouteProps<T>["component"]
+  component: RouteProps<T>["component"],
+  { noCommunitiesList }: { noCommunitiesList?: boolean }
 ): FunctionalComponent<T> {
   return ({ ...rest }) => {
     return (
@@ -30,7 +31,7 @@ function withStandardPageElements<T>(
         <Header />
         <div class="h-[calc(100%-120px)] flex">
           <div className="w-64">
-            <CommunitiesList />
+            {!noCommunitiesList && <CommunitiesList />}
           </div>
           {h(component, rest)}
         </div>
@@ -59,17 +60,24 @@ const App: FunctionalComponent = () => {
                 <Router>
                   <Route
                     path="/"
-                    component={withStandardPageElements(FeedScreen)}
+                    component={withStandardPageElements(FeedScreen, {})}
                   />
                   <Route
                     path="/communities/all"
                     requireSession={false}
-                    component={withStandardPageElements(AllScreen)}
+                    component={withStandardPageElements(AllScreen, {})}
                   />
                   <Route
                     path="/communities/:communityId"
                     requireSession={false}
-                    component={withStandardPageElements(CommunityScreen)}
+                    component={withStandardPageElements(CommunityScreen, {})}
+                  />
+                  <Route
+                    path="/communities/:communityId/add-post"
+                    requireSession={false}
+                    component={withStandardPageElements(AddPostScreen, {
+                      noCommunitiesList: true,
+                    })}
                   />
                   <Route
                     path={URLS.pages.user.signIn}

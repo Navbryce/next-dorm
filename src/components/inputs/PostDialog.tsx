@@ -14,32 +14,36 @@ const PostDialog = ({ onSubmit }: Props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [visibility, setVisibility] = useState(Visibility.NORMAL);
-  const onSubmitCb = useCallback(() => {
-    onSubmit({
-      title,
-      content,
-      visibility,
-    });
-  }, [onSubmit, title, content, visibility]);
+  const onSubmitCb = useCallback(
+    (e: Event) => {
+      e.preventDefault();
+      onSubmit({
+        title,
+        content,
+        visibility,
+      });
+    },
+    [onSubmit, title, content, visibility]
+  );
   return (
-    <div>
+    <form class="max-w-4xl">
       <div>
-        <Label class="block font-bold" htmlFor="title">
+        <Label className="block font-bold" htmlFor="title">
           Title
         </Label>
         <Input
-          className="w-3/5 max-w-prose"
+          className="w-full"
           name="title"
           value={title}
           onChange={(e) => setTitle((e.target as HTMLInputElement).value)}
         />
       </div>
       <div>
-        <Label class="block font-bold" htmlFor="content">
+        <Label className="block" htmlFor="content">
           Content
         </Label>
         <TextArea
-          className="w-3/5 max-w-prose"
+          className="w-full"
           name="content"
           value={content}
           onChange={(e) => setContent((e.target as HTMLInputElement).value)}
@@ -51,7 +55,7 @@ const PostDialog = ({ onSubmit }: Props) => {
       <div>
         <button onClick={onSubmitCb}>Submit</button>
       </div>
-    </div>
+    </form>
   );
 };
 export default PostDialog;

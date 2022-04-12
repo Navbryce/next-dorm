@@ -1,8 +1,8 @@
-import { FunctionalComponent, h } from "preact";
+import { h } from "preact";
 import { useCallback, useState } from "preact/compat";
-import { getPosts } from "../../actions/Post";
-import { Post, PostCursor } from "../../types/types";
-import InfinitePostsList from "../../components/InfinitePostsList";
+import { getPosts } from "src/actions/Post";
+import { Post, PostCursor } from "src/types/types";
+import InfinitePostsList from "src/components/InfinitePostsList";
 
 const AllScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -12,7 +12,7 @@ const AllScreen = () => {
   }, []);
 
   return (
-    <div class="relative h-full">
+    <div class="w-full h-full">
       <div class="h-full">
         <InfinitePostsList
           posts={posts}

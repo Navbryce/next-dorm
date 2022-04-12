@@ -6,6 +6,7 @@ export const URLS = {
     communities: "/communities",
     feed: "/feeds",
     posts: "/posts",
+    subscriptions: "/subscriptions",
     users: "/users",
   },
   pages: {

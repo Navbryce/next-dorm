@@ -1,8 +1,7 @@
 import { FunctionalComponent, h } from "preact";
 import InfiniteScroll from "react-infinite-scroller";
 import { useCallback, useEffect, useRef, useState } from "preact/compat";
-import { getPosts, PostCursor } from "../actions/Post";
-import { Post, StateProps } from "../types/types";
+import { Post, PostCursor, StateProps } from "src/types/types";
 import PostsList from "./PostsList";
 
 type Props<CURSOR_TYPE extends PostCursor> = {
@@ -62,7 +61,7 @@ function InfinitePostsList<CURSOR_TYPE>({
   ]);
 
   return (
-    <div class="h-full overflow-auto" ref={scrollDiv}>
+    <div class="w-full h-full overflow-auto" ref={scrollDiv}>
       <InfiniteScroll
         useWindow={false}
         getScrollParent={() => scrollDiv.current}

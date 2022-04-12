@@ -12,8 +12,9 @@ const FeedScreen = () => {
   }, []);
 
   return (
-    <div class="relative h-full">
+    <div class="w-full h-full">
       <div class="h-full">
+        {posts.length == 0 && <div />}
         <InfinitePostsList
           posts={posts}
           setPosts={setPosts}

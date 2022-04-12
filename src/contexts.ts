@@ -49,13 +49,13 @@ export class AuthService {
     }
     this.setUser({
       firebaseUser: this._user?.firebaseUser,
-      profile: profile,
+      profile,
     });
   }
 }
 
 export const UserContext = createContext<
-  [UserMaybe, (value: UserMaybe) => void]
+  [UserMaybe,(value: UserMaybe) => void]
 >([
   undefined,
   () => {

@@ -1,5 +1,8 @@
 {
-  "extends": ["plugin:@typescript-eslint/recommended"],
+  "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"]
+  "extends": ["preact", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "no-inner-declarations": "off"
+  }
 }
