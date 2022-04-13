@@ -3,6 +3,7 @@ import { FunctionalComponent, h, RenderableProps } from "preact";
 import { Listbox as HeadlessListBox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import { classNames } from "src/utils/styling";
+import { Stylable } from "src/types/types";
 
 type ListBoxProps<T> = {
   value: T;
@@ -13,7 +14,7 @@ export function ListBox<T>({
   children,
   className,
   ...rest
-}: RenderableProps<ListBoxProps<T>> & { className?: string }) {
+}: RenderableProps<ListBoxProps<T>> & Stylable) {
   return (
     <div className={classNames("w-72 relative", className ?? "")}>
       <HeadlessListBox {...rest}>{children}</HeadlessListBox>
@@ -60,7 +61,12 @@ export namespace ListBox {
   export function Button({ children }: RenderableProps<unknown>) {
     return (
       <div class="relative mt-1">
-        <HeadlessListBox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
+        <HeadlessListBox.Button
+          className="
+          !bg-none !bg-slate-700
+          relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-sm
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm"
+        >
           <span className="block truncate">{children}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
             <SelectorIcon className="w-5 h-5 text-white" aria-hidden="true" />

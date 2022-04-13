@@ -1,13 +1,11 @@
-import { getAuth, User as FirebaseUser } from "firebase/auth";
-import { DisplayableUserRes } from "../types/types";
+import { DisplayableUserRes, User } from "../types/types";
 
-export function currentUserToDisplayable(): DisplayableUserRes {
-  const { uid, displayName, photoURL } = getAuth().currentUser as FirebaseUser;
+export function userToDisplayable(user: User): DisplayableUserRes {
   return {
     user: {
-      id: uid,
-      displayName: displayName ?? "not found",
-      avatar: photoURL ?? "not found",
+      id: user.firebaseUser.uid,
+      displayName: user.profile?.displayName ?? "not found",
+      avatar: user.profile?.avatar ?? "not found",
     },
   };
 }

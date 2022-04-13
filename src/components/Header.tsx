@@ -15,7 +15,9 @@ const Header: FunctionalComponent = () => {
         <h1 class="text-3xl flex flex-row items-center">NextDorm</h1>
       </a>
       {!user && (
-        <button onClick={() => route(URLS.pages.user.signIn)}>Sign in</button>
+        <button type="button" onClick={() => route(URLS.pages.user.signIn)}>
+          Sign in
+        </button>
       )}
       {user && (
         <div>

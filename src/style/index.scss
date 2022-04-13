@@ -25,7 +25,6 @@
   a {
     cursor: pointer;
   }
-  button,
   button[type="submit"],
   button[type="button"] {
     @apply bg-gradient-to-tl dark:bg-secondary-500 dark:from-secondary-200 p-3 rounded-md shadow-lg dark:shadow-primary-900;

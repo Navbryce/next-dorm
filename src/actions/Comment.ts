@@ -1,7 +1,7 @@
 import { URLS } from "../urls";
 import { execInternalReq, HttpMethod } from "../utils/request";
-import { Comment } from "../types/types";
-import { currentUserToDisplayable } from "../utils/auth";
+import { Comment, User } from "../types/types";
+import { userToDisplayable } from "../utils/auth";
 
 // TODO: Update how this calculated
 function basePathForPost(postId: number): string {
@@ -20,6 +20,7 @@ type CreateCommentReq = Pick<Comment, "content" | "visibility"> & {
 };
 
 export async function createComment(
+  currentUser: User,
   postId: number,
   req: CreateCommentReq
 ): Promise<Comment> {
@@ -35,7 +36,7 @@ export async function createComment(
     children: [],
     voteTotal: 0,
     userVote: { value: 0 },
-    creator: currentUserToDisplayable(),
+    creator: userToDisplayable(currentUser),
     ...req,
   };
 }

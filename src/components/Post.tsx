@@ -2,13 +2,20 @@ import { FunctionalComponent, h } from "preact";
 
 import { Comment, Post, Visibility } from "../types/types";
 import { PostProfileCard } from "./ProfileCard";
-import { useCallback, useEffect, useState } from "preact/compat";
+import { useCallback, useContext, useEffect, useState } from "preact/compat";
 import { createComment, getComments } from "../actions/Comment";
 import Comments from "./Comments";
 import CommentDialog, { Values } from "./inputs/CommentDialog";
+import { UserContext } from "src/contexts";
+import { PostVoteCounter } from "src/components/VoteCounter";
 
 const PostComponent = ({ post }: { post: Post }) => {
+  const [user] = useContext(UserContext);
   const [comments, setComments] = useState<Comment[]>();
+  const [commentDialogContent, setCommentDialogContent] = useState("");
+  const [commentWithReplyLock, setCommentWithReplyLock] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     setComments([]);
@@ -20,24 +27,44 @@ const PostComponent = ({ post }: { post: Post }) => {
       if (!comments) {
         return;
       }
-      const comment = await createComment(post.id, values);
+      if (!user) {
+        throw new Error("must  be logged in to comment");
+      }
+      const comment = await createComment(user, post.id, values);
       setComments([comment, ...comments]);
+      setCommentDialogContent("");
     },
-    [post, comments]
+    [post, comments, setCommentDialogContent]
   );
 
   return (
-    <div class="bg-primary-600 h-full overflow-y-scroll">
+    <div class="h-full w-full">
       <div>
-        <h2>{post.title}</h2>
+        <h1>{post.title}</h1>
       </div>
-      <PostProfileCard user={post.creator} />
-      <div>{post.content}</div>
+      <div class="flex">
+        <div>
+          <PostVoteCounter post={post} />
+        </div>
+        <div>
+          <PostProfileCard user={post.creator} />
+          <div>{post.content}</div>
+        </div>
+      </div>
       <div class="mt-5 pt-5 border-t border-secondary-100">
         {comments && (
           <div>
-            <CommentDialog onSubmit={createCommentCb} />
-            <Comments comments={comments} postId={post.id} />
+            <CommentDialog
+              content={commentDialogContent}
+              setContent={setCommentDialogContent}
+              onSubmit={createCommentCb}
+            />
+            <Comments
+              comments={comments}
+              postId={post.id}
+              commentWithReplyLock={commentWithReplyLock}
+              setCommentWithReplyLock={setCommentWithReplyLock}
+            />
           </div>
         )}
       </div>

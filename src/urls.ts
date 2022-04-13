@@ -1,4 +1,4 @@
-import { Community } from "./types/types";
+import { Community, Post } from "./types/types";
 
 export const URLS = {
   api: {
@@ -24,4 +24,9 @@ export function genLinkToCommunity(community: Community): string {
   return `${URLS.pages.communities}/${
     community.id > -1 ? community.id : community.name.toLowerCase()
   }`;
+}
+
+export function genLinkToPost(post: Post): string {
+  // TODO just use the first community of the post for now
+  return `${URLS.pages.communities}/${post.communities[0].id}/posts/${post.id}`;
 }

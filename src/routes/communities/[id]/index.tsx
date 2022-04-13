@@ -83,7 +83,11 @@ const CommunityScreen = ({
         </div>
         <div class="h-1/4 m-5 p-5 space-x-5 rounded outline flex justify-around items-center">
           <div class="h-fit">
-            <button onClick={createPostCb} className="inline-block">
+            <button
+              type="button"
+              onClick={createPostCb}
+              className="inline-block"
+            >
               Add Post
             </button>
           </div>

@@ -6,7 +6,6 @@ import NotFoundPage from "../routes/notfound";
 import Header from "./Header";
 import { useEffect, useState } from "preact/compat";
 import { AuthService, UserContext } from "src/contexts";
-import Footer from "./Footer";
 import "src/utils/firebase";
 import SignInScreen from "src/routes/user/sign-in";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -19,6 +18,7 @@ import { URLS } from "src/urls";
 import { User } from "src/types/types";
 import Route from "src/components/Route";
 import AddPostScreen from "src/routes/communities/[id]/add-post";
+import PostScreen from "src/routes/communities/[id]/posts/index";
 
 // TODO: Absolute imports
 function withStandardPageElements<T>(
@@ -29,11 +29,13 @@ function withStandardPageElements<T>(
     return (
       <div class="w-full h-full">
         <Header />
-        <div class="h-[calc(100%-120px)] flex">
-          <div className="w-64">
-            {!noCommunitiesList && <CommunitiesList />}
-          </div>
-          {h(component, rest)}
+        <div class="h-[calc(100%-120px)] flex justify-center">
+          {!noCommunitiesList && (
+            <div className="w-64">
+              <CommunitiesList />
+            </div>
+          )}
+          <div class="w-full max-w-6xl">{h(component, rest)}</div>
         </div>
       </div>
     );
@@ -53,7 +55,7 @@ const App: FunctionalComponent = () => {
   return (
     <UserContext.Provider value={[user, setUser]}>
       <div class="dark h-screen">
-        <div class="dark:bg-gradient-to-r dark:bg-primary-900 dark:from-primary-800 dark:text-blue-100 h-screen overflow-y-scroll flex flex-col justify-between">
+        <div class="dark:bg-gradient-to-r dark:bg-primary-900 dark:from-primary-800 dark:text-blue-100 h-screen overflow-y-auto flex flex-col justify-between">
           <div class="h-full">
             {new AuthService(user, setUser).authStateEstablished && (
               <div class="h-[calc(100%-120px)] flex">
@@ -80,6 +82,13 @@ const App: FunctionalComponent = () => {
                     })}
                   />
                   <Route
+                    path="/communities/:communityId/posts/:postId"
+                    requireSession={false}
+                    component={withStandardPageElements(PostScreen, {
+                      noCommunitiesList: true,
+                    })}
+                  />
+                  <Route
                     path={URLS.pages.user.signIn}
                     requireSession={false}
                     requireProfile={false}
@@ -102,7 +111,6 @@ const App: FunctionalComponent = () => {
               </div>
             )}
           </div>
-          <Footer />
         </div>
       </div>
     </UserContext.Provider>

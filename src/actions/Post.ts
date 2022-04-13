@@ -1,9 +1,15 @@
 import { URLS } from "../urls";
 import { execInternalReq, HttpMethod } from "../utils/request";
 import { Post, PostCursor, PostPage } from "../types/types";
-import { currentUserToDisplayable } from "../utils/auth";
+import { userToDisplayable } from "../utils/auth";
 
 const postsPath = URLS.api.posts;
+
+export async function getPost(id: number): Promise<Post> {
+  return execInternalReq(`${postsPath}/${id}`, {
+    method: HttpMethod.GET,
+  });
+}
 
 export async function getPosts(cursor?: PostCursor): Promise<PostPage> {
   return execInternalReq(postsPath, {
@@ -26,7 +32,7 @@ export async function createPost(req: CreatePostReq): Promise<Post> {
   });
   return {
     id,
-    creator: currentUserToDisplayable(),
+    creator: userToDisplayable(),
     voteTotal: 0,
     userVote: {
       value: 0,

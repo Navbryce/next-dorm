@@ -81,3 +81,7 @@ export type StateProps<T> = T & {
     value: T[Property]
   ) => void;
 };
+
+export type Stylable = {
+  className?: string;
+};

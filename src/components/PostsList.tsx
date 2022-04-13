@@ -1,11 +1,11 @@
-import { FunctionalComponent, h } from "preact";
-import { useEffect, useState } from "preact/compat";
+import { h } from "preact";
+import { useState } from "preact/compat";
 import type { Post } from "../types/types";
-import { getPosts } from "../actions/Post";
-import PostComponent from "./Post";
 import { classNames } from "../utils/styling";
 import { PostVoteCounter } from "./VoteCounter";
 import { toDisplayableUser } from "src/model/DisplayableUser";
+import { route } from "preact-router";
+import { genLinkToPost } from "src/urls";
 
 type Props = {
   posts: Post[];
@@ -24,7 +24,7 @@ const PostsList = ({ posts }: Props) => {
               "p-4 cursor-pointer",
               selected == post ? "bg-primary-600" : ""
             )}
-            onClick={() => setSelected(post)}
+            onClick={() => route(genLinkToPost(post))}
           >
             <div class="flex space-x-5">
               <PostVoteCounter post={post} />
@@ -41,15 +41,6 @@ const PostsList = ({ posts }: Props) => {
       </div>
     </div>
   );
-  {
-    /*<div class="absolute h-full w-5/6">*/
-  }
-  {
-    /*  {selected && <PostComponent post={selected}/>}*/
-  }
-  {
-    /*</div>*/
-  }
 };
 
 export default PostsList;
