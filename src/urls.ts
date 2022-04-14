@@ -1,4 +1,4 @@
-import { Community, Post } from "./types/types";
+import { Community, KnownDisplayableUser, Post } from "./types/types";
 
 export const URLS = {
   api: {
@@ -11,10 +11,11 @@ export const URLS = {
   },
   pages: {
     communities: "/communities",
-    user: {
-      createProfile: "/user/create-profile",
-      signIn: "/user/sign-in",
-      register: "/user/register",
+    users: {
+      root: "/users",
+      createProfile: "/users/create-profile",
+      signIn: "/users/sign-in",
+      register: "/users/register",
     },
   },
 };
@@ -29,4 +30,9 @@ export function genLinkToCommunity(community: Community): string {
 export function genLinkToPost(post: Post): string {
   // TODO just use the first community of the post for now
   return `${URLS.pages.communities}/${post.communities[0].id}/posts/${post.id}`;
+}
+
+export function genLinkToUser(user: KnownDisplayableUser): string {
+  // TODO just use the first community of the post for now
+  return `${URLS.pages.users.root}/${user.id}`;
 }

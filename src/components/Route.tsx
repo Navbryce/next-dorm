@@ -17,12 +17,12 @@ function AuthWrapper<T>(
     const [user] = useContext(UserContext);
 
     if (requireSession && !user) {
-      route(URLS.pages.user.signIn);
+      route(URLS.pages.users.signIn);
       return <div />;
     }
 
     if (requireSession && requireProfile && !user?.profile) {
-      route(URLS.pages.user.createProfile);
+      route(URLS.pages.users.createProfile);
       return <div />;
     }
     return h(component, props);

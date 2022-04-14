@@ -39,9 +39,18 @@ function InfinitePostsList<CURSOR_TYPE>({
       return;
     }
     setIsLoading(true);
-    const { posts: newPosts, nextCursor: newNextCursor } = await fetchNextPage(
-      nextCursor
-    );
+
+    let newPosts: Post[] = [];
+    let newNextCursor: PostCursor;
+    try {
+      ({ posts: newPosts, nextCursor: newNextCursor } = await fetchNextPage(
+        nextCursor
+      ));
+    } catch (e) {
+      setHasMore(false);
+      setIsLoading(false);
+      return;
+    }
     setPosts([...posts, ...newPosts]);
     // TODO: if returning less than limit, setHasMore to false
     if (!newNextCursor) {

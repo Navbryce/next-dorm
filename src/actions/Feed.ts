@@ -1,15 +1,17 @@
 import { URLS } from "src/urls";
-import { Post, PostCursor, PostPage } from "src/types/types";
+import { PostCursor, PostPageRes, PostPage } from "src/types/types";
 import { execInternalReq, HttpMethod } from "src/utils/request";
+import { makePostPageDisplayable } from "src/actions/util";
 
 const basePath = URLS.api.feed;
 
-export function getFeed(cursor?: PostCursor): Promise<PostPage> {
-  return execInternalReq(basePath, {
+export async function getFeed(cursor?: PostCursor): Promise<PostPage> {
+  const page = await execInternalReq<PostPageRes>(basePath, {
     method: HttpMethod.POST,
     body: {
       orderBy: "MOST_RECENT",
       cursor,
     },
   });
+  return makePostPageDisplayable(page);
 }

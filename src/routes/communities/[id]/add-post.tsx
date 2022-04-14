@@ -1,6 +1,7 @@
 import { FunctionalComponent, h } from "preact";
 import {
   useCallback,
+  useContext,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -20,6 +21,7 @@ import SubscribeButton from "src/components/SubscribeButton";
 import { subscribe } from "src/actions/Subscription";
 import { route } from "preact-router";
 import { URLS } from "src/urls";
+import { UserContext } from "src/contexts";
 
 const AddPostScreen = ({
   communityId: communityIdStr,
@@ -28,10 +30,15 @@ const AddPostScreen = ({
 }) => {
   const communityId = useMemo(() => parseInt(communityIdStr), [communityIdStr]);
 
+  const [user] = useContext(UserContext);
+
   const createPostCb = useCallback(
     async (values: Values) => {
+      if (!user) {
+        throw new Error("must be logged in to create a post");
+      }
       try {
-        await createPost({
+        await createPost(user, {
           ...values,
           communities: [communityId],
         });

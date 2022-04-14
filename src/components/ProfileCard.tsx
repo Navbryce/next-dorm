@@ -1,9 +1,9 @@
 import { FunctionalComponent, h } from "preact";
-import { DisplayableUserRes } from "../types/types";
+import { DisplayableUser, DisplayableUserRes } from "../types/types";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { toDisplayableUser, DisplayableUser } from "src/model/DisplayableUser";
+import { toDisplayableUser } from "src/utils/auth";
 
-const Avatar = ({
+export const Avatar = ({
   user,
   ...rest
 }: {
@@ -18,20 +18,20 @@ const Avatar = ({
   );
 };
 
-export const PostProfileCard = ({ user }: { user: DisplayableUserRes }) => {
+export const PostProfileCard = ({ user }: { user: DisplayableUser }) => {
   return (
     <div class="flex items-center">
-      <Avatar user={toDisplayableUser(user)} width={40} height={40} />
-      <span>{toDisplayableUser(user).displayName}</span>
+      <Avatar user={user} width={40} height={40} />
+      <span>{user.displayName}</span>
     </div>
   );
 };
 
-export const CommentProfileCard = ({ user }: { user: DisplayableUserRes }) => {
+export const CommentProfileCard = ({ user }: { user: DisplayableUser }) => {
   return (
     <div class="flex items-center">
-      <Avatar user={toDisplayableUser(user)} width={25} height={25} />
-      <span>{toDisplayableUser(user).displayName}</span>
+      <Avatar user={user} width={25} height={25} />
+      <span>{user.displayName}</span>
     </div>
   );
 };

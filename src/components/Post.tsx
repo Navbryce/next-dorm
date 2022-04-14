@@ -8,6 +8,7 @@ import Comments from "./Comments";
 import CommentDialog, { Values } from "./inputs/CommentDialog";
 import { UserContext } from "src/contexts";
 import { PostVoteCounter } from "src/components/VoteCounter";
+import { toDisplayableUser } from "src/utils/auth";
 
 const PostComponent = ({ post }: { post: Post }) => {
   const [user] = useContext(UserContext);

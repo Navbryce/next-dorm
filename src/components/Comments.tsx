@@ -9,6 +9,7 @@ import { createComment } from "../actions/Comment";
 import CommentDialog, { Values } from "./inputs/CommentDialog";
 import { IconButton } from "src/components/inputs/Button";
 import { UserContext } from "src/contexts";
+import { toDisplayableUser } from "src/utils/auth";
 
 type HasReplyLock = StateProps<{ commentWithReplyLock: number | null }>;
 

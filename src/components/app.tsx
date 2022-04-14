@@ -7,18 +7,19 @@ import Header from "./Header";
 import { useEffect, useState } from "preact/compat";
 import { AuthService, UserContext } from "src/contexts";
 import "src/utils/firebase";
-import SignInScreen from "src/routes/user/sign-in";
+import SignInScreen from "src/routes/users/sign-in";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import AllScreen from "src/routes/communities/AllScreen";
 import CommunitiesList from "src/components/CommunitiesList";
 import FeedScreen from "src/routes/FeedScreen";
-import RegisterScreen from "src/routes/user/register";
-import CreateProfileScreen from "src/routes/user/create-profile";
+import RegisterScreen from "src/routes/users/register";
+import CreateProfileScreen from "src/routes/users/create-profile";
 import { URLS } from "src/urls";
 import { User } from "src/types/types";
 import Route from "src/components/Route";
 import AddPostScreen from "src/routes/communities/[id]/add-post";
 import PostScreen from "src/routes/communities/[id]/posts/index";
+import UserScreen from "src/routes/users/[id]/index";
 
 // TODO: Absolute imports
 function withStandardPageElements<T>(
@@ -89,7 +90,14 @@ const App: FunctionalComponent = () => {
                     })}
                   />
                   <Route
-                    path={URLS.pages.user.signIn}
+                    path={`${URLS.pages.users.root}/:userId`}
+                    requireSession={false}
+                    component={withStandardPageElements(UserScreen, {
+                      noCommunitiesList: true,
+                    })}
+                  />
+                  <Route
+                    path={URLS.pages.users.signIn}
                     requireSession={false}
                     requireProfile={false}
                     component={SignInScreen}
@@ -97,13 +105,13 @@ const App: FunctionalComponent = () => {
                   <Route
                     requireSession={false}
                     requireProfile={false}
-                    path={URLS.pages.user.register}
+                    path={URLS.pages.users.register}
                     component={RegisterScreen}
                   />
                   <Route
                     requireSession={true}
                     requireProfile={false}
-                    path={URLS.pages.user.createProfile}
+                    path={URLS.pages.users.createProfile}
                     component={CreateProfileScreen}
                   />
                   <NotFoundPage default />

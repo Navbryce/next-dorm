@@ -12,7 +12,6 @@ const CreateProfileScreen = () => {
     await new AuthService(user, setUser).setProfile(
       await createProfile({ displayName })
     );
-    console.log(user);
     route("/");
   }, [user, setUser, displayName]);
   return (

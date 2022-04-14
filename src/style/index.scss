@@ -33,6 +33,10 @@
   .form {
     @apply rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit space-y-4;
   }
+
+  .divider-b {
+    @apply border-b border-secondary-100;
+  }
 }
 
 @tailwind components;

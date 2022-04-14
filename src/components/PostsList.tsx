@@ -3,9 +3,9 @@ import { useState } from "preact/compat";
 import type { Post } from "../types/types";
 import { classNames } from "../utils/styling";
 import { PostVoteCounter } from "./VoteCounter";
-import { toDisplayableUser } from "src/model/DisplayableUser";
 import { route } from "preact-router";
 import { genLinkToPost } from "src/urls";
+import { toDisplayableUser } from "src/utils/auth";
 
 type Props = {
   posts: Post[];
@@ -33,7 +33,7 @@ const PostsList = ({ posts }: Props) => {
                 <span>
                   {post.communities.map((community) => community.name)}
                 </span>
-                <div>by {toDisplayableUser(post.creator).displayName}</div>
+                <div>by {post.creator.displayName}</div>
               </div>
             </div>
           </div>

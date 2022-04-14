@@ -4,7 +4,7 @@ import { UserContext } from "src/contexts";
 import DropdownMenu, { MenuItem } from "./DropdownMenu";
 import { getAuth, signOut } from "firebase/auth";
 import { route } from "preact-router";
-import { URLS } from "src/urls";
+import { genLinkToUser, URLS } from "src/urls";
 
 const Header: FunctionalComponent = () => {
   const [user] = useContext(UserContext);
@@ -15,7 +15,7 @@ const Header: FunctionalComponent = () => {
         <h1 class="text-3xl flex flex-row items-center">NextDorm</h1>
       </a>
       {!user && (
-        <button type="button" onClick={() => route(URLS.pages.user.signIn)}>
+        <button type="button" onClick={() => route(URLS.pages.users.signIn)}>
           Sign in
         </button>
       )}
@@ -36,7 +36,11 @@ const Header: FunctionalComponent = () => {
               </div>
             }
           >
-            <MenuItem href="/">View Profile</MenuItem>
+            {user.profile && (
+              <MenuItem href={genLinkToUser(user.profile)}>
+                View Profile
+              </MenuItem>
+            )}
             <MenuItem onClick={() => signOut(getAuth())}>Logout</MenuItem>
           </DropdownMenu>
         </div>

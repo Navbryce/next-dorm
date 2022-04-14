@@ -54,7 +54,10 @@ const SignInScreen = () => {
         </div>
         <div class="py-2 space-x-2">
           <button type="submit">Sign In</button>
-          <button type="button" onClick={() => route(URLS.pages.user.register)}>
+          <button
+            type="button"
+            onClick={() => route(URLS.pages.users.register)}
+          >
             Register
           </button>
         </div>

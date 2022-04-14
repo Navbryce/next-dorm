@@ -12,7 +12,16 @@ export type AnonymousUserRes = {
   displayName: string;
 };
 
-export type Profile = {
+export interface DisplayableUser {
+  displayName: string;
+  avatar: string;
+}
+
+export type KnownDisplayableUser = DisplayableUser & {
+  id: string;
+};
+
+export type LocalUser = {
   id: string;
   avatar: string;
   displayName: string;
@@ -20,10 +29,10 @@ export type Profile = {
 
 export type User = {
   firebaseUser: FirebaseUser;
-  profile: Profile | null;
+  profile: LocalUser | null;
 };
 
-export type UserRes = Profile;
+export type UserRes = LocalUser;
 
 export type Community = {
   id: number;
@@ -44,12 +53,23 @@ export enum Visibility {
   HIDDEN = "HIDDEN",
 }
 
-export type ContentMetadata = {
+export type ContentMetadataRes = {
   creator: DisplayableUserRes;
   voteTotal: number;
   userVote: { value: number } | null;
   visibility: Visibility;
 };
+
+export type ContentMetadata = Omit<ContentMetadataRes, "creator"> & {
+  creator: DisplayableUser;
+};
+
+export type PostRes = {
+  id: number;
+  title: string;
+  content: string;
+  communities: Community[];
+} & ContentMetadataRes;
 
 export type Post = {
   id: number;
@@ -58,6 +78,12 @@ export type Post = {
   communities: Community[];
 } & ContentMetadata;
 
+export type CommentRes = {
+  id: number;
+  content: string;
+  children: Comment[];
+} & ContentMetadataRes;
+
 export type Comment = {
   id: number;
   content: string;
@@ -65,6 +91,11 @@ export type Comment = {
 } & ContentMetadata;
 
 export type PostCursor = any;
+
+export type PostPageRes = {
+  posts: PostRes[];
+  nextCursor: PostCursor;
+};
 
 export type PostPage = {
   posts: Post[];
