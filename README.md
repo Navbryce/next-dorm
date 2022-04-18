@@ -1,10 +1,9 @@
-# splitzies [![Netlify Status](https://api.netlify.com/api/v1/badges/63b8f105-b1c4-4dc3-879e-8ca8de3cd473/deploy-status)](https://app.netlify.com/sites/splitzies/deploys)
-
-Split Instacart receipts with friends using Google Drive.
+# Next Dorm
+A social network
 
 # Stack
 - Preact
-- [python serverless functions](https://github.com/Navbryce/splitzies-functions)
+- Golang (Backend)
 
 ## CLI Commands
 *   `npm install`: Installs dependencies
