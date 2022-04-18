@@ -17,6 +17,7 @@
     "dotenv-safe": "^8.2.0",
     "firebase": "^9.6.8",
     "firebaseui": "^6.0.1",
+    "immutability-helper": "^3.1.1",
     "preact": "^10.3.1",
     "preact-render-to-string": "^5.1.4",
     "preact-router": "^3.2.1",
@@ -24,7 +25,8 @@
     "react-infinite-scroller": "^1.2.5",
     "react-lazy-load-image-component": "^1.5.1",
     "rxjs": "^7.5.5",
-    "sweetalert2": "^11.4.0"
+    "sweetalert2": "^11.4.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx-source": "^7.16.7",
@@ -33,6 +35,7 @@
     "@types/jest": "^26.0.24",
     "@types/react-infinite-scroller": "^1.2.3",
     "@types/react-lazy-load-image-component": "^1.5.2",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^5.18.0",
     "enzyme": "^3.11.0",

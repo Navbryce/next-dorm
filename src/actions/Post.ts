@@ -27,7 +27,10 @@ export async function getPosts(cursor?: PostCursor): Promise<PostPage> {
   return makePostPageDisplayable(page);
 }
 
-type CreatePostReq = Pick<Post, "title" | "content" | "visibility"> & {
+type CreatePostReq = Pick<
+  Post,
+  "title" | "content" | "visibility" | "imageBlobNames"
+> & {
   communities: number[];
 };
 

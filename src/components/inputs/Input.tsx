@@ -1,5 +1,8 @@
 import { h } from "preact";
 import { classNames } from "src/utils/styling";
+import { IconButton } from "src/components/inputs/Button";
+import { PhotographIcon } from "@heroicons/react/outline";
+import { useRef } from "preact/compat";
 
 // TODO: Switch to tailwind styles.scss?
 export const Label = ({
@@ -38,5 +41,24 @@ export const TextArea = ({
       className={classNames(COMMON_INPUT_CLASSES, className ?? "")}
       {...rest}
     />
+  );
+};
+
+export const ImageUploadInput = ({
+  className,
+  ...rest
+}: h.JSX.HTMLAttributes<HTMLInputElement>) => {
+  const fileUploadEl = useRef<HTMLInputElement | null>(null);
+  return (
+    <div class={className}>
+      <IconButton
+        buttonType="text"
+        startIcon={<PhotographIcon />}
+        onClick={() => {
+          fileUploadEl.current && fileUploadEl.current.click();
+        }}
+      />
+      <input type="file" ref={fileUploadEl} className="hidden" {...rest} />
+    </div>
   );
 };

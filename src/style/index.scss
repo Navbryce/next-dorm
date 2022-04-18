@@ -25,8 +25,8 @@
   a {
     cursor: pointer;
   }
-  button[type="submit"],
-  button[type="button"] {
+  .btn,
+  button[type="submit"] {
     @apply bg-gradient-to-tl dark:bg-secondary-500 dark:from-secondary-200 p-3 rounded-md shadow-lg dark:shadow-primary-900;
   }
   form,

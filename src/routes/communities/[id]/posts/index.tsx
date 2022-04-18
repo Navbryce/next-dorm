@@ -1,25 +1,7 @@
-import { FunctionalComponent, h } from "preact";
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from "preact/compat";
-import { createPost, getPost, getPosts } from "src/actions/Post";
-import {
-  Community,
-  CommunityWithSubStatus,
-  Post,
-  PostCursor,
-} from "src/types/types";
-import PostDialog, { Values } from "src/components/inputs/PostDialog";
-import InfinitePostsList from "src/components/InfinitePostsList";
-import { getCommunity } from "src/actions/Community";
-import SubscribeButton from "src/components/SubscribeButton";
-import { subscribe } from "src/actions/Subscription";
-import { route } from "preact-router";
-import { URLS } from "src/urls";
+import { h } from "preact";
+import { useEffect, useMemo, useState } from "preact/compat";
+import { getPost } from "src/actions/Post";
+import { Post } from "src/types/types";
 import PostComponent from "src/components/Post";
 
 const PostScreen = ({

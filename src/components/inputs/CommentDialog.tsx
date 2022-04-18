@@ -33,13 +33,15 @@ const CommentDialog = ({ content, setContent, onSubmit, onCancel }: Props) => {
           className="inline-block"
         />
         <div onClick={onSubmitCb} className="inline">
-          <button type="button" disabled={content.length == 0}>
+          <button type="button" class="btn" disabled={content.length == 0}>
             Reply
           </button>
         </div>
         {onCancel && (
           <div onClick={onCancel} className="inline">
-            <button type="button">Cancel</button>
+            <button type="button" class="btn">
+              Cancel
+            </button>
           </div>
         )}
       </div>

@@ -6,6 +6,7 @@ import { PostVoteCounter } from "./VoteCounter";
 import { route } from "preact-router";
 import { genLinkToPost } from "src/urls";
 import { toDisplayableUser } from "src/utils/auth";
+import UploadedImage from "src/components/UploadedImage";
 
 type Props = {
   posts: Post[];
@@ -34,6 +35,11 @@ const PostsList = ({ posts }: Props) => {
                   {post.communities.map((community) => community.name)}
                 </span>
                 <div>by {post.creator.displayName}</div>
+                <div>
+                  {post.imageBlobNames.length > 0 && (
+                    <UploadedImage blobName={post.imageBlobNames[0]} />
+                  )}
+                </div>
               </div>
             </div>
           </div>

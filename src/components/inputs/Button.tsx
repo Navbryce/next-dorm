@@ -12,7 +12,7 @@ type IconButtonProps = {
 };
 
 const BUTTON_TYPE_BY_TYPE = {
-  [ButtonType.TEXT]: "",
+  [ButtonType.TEXT]: "button",
   [ButtonType.CONTAINED]: "button",
 };
 
@@ -36,12 +36,12 @@ export function IconButton({
 }: RenderableProps<IconButtonProps> & h.JSX.HTMLAttributes<HTMLButtonElement>) {
   return (
     <button
-      type={BUTTON_TYPE_BY_TYPE[buttonType as ButtonType]}
       class={classNames(
         "group",
         BUTTON_CLASSES_BY_TYPE[buttonType as ButtonType]
       )}
       {...rest}
+      type={BUTTON_TYPE_BY_TYPE[buttonType as ButtonType]}
     >
       {cloneElement(startIcon, {
         className: classNames(

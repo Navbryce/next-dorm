@@ -57,6 +57,7 @@ export type ContentMetadataRes = {
   creator: DisplayableUserRes;
   voteTotal: number;
   userVote: { value: number } | null;
+  imageBlobNames: string[];
   visibility: Visibility;
 };
 

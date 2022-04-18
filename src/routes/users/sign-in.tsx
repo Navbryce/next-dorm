@@ -56,6 +56,7 @@ const SignInScreen = () => {
           <button type="submit">Sign In</button>
           <button
             type="button"
+            class="btn"
             onClick={() => route(URLS.pages.users.register)}
           >
             Register

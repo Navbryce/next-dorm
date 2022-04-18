@@ -86,7 +86,7 @@ const CommunityScreen = ({
             <button
               type="button"
               onClick={createPostCb}
-              className="inline-block"
+              className="btn inline-block"
             >
               Add Post
             </button>
