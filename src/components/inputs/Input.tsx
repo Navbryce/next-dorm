@@ -20,18 +20,6 @@ export const Label = ({
 const COMMON_INPUT_CLASSES =
   "bg-slate-800 p-2 rounded leading-tight focus:outline-none focus:shadow-outline w-full";
 
-export const Input = ({
-  className,
-  ...rest
-}: h.JSX.HTMLAttributes<HTMLInputElement>) => {
-  return (
-    <input
-      className={classNames(COMMON_INPUT_CLASSES, className ?? "")}
-      {...rest}
-    />
-  );
-};
-
 export const TextArea = ({
   className,
   ...rest

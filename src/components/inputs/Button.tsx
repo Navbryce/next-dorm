@@ -17,14 +17,13 @@ const BUTTON_TYPE_BY_TYPE = {
 };
 
 const BUTTON_CLASSES_BY_TYPE = {
-  [ButtonType.TEXT]:
-    "text-gray-300 hover:text-cyan-400 transition-all duration-200",
+  [ButtonType.TEXT]: "text-cyan-400 transition-all duration-200",
   [ButtonType.CONTAINED]: "",
 };
 
 const ICON_CLASSES_BY_TYPE = {
   [ButtonType.TEXT]:
-    "rounded-full bg-cyan-400/0 group-hover:bg-cyan-400/20 transition-all duration-200",
+    "rounded-full p-2 bg-cyan-400/0 group-hover:bg-cyan-400/20 transition-all duration-200",
   [ButtonType.CONTAINED]: "",
 };
 
@@ -45,9 +44,12 @@ export function IconButton({
     >
       {cloneElement(startIcon, {
         className: classNames(
-          "w-4 h-4 p-2 box-content inline",
-          ICON_CLASSES_BY_TYPE[buttonType as ButtonType]
+          "box-content inline",
+          ICON_CLASSES_BY_TYPE[buttonType as ButtonType],
+          startIcon.props.className
         ),
+        width: startIcon.props.width ?? 20,
+        height: startIcon.props.height ?? 20,
       })}{" "}
       {children}
     </button>

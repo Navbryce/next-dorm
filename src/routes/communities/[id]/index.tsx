@@ -9,17 +9,20 @@ import {
 import { createPost, getPosts } from "src/actions/Post";
 import {
   Community,
+  CommunityPosInTree,
   CommunityWithSubStatus,
   Post,
   PostCursor,
 } from "src/types/types";
-import PostDialog, { Values } from "src/components/inputs/PostDialog";
 import InfinitePostsList from "src/components/InfinitePostsList";
-import { getCommunity } from "src/actions/Community";
+import { getCommunity, getCommunityPos } from "src/actions/Community";
 import SubscribeButton from "src/components/SubscribeButton";
 import { subscribe } from "src/actions/Subscription";
 import { route } from "preact-router";
 import { URLS } from "src/urls";
+import CommunitiesList from "src/components/CommunitiesList";
+import Breadcrumb, { BreadcrumbItem } from "src/components/Breadcrumb";
+import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
 
 const CommunityScreen = ({
   communityId: communityIdStr,
@@ -29,17 +32,20 @@ const CommunityScreen = ({
   const [community, setCommunity] = useState<
     CommunityWithSubStatus | undefined
   >();
+  const [communityPos, setCommunityPos] = useState<
+    CommunityPosInTree | undefined
+  >(undefined);
   const [posts, setPosts] = useState<Post[]>([]);
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   const communityId = useMemo(() => parseInt(communityIdStr), [communityIdStr]);
 
   useLayoutEffect(() => {
-    (async () => {
-      const community = await getCommunity(communityId);
+    getCommunity(communityId).then((community) => {
       setCommunity(community);
       setIsSubscribed(community.isSubscribed);
-    })();
+    });
+    getCommunityPos(communityId).then(setCommunityPos);
   }, [communityId]);
 
   const fetchNextPageCb = useCallback(
@@ -65,7 +71,10 @@ const CommunityScreen = ({
   }
 
   return (
-    <div class="relative w-full h-full">
+    <div class="relative w-full h-full flex">
+      <div className="w-64">
+        <CommunitiesList current={community} pos={communityPos} />
+      </div>
       <div class="flex w-full h-full">
         <div class="w-4/5">
           {community && (
@@ -74,6 +83,9 @@ const CommunityScreen = ({
             </div>
           )}
           <div className="h-full">
+            <div>
+              <CommunityBreadcrumb pos={communityPos} current={community} />
+            </div>
             <InfinitePostsList
               posts={posts}
               setPosts={setPosts}

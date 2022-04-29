@@ -1,11 +1,13 @@
 import firebase from "firebase/compat";
 import { User as FirebaseUser } from "firebase/auth";
+import dayjs, { Dayjs } from "dayjs";
 
 export type DisplayableUserRes =
   | {
       anonymousUser: AnonymousUserRes;
     }
-  | { user: UserRes };
+  | { user: UserRes }
+  | { anonymousUser: AnonymousUserRes; user: UserRes };
 
 export type AnonymousUserRes = {
   avatar: string;
@@ -39,6 +41,11 @@ export type Community = {
   name: string;
 };
 
+export type CommunityPosInTree = {
+  path: Community[];
+  children: Community[];
+};
+
 export type Subscription = {
   userId: string;
   communityId: string;
@@ -59,10 +66,17 @@ export type ContentMetadataRes = {
   userVote: { value: number } | null;
   imageBlobNames: string[];
   visibility: Visibility;
+  createdAt: number;
+  updatedAt: number;
 };
 
-export type ContentMetadata = Omit<ContentMetadataRes, "creator"> & {
+export type ContentMetadata = Omit<
+  ContentMetadataRes,
+  "creator" | "createdAt" | "updatedAt"
+> & {
   creator: DisplayableUser;
+  updatedAt: Dayjs;
+  createdAt: Dayjs;
 };
 
 export type PostRes = {
@@ -70,6 +84,7 @@ export type PostRes = {
   title: string;
   content: string;
   communities: Community[];
+  commentCount: number;
 } & ContentMetadataRes;
 
 export type Post = {
@@ -77,12 +92,13 @@ export type Post = {
   title: string;
   content: string;
   communities: Community[];
+  commentCount: number;
 } & ContentMetadata;
 
 export type CommentRes = {
   id: number;
   content: string;
-  children: Comment[];
+  children: CommentRes[];
 } & ContentMetadataRes;
 
 export type Comment = {

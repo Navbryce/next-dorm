@@ -3,7 +3,6 @@ import { h } from "preact";
 import { useCallback, useState } from "preact/compat";
 import VisibilitySelect from "./VisibilitySelect";
 import { Comment, StateProps, Visibility } from "src/types/types";
-import { Input } from "./Input";
 
 export type Values = Pick<Comment, "content" | "visibility">;
 
@@ -20,7 +19,7 @@ const CommentDialog = ({ content, setContent, onSubmit, onCancel }: Props) => {
 
   return (
     <div class="border-b border-secondary-100">
-      <Input
+      <input
         class="w-4/5"
         placeholder="This is a comment..."
         value={content}

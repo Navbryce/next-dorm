@@ -4,14 +4,19 @@ import { useContext } from "preact/compat";
 import { UserContext } from "src/contexts";
 import { URLS } from "src/urls";
 
-type AuthConfig = {
+type AuthConfig<T> = {
   requireSession?: boolean;
   requireProfile?: boolean;
+  customValidator?: (props: T) => boolean;
 };
 
 function AuthWrapper<T>(
   component: RouteProps<T>["component"],
-  { requireSession = true, requireProfile = true }: AuthConfig
+  {
+    requireSession = true,
+    requireProfile = true,
+    customValidator = () => true,
+  }: AuthConfig<T>
 ) {
   const WrappedComponent: FunctionComponent<T> = (props) => {
     const [user] = useContext(UserContext);
@@ -25,12 +30,15 @@ function AuthWrapper<T>(
       route(URLS.pages.users.createProfile);
       return <div />;
     }
+    if (!customValidator(props)) {
+      return <div />;
+    }
     return h(component, props);
   };
   return WrappedComponent;
 }
 
-type Props<T> = RouteProps<T> & Partial<T> & AuthConfig;
+type Props<T> = RouteProps<T> & Partial<T> & AuthConfig<T>;
 
 export function Route<T>({
   component,

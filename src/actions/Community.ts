@@ -1,4 +1,8 @@
-import { CommunityWithSubStatus } from "src/types/types";
+import {
+  Community,
+  CommunityPosInTree,
+  CommunityWithSubStatus,
+} from "src/types/types";
 import { URLS } from "src/urls";
 import { execInternalReq, HttpMethod } from "src/utils/request";
 
@@ -12,8 +16,11 @@ export async function getCommunity(
   });
 }
 
-export async function getCommunities(): Promise<CommunityWithSubStatus[]> {
-  return execInternalReq(`${basePath}`, {
+export async function getCommunityPos(
+  id?: number
+): Promise<CommunityPosInTree> {
+  // treat null as 0
+  return execInternalReq(`${basePath}/${id ?? 0}/pos`, {
     method: HttpMethod.GET,
   });
 }

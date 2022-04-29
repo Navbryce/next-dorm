@@ -1,7 +1,7 @@
 import { FunctionalComponent, h } from "preact";
 import { useCallback, useContext, useState } from "preact/compat";
 import { route } from "preact-router";
-import { Input, Label } from "src/components/inputs/Input";
+import { Label } from "src/components/inputs/Input";
 import { createProfile } from "src/actions/User";
 import { AuthService, UserContext } from "src/contexts";
 
@@ -29,7 +29,7 @@ const CreateProfileScreen = () => {
               <Label htmlFor="username" className="block">
                 Username
               </Label>
-              <Input
+              <input
                 name="username"
                 value={displayName}
                 onChange={(e) =>

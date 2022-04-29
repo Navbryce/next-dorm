@@ -16,11 +16,11 @@ const VoteCounter: FunctionalComponent<Props> = ({ content, onVote }) => {
   const voteCb = useCallback(
     async (voteValue: number) => {
       voteValue = content.userVote?.value == voteValue ? 0 : voteValue;
-      await onVote(voteValue);
       content.voteTotal += voteValue - (content.userVote?.value ?? 0);
       content.userVote = { value: voteValue };
       setUserVote(voteValue);
       setVoteCount(content.voteTotal);
+      await onVote(voteValue);
     },
     [content]
   );
@@ -28,14 +28,20 @@ const VoteCounter: FunctionalComponent<Props> = ({ content, onVote }) => {
     <div class="inline-block">
       <div class="flex flex-col justify-center">
         <div
-          class={classNames("h-5 w-5", userVote == 1 ? "text-violet-400" : "")}
+          class={classNames(
+            "h-5 w-5 cursor-pointer",
+            userVote == 1 ? "text-violet-400" : ""
+          )}
           onClick={() => voteCb(1)}
         >
           <ArrowUpIcon />
         </div>
         <span class="text-center">{voteCount}</span>
         <div
-          class={classNames("h-5 w-5", userVote == -1 ? "text-violet-400" : "")}
+          class={classNames(
+            "h-5 w-5 cursor-pointer",
+            userVote == -1 ? "text-violet-400" : ""
+          )}
           onClick={() => voteCb(-1)}
         >
           <ArrowDownIcon />

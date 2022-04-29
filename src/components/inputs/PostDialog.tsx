@@ -3,7 +3,7 @@ import { FunctionalComponent, h } from "preact";
 import { Post, Visibility } from "src/types/types";
 import VisibilitySelect from "./VisibilitySelect";
 import { useCallback, useContext, useState } from "preact/compat";
-import { ImageUploadInput, Input, Label, TextArea } from "./Input";
+import { ImageUploadInput, Label, TextArea } from "./Input";
 import { UserContext } from "src/contexts";
 import { uploadImage } from "src/utils/upload";
 import update from "immutability-helper";
@@ -18,11 +18,6 @@ type Props = {
   onSubmit: (post: Values) => void;
 };
 
-type UploadedImage = {
-  blobName: string;
-  url: string;
-};
-
 const PostDialog = ({ onSubmit }: Props) => {
   const [user] = useContext(UserContext);
 
@@ -33,7 +28,7 @@ const PostDialog = ({ onSubmit }: Props) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [uploadProgresses, setUploadProgresses] = useState<number[]>([]);
   const [imageBlobNames, setImageBlobNames] = useState<
-    Array<string | undefined>
+    Array<string | null | undefined>
   >([]);
 
   const onSubmitCb = useCallback(
@@ -88,13 +83,27 @@ const PostDialog = ({ onSubmit }: Props) => {
     ]
   );
 
+  const onImageCancelCb = useCallback(
+    (i: number) => {
+      setImageBlobNames(update(imageBlobNames, { [i]: { $set: null } }));
+    },
+    [
+      imageFiles,
+      setImageFiles,
+      uploadProgresses,
+      setUploadProgresses,
+      imageBlobNames,
+      setImageBlobNames,
+    ]
+  );
+
   return (
     <form class="max-w-4xl">
       <div>
         <Label className="block font-bold" htmlFor="title">
           Title
         </Label>
-        <Input
+        <input
           className="w-full"
           name="title"
           value={title}
@@ -114,13 +123,16 @@ const PostDialog = ({ onSubmit }: Props) => {
         <ImageUploadInput onChange={onImageChangeCb} />
       </div>
       <div>
-        {imageFiles.map((file, i) => (
-          <UploadedImagePreview
-            key={i}
-            progress={uploadProgresses[i]}
-            blobName={imageBlobNames[i]}
-          />
-        ))}
+        {imageBlobNames
+          .filter((blobName) => blobName != null)
+          .map((blobName, i) => (
+            <UploadedImagePreview
+              key={i}
+              progress={uploadProgresses[i]}
+              blobName={blobName as string | undefined}
+              onCancel={() => onImageCancelCb(i)}
+            />
+          ))}
       </div>
       <div>
         <VisibilitySelect value={visibility} onChange={setVisibility} />

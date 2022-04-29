@@ -5,6 +5,7 @@ export enum HttpMethod {
   GET = "GET",
   POST = "POST",
   PUT = "PUT",
+  DELETE = "DELETE",
 }
 
 type SerializableTypes = string | number;

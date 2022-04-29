@@ -70,7 +70,7 @@ function InfinitePostsList<CURSOR_TYPE>({
   ]);
 
   return (
-    <div class="w-full h-full overflow-auto" ref={scrollDiv}>
+    <div class="w-full h-full" ref={scrollDiv}>
       <InfiniteScroll
         useWindow={false}
         getScrollParent={() => scrollDiv.current}

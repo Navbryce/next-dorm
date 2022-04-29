@@ -1,10 +1,9 @@
 import { useEffect, useLayoutEffect, useState } from "preact/compat";
 import { getUrl } from "src/utils/upload";
 import { h } from "preact";
-import {
+import LazyLoadImage, {
   LazyLoadImageProps,
-  LazyLoadImage,
-} from "react-lazy-load-image-component";
+} from "src/components/LazyLoadImage";
 
 type Props = {
   blobName: string;
@@ -15,10 +14,6 @@ const UploadedImage = ({ blobName, ...rest }: Props) => {
   useLayoutEffect(() => {
     getUrl(blobName).then(setURL);
   }, [blobName]);
-
-  if (!url) {
-    return <div />;
-  }
 
   return <LazyLoadImage src={url} {...rest} />;
 };

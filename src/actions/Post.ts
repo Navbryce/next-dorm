@@ -1,8 +1,20 @@
 import { URLS } from "../urls";
 import { execInternalReq, HttpMethod } from "../utils/request";
-import { Post, PostCursor, PostPage, PostRes, User } from "../types/types";
-import { userToDisplayable } from "../utils/auth";
-import { makePostDisplayable, makePostPageDisplayable } from "src/actions/util";
+import {
+  Post,
+  PostCursor,
+  PostPage,
+  PostRes,
+  User,
+  Visibility,
+} from "../types/types";
+import { userToDisplayable } from "src/utils/user";
+import {
+  makePostDisplayable,
+  makePostPageDisplayable,
+} from "src/actions/parse";
+import dayjs from "dayjs";
+import { Diff } from "src/utils/diff";
 
 const postsPath = URLS.api.posts;
 
@@ -51,7 +63,34 @@ export async function createPost(
     },
     ...req,
     communities: [], // TODO: Properly populate communities
+    commentCount: 0,
+    createdAt: dayjs(),
+    updatedAt: dayjs(),
   };
+}
+
+type EditPostReq = Diff<{
+  title: string;
+  content: string;
+  imageBlobNames: string[];
+  visibility: Visibility;
+}>;
+
+export async function editPost(
+  user: User,
+  id: number,
+  req: EditPostReq
+): Promise<void> {
+  await execInternalReq<{ id: number }>(`${postsPath}/${id}`, {
+    method: HttpMethod.PUT,
+    body: req,
+  });
+}
+
+export async function deletePost(user: User, id: number): Promise<void> {
+  await execInternalReq<{ id: number }>(`${postsPath}/${id}`, {
+    method: HttpMethod.DELETE,
+  });
 }
 
 export async function vote(id: number, value: number): Promise<void> {

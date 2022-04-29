@@ -2,14 +2,15 @@ import { h } from "preact";
 
 import type { Comment, StateProps } from "../types/types";
 import { CommentVoteCounter } from "./VoteCounter";
-import { CommentProfileCard } from "./ProfileCard";
+import { ProfileCardSm } from "./ProfileCard";
 import { ChatIcon } from "@heroicons/react/outline";
 import { useCallback, useContext, useState } from "preact/compat";
 import { createComment } from "../actions/Comment";
 import CommentDialog, { Values } from "./inputs/CommentDialog";
 import { IconButton } from "src/components/inputs/Button";
 import { UserContext } from "src/contexts";
-import { toDisplayableUser } from "src/utils/auth";
+import { toDisplayableUser } from "src/utils/user";
+import { timeToDisplayStr } from "src/utils/display";
 
 type HasReplyLock = StateProps<{ commentWithReplyLock: number | null }>;
 
@@ -61,13 +62,18 @@ const CommentComponent = ({
           <CommentVoteCounter comment={comment} />
         </div>
         <div>
-          <CommentProfileCard user={comment.creator} />
+          <div className="flex items-center space-x-2">
+            <ProfileCardSm user={comment.creator} />
+            <span className="text-gray-400 text-[11pt]">
+              {timeToDisplayStr(comment.createdAt)}
+            </span>
+          </div>
           <div>{comment.content}</div>
           <div>
             <span onClick={onStartReply}>
               {/*Create a common class for buttons*/}
               <IconButton buttonType="text" startIcon={<ChatIcon />}>
-                Comment
+                Reply
               </IconButton>
             </span>
           </div>

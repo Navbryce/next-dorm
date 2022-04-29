@@ -1,4 +1,5 @@
 @import "sweetalert2/src/sweetalert2.scss";
+@import "react-lazy-load-image-component/src/effects/blur.css";
 
 @tailwind base;
 
@@ -25,6 +26,9 @@
   a {
     cursor: pointer;
   }
+  .link {
+    @apply text-cyan-400;
+  }
   .btn,
   button[type="submit"] {
     @apply bg-gradient-to-tl dark:bg-secondary-500 dark:from-secondary-200 p-3 rounded-md shadow-lg dark:shadow-primary-900;
@@ -32,6 +36,11 @@
   form,
   .form {
     @apply rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit space-y-4;
+  }
+
+  input,
+  textarea {
+    @apply bg-slate-800 p-2 rounded leading-tight focus:outline-none  w-full;
   }
 
   .divider-b {

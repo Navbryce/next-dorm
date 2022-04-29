@@ -14,6 +14,7 @@ export const URLS = {
     users: {
       root: "/users",
       createProfile: "/users/create-profile",
+      forgotPassword: "/users/forgot-password",
       signIn: "/users/sign-in",
       register: "/users/register",
     },
@@ -30,6 +31,10 @@ export function genLinkToCommunity(community: Community): string {
 export function genLinkToPost(post: Post): string {
   // TODO just use the first community of the post for now
   return `${URLS.pages.communities}/${post.communities[0].id}/posts/${post.id}`;
+}
+
+export function genLinkToEditPost(post: Post): string {
+  return `${genLinkToPost(post)}/edit`;
 }
 
 export function genLinkToUser(user: KnownDisplayableUser): string {

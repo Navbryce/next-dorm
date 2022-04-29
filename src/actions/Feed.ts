@@ -1,7 +1,7 @@
 import { URLS } from "src/urls";
 import { PostCursor, PostPageRes, PostPage } from "src/types/types";
 import { execInternalReq, HttpMethod } from "src/utils/request";
-import { makePostPageDisplayable } from "src/actions/util";
+import { makePostPageDisplayable } from "src/actions/parse";
 
 const basePath = URLS.api.feed;
 

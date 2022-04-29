@@ -1,7 +1,6 @@
 import {
   cloneElement,
   ComponentChild,
-  ComponentChildren,
   FunctionalComponent,
   h,
   toChildArray,
@@ -12,7 +11,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { classNames } from "../utils/styling";
 import { Link } from "preact-router";
-import { Children, useEffect } from "preact/compat";
+import { Children } from "preact/compat";
 
 type MenuItemProps = {
   active?: boolean;
@@ -58,7 +57,7 @@ const DropdownMenu: FunctionalComponent<Props> = ({
       <div>
         <Menu.Button
           className="inline-flex justify-center items-center w-full rounded-md border
-          border-gray-300 shadow-sm px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-indigo-500"
+          border-gray-300 shadow-sm px-4 py-2 text-sm font-medium"
         >
           {title}
           <ChevronDownIcon className="mr-1 ml-2 h-5 w-5" aria-hidden="true" />

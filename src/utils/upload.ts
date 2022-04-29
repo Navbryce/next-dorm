@@ -16,28 +16,27 @@ type UploadOpts = {
  *
  * @param user
  * @param file
- * @param path
- * @param onProgress
+ * @param opts
  *
  * @return the blob name
  */
 export function uploadImage(
   user: User,
   file: File,
-  { path, onProgress }: UploadOpts
+  opts: UploadOpts | undefined
 ): Promise<string> {
   const storage = getStorage();
   const storageRef = ref(
     storage,
-    `uploads/${user.firebaseUser.uid}/${path ?? uuidv4()}/${file.name}`
+    `uploads/${user.firebaseUser.uid}/${opts?.path ?? uuidv4()}/${file.name}`
   );
   const uploadTask = uploadBytesResumable(storageRef, file);
   return new Promise((onResolve, onError) =>
     uploadTask.on(
       "state_changed",
       (snapshot) =>
-        onProgress &&
-        onProgress(snapshot.bytesTransferred / snapshot.totalBytes),
+        opts?.onProgress &&
+        opts.onProgress(snapshot.bytesTransferred / snapshot.totalBytes),
       (error) => onError(error),
       () => onResolve(storageRef.fullPath)
     )
@@ -46,6 +45,5 @@ export function uploadImage(
 
 // TODO: Assumes file is public read
 export function getUrl(blobName: string): Promise<string> {
-  console.log(blobName);
   return getDownloadURL(ref(getStorage(), blobName));
 }
