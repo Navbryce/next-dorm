@@ -17,13 +17,14 @@ const BUTTON_TYPE_BY_TYPE = {
 };
 
 const BUTTON_CLASSES_BY_TYPE = {
-  [ButtonType.TEXT]: "text-cyan-400 transition-all duration-200",
+  [ButtonType.TEXT]:
+    "text-cyan-400 hover:bg-cyan-400/20 rounded-full transition-all duration-200",
   [ButtonType.CONTAINED]: "",
 };
 
 const ICON_CLASSES_BY_TYPE = {
   [ButtonType.TEXT]:
-    "rounded-full p-2 bg-cyan-400/0 group-hover:bg-cyan-400/20 transition-all duration-200",
+    "rounded-full p-1 bg-cyan-400/0 group-hover:bg-cyan-400/20 transition-all duration-200",
   [ButtonType.CONTAINED]: "",
 };
 
@@ -36,7 +37,7 @@ export function IconButton({
   return (
     <button
       class={classNames(
-        "group",
+        "group p-2",
         BUTTON_CLASSES_BY_TYPE[buttonType as ButtonType]
       )}
       {...rest}

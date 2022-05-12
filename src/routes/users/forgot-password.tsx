@@ -66,7 +66,7 @@ const ForgotPasswordScreen = () => {
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit(onSignInCb) as any}>
+        <form className="form" onSubmit={handleSubmit(onSignInCb) as any}>
           <div>
             <Label htmlFor="email" className="block">
               Email

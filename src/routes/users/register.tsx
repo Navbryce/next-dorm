@@ -16,7 +16,7 @@ const RegisterUserSchema = z
   })
   .refine(({ password, confirmPassword }) => password == confirmPassword, {
     message: "Passwords not match",
-    path: ["confirm"],
+    path: ["password"],
   });
 
 type RegisterUser = z.infer<typeof RegisterUserSchema>;
@@ -62,7 +62,7 @@ const RegisterScreen = () => {
   );
   return (
     <div class="w-full h-full flex justify-center items-center">
-      <form onSubmit={handleSubmit(onRegisterCb) as any}>
+      <form className="form" onSubmit={handleSubmit(onRegisterCb) as any}>
         <div>
           <Label htmlFor="email" className="block">
             Email

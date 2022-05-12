@@ -1,40 +1,64 @@
-import { FunctionalComponent, h } from "preact";
+import { h } from "preact";
 import { useCallback, useLayoutEffect, useState } from "preact/compat";
-import { CommunityPosInTree, Post, PostCursor } from "../types/types";
+import {
+  CommunityPosInTree,
+  CursorType,
+  Post,
+  PostCursor,
+} from "../types/types";
 import InfinitePostsList from "../components/InfinitePostsList";
-import { getFeed } from "../actions/Feed";
 import CommunitiesList from "src/components/CommunitiesList";
 import { getCommunityPos } from "src/actions/Community";
+import StdLayout, { MainContent, Toolbar } from "src/components/StdLayout";
+import { getPosts } from "src/actions/Post";
+import { SortBy } from "src/components/inputs/SortSelect";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [communityPos, setCommunityPos] = useState<
     CommunityPosInTree | undefined
   >(undefined);
+  const [cursorType, setCursorType] = useState<CursorType>(
+    CursorType.SUBBED_MOST_RECENT
+  );
 
-  const fetchNextPageCb = useCallback(async (cursor?: PostCursor) => {
-    return getFeed(cursor);
-  }, []);
+  const onSortChangeCb = useCallback(
+    (sortBy: SortBy) => {
+      setCursorType(
+        sortBy == SortBy.MOST_RECENT
+          ? CursorType.SUBBED_MOST_RECENT
+          : CursorType.SUBBED_MOST_POPULAR
+      );
+    },
+    [setCursorType]
+  );
+
+  const fetchNextPageCb = useCallback(
+    async (cursor?: PostCursor) => {
+      return getPosts(cursorType, cursor);
+    },
+    [cursorType]
+  );
 
   useLayoutEffect(() => {
     getCommunityPos(undefined).then(setCommunityPos);
   }, []);
 
   return (
-    <div class="w-full h-full flex">
-      {/*TODO: Create layout element*/}
-      <div className="w-64">
+    <StdLayout>
+      <Toolbar>
         <CommunitiesList current={undefined} pos={communityPos} />
-      </div>
-      <div class="h-full">
+      </Toolbar>
+      <MainContent>
         {posts.length == 0 && <div />}
         <InfinitePostsList
           posts={posts}
           setPosts={setPosts}
           fetchNextPage={fetchNextPageCb}
+          onSortChange={onSortChangeCb}
         />
-      </div>
-    </div>
+      </MainContent>
+    </StdLayout>
   );
 };
 

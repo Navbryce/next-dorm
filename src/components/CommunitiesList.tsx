@@ -37,7 +37,7 @@ const CommunitiesList = ({ pos, current }: Props) => {
   }, [pos]);
 
   return (
-    <div className="fixed">
+    <div>
       <div className="space-x-2">
         <a href={genLinkToCommunity(pos?.path[-1] ?? ALL_COMMUNITY)}>
           <IconButton buttonType="text" startIcon={<ArrowUpIcon />} />

@@ -1,8 +1,9 @@
-import { FunctionalComponent, h } from "preact";
+import { h } from "preact";
 import InfiniteScroll from "react-infinite-scroller";
 import { useCallback, useEffect, useRef, useState } from "preact/compat";
-import { Post, PostCursor, StateProps } from "src/types/types";
+import { CursorType, Post, PostCursor, StateProps } from "src/types/types";
 import PostsList from "./PostsList";
+import SortSelect, { SortBy } from "src/components/inputs/SortSelect";
 
 type Props<CURSOR_TYPE extends PostCursor> = {
   /*
@@ -13,6 +14,7 @@ type Props<CURSOR_TYPE extends PostCursor> = {
   fetchNextPage: (
     previousCursor?: CURSOR_TYPE
   ) => Promise<{ posts: Post[]; nextCursor: CURSOR_TYPE | null }>;
+  onSortChange: (sort: SortBy) => void;
   // inject posts so new posts can be added outside this component
 } & StateProps<{ posts: Post[] }>;
 
@@ -20,7 +22,9 @@ function InfinitePostsList<CURSOR_TYPE>({
   fetchNextPage,
   posts,
   setPosts,
+  onSortChange,
 }: Props<CURSOR_TYPE>) {
+  const [sortBy, setSortBy] = useState<SortBy>(SortBy.MOST_RECENT);
   const [nextCursor, setNextCursor] = useState<CURSOR_TYPE>();
   const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +35,7 @@ function InfinitePostsList<CURSOR_TYPE>({
     setHasMore(true);
     setNextCursor(undefined);
     setIsLoading(false);
-  }, [fetchNextPage, setPosts, setHasMore, setNextCursor]);
+  }, [fetchNextPage, sortBy, setPosts, setHasMore, setNextCursor]);
 
   const fetchDataCb = useCallback(async () => {
     if (isLoading) {
@@ -41,7 +45,7 @@ function InfinitePostsList<CURSOR_TYPE>({
     setIsLoading(true);
 
     let newPosts: Post[] = [];
-    let newNextCursor: PostCursor;
+    let newNextCursor: CURSOR_TYPE | null;
     try {
       ({ posts: newPosts, nextCursor: newNextCursor } = await fetchNextPage(
         nextCursor
@@ -61,6 +65,7 @@ function InfinitePostsList<CURSOR_TYPE>({
     setIsLoading(false);
   }, [
     fetchNextPage,
+    sortBy,
     setPosts,
     posts,
     setNextCursor,
@@ -69,8 +74,17 @@ function InfinitePostsList<CURSOR_TYPE>({
     setIsLoading,
   ]);
 
+  const onSortChangeCb = useCallback(
+    (sort: SortBy) => {
+      setSortBy(sort);
+      onSortChange(sort);
+    },
+    [setSortBy]
+  );
+
   return (
     <div class="w-full h-full" ref={scrollDiv}>
+      <SortSelect value={sortBy} onChange={onSortChangeCb} />
       <InfiniteScroll
         useWindow={false}
         getScrollParent={() => scrollDiv.current}

@@ -5,7 +5,7 @@ import VisibilitySelect from "./VisibilitySelect";
 import { useCallback, useContext, useState } from "preact/compat";
 import { ImageUploadInput, Label, TextArea } from "./Input";
 import { UserContext } from "src/contexts";
-import { uploadImage } from "src/utils/upload";
+import { uploadContentImage } from "src/utils/upload";
 import update from "immutability-helper";
 import UploadedImagePreview from "src/components/UploadedImagePreview";
 
@@ -64,7 +64,7 @@ const PostDialog = ({ onSubmit }: Props) => {
       setImageFiles([...imageFiles, files[0]]);
       setUploadProgresses([...uploadProgresses, 0]);
       setImageBlobNames([...imageBlobNames, undefined]);
-      uploadImage(user, files[0], {
+      uploadContentImage(user, files[0], {
         onProgress: (progress) =>
           setUploadProgresses(
             update(uploadProgresses, { [i]: { $set: progress } })
@@ -98,7 +98,7 @@ const PostDialog = ({ onSubmit }: Props) => {
   );
 
   return (
-    <form class="max-w-4xl">
+    <form class="form max-w-4xl">
       <div>
         <Label className="block font-bold" htmlFor="title">
           Title

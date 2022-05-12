@@ -3,7 +3,6 @@ import {DefinePlugin} from 'webpack';
 const { required } = require('dotenv-safe').config();
 
 export default (config, env, helpers, params = defaultParams) => {
-    console.log(env.src);
     config.resolve.alias.src = env.src;
     // dotenv injection
     config.plugins.push(new DefinePlugin(

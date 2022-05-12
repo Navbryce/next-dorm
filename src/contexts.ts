@@ -2,7 +2,7 @@ import { createContext } from "preact";
 import { AlertService } from "./utils/Alert";
 import { LocalUser, User } from "src/types/types";
 import { User as FirebaseUser } from "firebase/auth";
-import { getLocalUser } from "src/actions/User";
+import { getCurrentLocalUser } from "src/actions/User";
 
 type UserMaybe = User | null | undefined;
 
@@ -23,20 +23,22 @@ export class AuthService {
     firebaseUser: FirebaseUser | null
   ) {
     if (firebaseUser == null) {
-      await this.setUser(null);
+      this.setUser(null);
       return;
     }
 
-    // don't update if users is logged in and the logged-in users has a profile
-    if (
-      this._user &&
-      firebaseUser == this._user.firebaseUser &&
-      this._user?.profile
-    ) {
+    if (this._user && this._user.profile) {
+      if (this._user.firebaseUser == firebaseUser) {
+        return;
+      }
+      this.setUser({
+        firebaseUser,
+        profile: this._user?.profile,
+      });
       return;
     }
 
-    const profile = await getLocalUser();
+    const profile = await getCurrentLocalUser();
     await this.setUser({
       firebaseUser,
       profile,

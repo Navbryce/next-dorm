@@ -33,7 +33,6 @@
   button[type="submit"] {
     @apply bg-gradient-to-tl dark:bg-secondary-500 dark:from-secondary-200 p-3 rounded-md shadow-lg dark:shadow-primary-900;
   }
-  form,
   .form {
     @apply rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit space-y-4;
   }
@@ -58,4 +57,7 @@ body {
   color: #444;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.avatar {
+  @apply rounded-full;
 }

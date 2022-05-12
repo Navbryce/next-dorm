@@ -8,7 +8,7 @@ import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import update from "immutability-helper";
-import { uploadImage } from "src/utils/upload";
+import { uploadContentImage } from "src/utils/upload";
 import { UserContext } from "src/contexts";
 
 const EditPostSchema = z.object({
@@ -24,11 +24,11 @@ export type Values = {
 } & EditPostForm;
 
 type Props = {
-  values: Values;
+  initialValues: Values;
   onSubmit: (values: Values) => void;
 };
 
-const EditPostDialog = ({ values, onSubmit }: Props) => {
+const EditPostDialog = ({ initialValues, onSubmit }: Props) => {
   const [user] = useContext(UserContext);
 
   const [imageBlobNames, setImageBlobNames] = useState<
@@ -36,11 +36,11 @@ const EditPostDialog = ({ values, onSubmit }: Props) => {
   >([]);
 
   useEffect(() => {
-    setImageBlobNames(values.imageBlobNames);
-  }, [values]);
+    setImageBlobNames(initialValues.imageBlobNames);
+  }, [initialValues]);
 
   const { register, handleSubmit, control } = useForm<EditPostForm>({
-    defaultValues: values,
+    defaultValues: initialValues,
     resolver: zodResolver(EditPostSchema),
     reValidateMode: "onSubmit",
   });
@@ -55,7 +55,7 @@ const EditPostDialog = ({ values, onSubmit }: Props) => {
         ...values,
       });
     },
-    [values, imageBlobNames]
+    [initialValues, imageBlobNames]
   );
 
   const onImageChangeCb = useCallback(
@@ -71,7 +71,7 @@ const EditPostDialog = ({ values, onSubmit }: Props) => {
 
       const i = imageBlobNames.length;
       setImageBlobNames([...imageBlobNames, undefined]);
-      uploadImage(user, files[0], {}).then((blobName) => {
+      uploadContentImage(user, files[0], {}).then((blobName) => {
         setImageBlobNames(
           update(imageBlobNames, {
             [i]: {
@@ -103,7 +103,7 @@ const EditPostDialog = ({ values, onSubmit }: Props) => {
    */
 
   return (
-    <form className="max-w-4xl" onSubmit={handleSubmit(onSubmitCb) as any}>
+    <form className="form max-w-4xl" onSubmit={handleSubmit(onSubmitCb) as any}>
       <div>
         <Label className="block font-bold" htmlFor="title">
           Title

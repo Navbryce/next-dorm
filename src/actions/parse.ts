@@ -5,9 +5,11 @@ import {
   ContentMetadataRes,
   PostCursor,
   PostRes,
+  Status,
 } from "src/types/types";
-import { toDisplayableUser } from "src/utils/user";
+import { parseContentAuthorRes } from "src/actions/user-parse";
 import dayjs from "dayjs";
+import { generateDeletedCommentFrom } from "src/utils/comment";
 
 export function parseTime(time: number) {
   return dayjs(time);
@@ -18,7 +20,7 @@ export function makeCMDisplayable<T extends ContentMetadataRes>(
 ): T & ContentMetadata {
   return {
     ...res,
-    creator: toDisplayableUser(res.creator),
+    creator: parseContentAuthorRes(res.creator),
     createdAt: parseTime(res.createdAt),
     updatedAt: parseTime(res.updatedAt),
   };
@@ -39,8 +41,12 @@ export function makePostPageDisplayable({
 }
 
 export function makeCommentDisplayable(comment: CommentRes): Comment {
-  return {
+  const displayableComment = {
     ...makeCMDisplayable(comment),
     children: comment.children.map(makeCommentDisplayable),
   };
+  // standardize deleted comments for display purposes (change the content to placeholder)
+  return displayableComment.status == Status.POSTED
+    ? displayableComment
+    : generateDeletedCommentFrom(displayableComment);
 }

@@ -1,10 +1,11 @@
-import { FunctionalComponent, h } from "preact";
+import { Fragment, FunctionalComponent, h } from "preact";
 import { useContext } from "preact/compat";
 import { UserContext } from "src/contexts";
 import DropdownMenu, { MenuItem } from "./DropdownMenu";
 import { getAuth, signOut } from "firebase/auth";
 import { route } from "preact-router";
 import { genLinkToUser, URLS } from "src/urls";
+import UploadedImage from "src/components/UploadedImage";
 
 const Header: FunctionalComponent = () => {
   const [user] = useContext(UserContext);
@@ -29,9 +30,9 @@ const Header: FunctionalComponent = () => {
             title={
               <div class="flex items-center">
                 {user.profile && (
-                  <img
-                    class="inline"
-                    src={user.profile.avatar}
+                  <UploadedImage
+                    className="inline"
+                    blobName={user.profile.avatarBlobName}
                     width={25}
                     height={25}
                   />
@@ -41,9 +42,14 @@ const Header: FunctionalComponent = () => {
             }
           >
             {user.profile && (
-              <MenuItem href={genLinkToUser(user.profile)}>
-                View Profile
-              </MenuItem>
+              <Fragment>
+                <MenuItem href={genLinkToUser(user.profile)}>
+                  View Profile
+                </MenuItem>
+                <MenuItem href={`${URLS.pages.users.settings}`}>
+                  Settings
+                </MenuItem>
+              </Fragment>
             )}
             <MenuItem onClick={() => signOut(getAuth())}>Logout</MenuItem>
           </DropdownMenu>

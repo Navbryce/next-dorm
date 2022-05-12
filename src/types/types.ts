@@ -1,31 +1,29 @@
-import firebase from "firebase/compat";
 import { User as FirebaseUser } from "firebase/auth";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
-export type DisplayableUserRes =
+export type ContentAuthorRes =
   | {
-      anonymousUser: AnonymousUserRes;
+      anonymousUser: Alias;
     }
-  | { user: UserRes }
-  | { anonymousUser: AnonymousUserRes; user: UserRes };
+  | { user: UserRes; anonymousUser?: Alias };
 
-export type AnonymousUserRes = {
-  avatar: string;
+export type Alias = {
+  avatarUrl: string;
   displayName: string;
 };
 
-export interface DisplayableUser {
+export interface Creator {
   displayName: string;
-  avatar: string;
+  avatar: { blobName: string } | { url: string } | null | undefined;
 }
 
-export type KnownDisplayableUser = DisplayableUser & {
+export type KnownContentAuthor = Creator & {
   id: string;
 };
 
 export type LocalUser = {
   id: string;
-  avatar: string;
+  avatarBlobName: string;
   displayName: string;
 };
 
@@ -60,12 +58,18 @@ export enum Visibility {
   HIDDEN = "HIDDEN",
 }
 
+export enum Status {
+  POSTED = "POSTED",
+  DELETED = "DELETED",
+}
+
 export type ContentMetadataRes = {
-  creator: DisplayableUserRes;
+  creator: ContentAuthorRes;
   voteTotal: number;
   userVote: { value: number } | null;
   imageBlobNames: string[];
   visibility: Visibility;
+  status: Status;
   createdAt: number;
   updatedAt: number;
 };
@@ -74,7 +78,7 @@ export type ContentMetadata = Omit<
   ContentMetadataRes,
   "creator" | "createdAt" | "updatedAt"
 > & {
-  creator: DisplayableUser;
+  creator: Creator;
   updatedAt: Dayjs;
   createdAt: Dayjs;
 };
@@ -107,7 +111,14 @@ export type Comment = {
   children: Comment[];
 } & ContentMetadata;
 
-export type PostCursor = any;
+export enum CursorType {
+  MOST_RECENT = "MOST_RECENT",
+  SUBBED_MOST_RECENT = "SUBBED_MOST_RECENT",
+  MOST_POPULAR = "MOST_POPULAR",
+  SUBBED_MOST_POPULAR = "SUBBED_MOST_POPULAR",
+}
+
+export type PostCursor = unknown;
 
 export type PostPageRes = {
   posts: PostRes[];

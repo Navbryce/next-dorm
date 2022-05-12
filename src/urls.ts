@@ -1,4 +1,4 @@
-import { Community, KnownDisplayableUser, Post } from "./types/types";
+import { Community, KnownContentAuthor, LocalUser, Post } from "./types/types";
 
 export const URLS = {
   api: {
@@ -17,6 +17,7 @@ export const URLS = {
       forgotPassword: "/users/forgot-password",
       signIn: "/users/sign-in",
       register: "/users/register",
+      settings: "/users/settings",
     },
   },
 };
@@ -37,7 +38,7 @@ export function genLinkToEditPost(post: Post): string {
   return `${genLinkToPost(post)}/edit`;
 }
 
-export function genLinkToUser(user: KnownDisplayableUser): string {
+export function genLinkToUser(user: LocalUser | KnownContentAuthor): string {
   // TODO just use the first community of the post for now
   return `${URLS.pages.users.root}/${user.id}`;
 }

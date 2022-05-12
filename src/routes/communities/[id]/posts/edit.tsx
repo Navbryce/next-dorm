@@ -13,7 +13,8 @@ import { diff } from "src/utils/diff";
 import { UserContext } from "src/contexts";
 import { route } from "preact-router";
 import { genLinkToPost } from "src/urls";
-import { canModifyPost } from "src/utils/user";
+import { canModifyPost } from "src/actions/user-parse";
+import StdLayout, { MainContent } from "src/components/StdLayout";
 
 const EditPostScreen = ({
   communityId: communityIdStr,
@@ -69,9 +70,11 @@ const EditPostScreen = ({
   }
 
   return (
-    <div class="w-full">
-      <EditPostDialog values={post} onSubmit={onEditPostCb} />
-    </div>
+    <StdLayout>
+      <MainContent>
+        <EditPostDialog initialValues={post} onSubmit={onEditPostCb} />
+      </MainContent>
+    </StdLayout>
   );
 };
 

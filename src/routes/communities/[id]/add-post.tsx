@@ -22,6 +22,7 @@ import { subscribe } from "src/actions/Subscription";
 import { route } from "preact-router";
 import { URLS } from "src/urls";
 import { UserContext } from "src/contexts";
+import { MainContent, StdLayout } from "src/components/StdLayout";
 
 const AddPostScreen = ({
   communityId: communityIdStr,
@@ -50,11 +51,11 @@ const AddPostScreen = ({
   );
 
   return (
-    <div class="relative w-full h-full">
-      <div class="absolute h-full w-full z-10">
+    <StdLayout>
+      <MainContent>
         <PostDialog onSubmit={createPostCb} />
-      </div>
-    </div>
+      </MainContent>
+    </StdLayout>
   );
 };
 

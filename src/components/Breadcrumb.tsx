@@ -1,7 +1,6 @@
 import { FunctionalComponent, h } from "preact";
 import { Children } from "preact/compat";
 import { ChevronRightIcon } from "@heroicons/react/solid";
-import { Stylable } from "src/types/types";
 
 export const BreadcrumbItem: FunctionalComponent = ({ children }) => {
   return <div className="inline">{children}</div>;

@@ -1,14 +1,11 @@
-import { h } from "preact";
 import { useState } from "preact/compat";
 import type { Post } from "../types/types";
 import { classNames } from "../utils/styling";
 import { PostVoteCounter } from "./VoteCounter";
 import { route } from "preact-router";
 import { genLinkToCommunity, genLinkToPost } from "src/urls";
-import { toDisplayableUser } from "src/utils/user";
 import UploadedImage from "src/components/UploadedImage";
 import { ProfileCardSm } from "src/components/ProfileCard";
-import { ChatIcon } from "@heroicons/react/outline";
 import { timeToDisplayStr } from "src/utils/display";
 
 type Props = {
@@ -35,9 +32,7 @@ const PostsList = ({ posts }: Props) => {
                 className="flex-grow"
                 onClick={() => route(genLinkToPost(post))}
               >
-                <div>
-                  <ProfileCardSm user={post.creator} />
-                </div>
+                <ProfileCardSm user={post.creator} />
                 <div>{post.title}</div>
                 <div className="text-gray-400 text-[11pt]">
                   <span className="text-gray-400">

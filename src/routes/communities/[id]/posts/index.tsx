@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "preact/compat";
 import { getPost } from "src/actions/Post";
 import { Post } from "src/types/types";
 import PostComponent from "src/components/Post";
+import StdLayout, { MainContent } from "src/components/StdLayout";
 
 const PostScreen = ({
   communityId: communityIdStr,
@@ -25,9 +26,11 @@ const PostScreen = ({
   }
 
   return (
-    <div class="">
-      <PostComponent post={post} />
-    </div>
+    <StdLayout>
+      <MainContent>
+        <PostComponent post={post} />
+      </MainContent>
+    </StdLayout>
   );
 };
 
