@@ -1,16 +1,15 @@
-import { FunctionalComponent, h } from "preact";
-import { RouteProps, Router } from "preact-router";
+import { FunctionalComponent } from "preact";
+import { Route as PreactRoute, Router } from "preact-router";
 
 import CommunityScreen from "src/routes/communities/[id]/index";
 import NotFoundPage from "../routes/notfound";
-import Header from "./Header";
 import { useEffect, useLayoutEffect, useState } from "preact/compat";
-import { AuthService, UserContext } from "src/contexts";
+import { UserContext } from "src/contexts";
+import { AuthService } from "src/utils/auth";
 import "src/utils/firebase";
 import SignInScreen from "src/routes/users/sign-in";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import AllScreen from "src/routes/communities/AllScreen";
-import CommunitiesList from "src/components/CommunitiesList";
 import FeedScreen from "src/routes/FeedScreen";
 import RegisterScreen from "src/routes/users/register";
 import CreateProfileScreen from "src/routes/users/create-profile";
@@ -23,29 +22,14 @@ import UserScreen from "src/routes/users/[id]/index";
 import ForgotPasswordScreen from "src/routes/users/forgot-password";
 import EditPostScreen from "src/routes/communities/[id]/posts/edit";
 import SettingsScreen from "src/routes/users/[id]/settings";
-
-// TODO: Absolute imports
-function withStandardPageElements<T>(
-  component: RouteProps<T>["component"],
-  { noCommunitiesList }: { noCommunitiesList?: boolean }
-): FunctionalComponent<T> {
-  return ({ ...rest }) => {
-    return (
-      <div class="w-full h-full">
-        <Header />
-        <div class="h-[calc(100%-120px) w-full] flex justify-center">
-          {h(component, rest)}
-        </div>
-      </div>
-    );
-  };
-}
+import { withStandardPageElements } from "src/components/StdLayout";
+import VerifyScreen from "src/routes/users/verify";
 
 const App: FunctionalComponent = () => {
   const [user, setUser] = useState<User | null | undefined>(undefined);
   useLayoutEffect(() => {
     document.documentElement.classList.add("dark");
-  });
+  }, []);
   useEffect(() => {
     onAuthStateChanged(getAuth(), (firebaseUser) => {
       void new AuthService(user, setUser).setFirebaseUserAndUpdateProfile(
@@ -62,51 +46,45 @@ const App: FunctionalComponent = () => {
             {new AuthService(user, setUser).authStateEstablished && (
               <Router>
                 <Route
-                  path="/"
-                  component={withStandardPageElements(FeedScreen, {})}
+                  path={URLS.pages.all}
+                  requireSession={false}
+                  requireProfile={false}
+                  component={withStandardPageElements(AllScreen, {})}
                 />
                 <Route
-                  path="/communities/all"
-                  requireSession={false}
-                  component={withStandardPageElements(AllScreen, {})}
+                  path="/feed"
+                  component={withStandardPageElements(FeedScreen, {})}
                 />
                 <Route
                   path="/communities/:communityId"
                   requireSession={false}
+                  requireProfile={false}
                   component={withStandardPageElements(CommunityScreen, {})}
                 />
-                <Route
+                <PreactRoute
                   path="/communities/:communityId/add-post"
-                  requireSession={false}
-                  component={withStandardPageElements(AddPostScreen, {
-                    noCommunitiesList: true,
-                  })}
+                  component={AddPostScreen}
                 />
                 <Route
                   path="/communities/:communityId/posts/:postId"
                   requireSession={false}
-                  component={withStandardPageElements(PostScreen, {
-                    noCommunitiesList: true,
-                  })}
+                  requireProfile={false}
+                  component={withStandardPageElements(PostScreen, {})}
                 />
                 <Route
                   path="/communities/:communityId/posts/:postId/edit"
                   requireProfile={true}
-                  component={withStandardPageElements(EditPostScreen, {
-                    noCommunitiesList: true,
-                  })}
+                  component={withStandardPageElements(EditPostScreen, {})}
                 />
                 <Route
                   path={`${URLS.pages.users.root}/:userId`}
                   requireSession={false}
-                  component={withStandardPageElements(UserScreen, {
-                    noCommunitiesList: true,
-                  })}
+                  requireProfile={false}
+                  component={withStandardPageElements(UserScreen, {})}
                 />
-                <Route
+                <PreactRoute
                   path={`${URLS.pages.users.root}/settings`}
-                  requireSession={false}
-                  component={withStandardPageElements(SettingsScreen, {})}
+                  component={SettingsScreen}
                 />
                 <Route
                   path={URLS.pages.users.signIn}
@@ -131,6 +109,10 @@ const App: FunctionalComponent = () => {
                   requireProfile={false}
                   path={URLS.pages.users.createProfile}
                   component={CreateProfileScreen}
+                />
+                <PreactRoute
+                  path={URLS.pages.users.verify}
+                  component={VerifyScreen}
                 />
                 <NotFoundPage default />
               </Router>

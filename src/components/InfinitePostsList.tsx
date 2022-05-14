@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { h, VNode } from "preact";
 import InfiniteScroll from "react-infinite-scroller";
 import { useCallback, useEffect, useRef, useState } from "preact/compat";
 import { CursorType, Post, PostCursor, StateProps } from "src/types/types";
@@ -16,13 +16,17 @@ type Props<CURSOR_TYPE extends PostCursor> = {
   ) => Promise<{ posts: Post[]; nextCursor: CURSOR_TYPE | null }>;
   onSortChange: (sort: SortBy) => void;
   // inject posts so new posts can be added outside this component
-} & StateProps<{ posts: Post[] }>;
+  noPostsMessage?: string;
+  beforePostsEl?: VNode<any>;
+} & StateProps<{ posts: Post[] | undefined }>;
 
 function InfinitePostsList<CURSOR_TYPE>({
   fetchNextPage,
   posts,
   setPosts,
   onSortChange,
+  beforePostsEl,
+  ...rest
 }: Props<CURSOR_TYPE>) {
   const [sortBy, setSortBy] = useState<SortBy>(SortBy.MOST_RECENT);
   const [nextCursor, setNextCursor] = useState<CURSOR_TYPE>();
@@ -31,7 +35,7 @@ function InfinitePostsList<CURSOR_TYPE>({
   const scrollDiv = useRef(null);
 
   useEffect(() => {
-    setPosts([]);
+    setPosts(undefined);
     setHasMore(true);
     setNextCursor(undefined);
     setIsLoading(false);
@@ -55,7 +59,7 @@ function InfinitePostsList<CURSOR_TYPE>({
       setIsLoading(false);
       return;
     }
-    setPosts([...posts, ...newPosts]);
+    setPosts([...(posts ?? []), ...newPosts]);
     // TODO: if returning less than limit, setHasMore to false
     if (!newNextCursor) {
       setHasMore(false);
@@ -85,15 +89,15 @@ function InfinitePostsList<CURSOR_TYPE>({
   return (
     <div class="w-full h-full" ref={scrollDiv}>
       <SortSelect value={sortBy} onChange={onSortChangeCb} />
+      {beforePostsEl}
       <InfiniteScroll
         useWindow={false}
         getScrollParent={() => scrollDiv.current}
         pageStart={0}
         loadMore={fetchDataCb}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
       >
-        <PostsList posts={posts} />
+        {posts ? <PostsList posts={posts} {...rest} /> : <div />}
       </InfiniteScroll>
     </div>
   );

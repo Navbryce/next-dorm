@@ -16,7 +16,7 @@ export function ListBox<T>({
   ...rest
 }: RenderableProps<ListBoxProps<T>> & Stylable) {
   return (
-    <div className={classNames("w-72 relative", className ?? "")}>
+    <div className={classNames("relative z-50 w-72", className ?? "")}>
       <HeadlessListBox {...rest}>{children}</HeadlessListBox>
     </div>
   );
@@ -86,7 +86,7 @@ export namespace ListBox {
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <HeadlessListBox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-slate-800 rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        <HeadlessListBox.Options className="absolute z-50 w-full py-1 mt-1 overflow-auto text-base bg-slate-800 rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           {children}
         </HeadlessListBox.Options>
       </Transition>

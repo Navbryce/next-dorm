@@ -1,5 +1,5 @@
 import { h } from "preact";
-import UploadedImage from "src/components/UploadedImage";
+import UploadedLazyLoadImage from "src/components/LazyUploadedImage";
 import { Stylable } from "src/types/types";
 import { XCircleIcon } from "@heroicons/react/outline";
 import { classNames } from "src/utils/styling";
@@ -20,7 +20,7 @@ const UploadedImagePreview = ({ className, blobName, onCancel }: Props) => {
 
   return (
     <div className={classNames("relative", className ?? "")}>
-      <UploadedImage
+      <UploadedLazyLoadImage
         blobName={blobName}
         afterLoad={() => setLoaded(true)}
         className="max-w-screen-md max-h-[200px]"

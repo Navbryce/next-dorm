@@ -4,20 +4,28 @@ import { classNames } from "../utils/styling";
 import { PostVoteCounter } from "./VoteCounter";
 import { route } from "preact-router";
 import { genLinkToCommunity, genLinkToPost } from "src/urls";
-import UploadedImage from "src/components/UploadedImage";
+import UploadedLazyLoadImage from "src/components/LazyUploadedImage";
 import { ProfileCardSm } from "src/components/ProfileCard";
 import { timeToDisplayStr } from "src/utils/display";
+import { ExclamationCircleIcon } from "@heroicons/react/solid";
 
 type Props = {
   posts: Post[];
+  noPostsMessage?: string;
 };
 
-const PostsList = ({ posts }: Props) => {
+const PostsList = ({ posts, noPostsMessage }: Props) => {
   const [selected, setSelected] = useState<Post | null>(null);
 
   return (
     <div class="divide-y-2 divide-secondary-400">
       <div>
+        {posts.length == 0 && (
+          <div className="flex items-center">
+            <ExclamationCircleIcon width={25} height={25} className="inline" />
+            {noPostsMessage ?? "No posts"}
+          </div>
+        )}
         {posts.map((post) => (
           <div
             key={post.id}
@@ -50,7 +58,7 @@ const PostsList = ({ posts }: Props) => {
                 </div>
                 <div>
                   {post.imageBlobNames.length > 0 && (
-                    <UploadedImage
+                    <UploadedLazyLoadImage
                       blobName={post.imageBlobNames[0]}
                       className="max-w-screen-sm max-h-[350px] object-contain rounded"
                     />

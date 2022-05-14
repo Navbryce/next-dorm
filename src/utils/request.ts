@@ -17,7 +17,7 @@ type InternalRequest = {
   queryParams?: QueryParams;
 };
 
-class InternalRequestError {
+export class InternalRequestError {
   constructor(
     public status: number,
     public message: string,

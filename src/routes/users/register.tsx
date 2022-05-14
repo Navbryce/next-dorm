@@ -1,12 +1,14 @@
 import { h } from "preact";
 import { Label } from "src/components/inputs/Input";
-import { useCallback, useState } from "preact/compat";
+import { useCallback, useContext, useState } from "preact/compat";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { route } from "preact-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import { z } from "zod";
 import { URLS } from "src/urls";
+import { AuthService } from "src/utils/auth";
+import { UserContext } from "src/contexts";
 
 const RegisterUserSchema = z
   .object({
@@ -22,6 +24,7 @@ const RegisterUserSchema = z
 type RegisterUser = z.infer<typeof RegisterUserSchema>;
 
 const RegisterScreen = () => {
+  const [user, setUser] = useContext(UserContext);
   const {
     register,
     handleSubmit,
@@ -36,7 +39,10 @@ const RegisterScreen = () => {
     ({ email, password }: RegisterUser) => {
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
+          await new AuthService(user, setUser).setFirebaseUser(
+            userCredential.user
+          );
           route("/");
         })
         .catch(({ message, code }) => {

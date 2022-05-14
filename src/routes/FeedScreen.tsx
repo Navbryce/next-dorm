@@ -1,4 +1,3 @@
-import { h } from "preact";
 import { useCallback, useLayoutEffect, useState } from "preact/compat";
 import {
   CommunityPosInTree,
@@ -14,7 +13,7 @@ import { getPosts } from "src/actions/Post";
 import { SortBy } from "src/components/inputs/SortSelect";
 
 const FeedScreen = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>();
   const [communityPos, setCommunityPos] = useState<
     CommunityPosInTree | undefined
   >(undefined);
@@ -50,12 +49,13 @@ const FeedScreen = () => {
         <CommunitiesList current={undefined} pos={communityPos} />
       </Toolbar>
       <MainContent>
-        {posts.length == 0 && <div />}
+        <h2>Your feed</h2>
         <InfinitePostsList
           posts={posts}
           setPosts={setPosts}
           fetchNextPage={fetchNextPageCb}
           onSortChange={onSortChangeCb}
+          noPostsMessage="No posts. Are you subscribed to anything?"
         />
       </MainContent>
     </StdLayout>

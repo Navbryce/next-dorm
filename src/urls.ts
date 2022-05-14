@@ -1,6 +1,8 @@
 import { Community, KnownContentAuthor, LocalUser, Post } from "./types/types";
+import { ALL_COMMUNITY } from "src/model/community";
 
 export const URLS = {
+  feRoot: process.env.FE_URL as string,
   api: {
     base: process.env.API_URL,
     communities: "/communities",
@@ -10,6 +12,8 @@ export const URLS = {
     users: "/users",
   },
   pages: {
+    all: "/",
+    feed: "/feed",
     communities: "/communities",
     users: {
       root: "/users",
@@ -18,12 +22,16 @@ export const URLS = {
       signIn: "/users/sign-in",
       register: "/users/register",
       settings: "/users/settings",
+      verify: "/users/verify",
     },
   },
 };
 
 // TODO: Add wrapper around Communitya and move into own class?
 export function genLinkToCommunity(community: Community): string {
+  if (community == ALL_COMMUNITY) {
+    return URLS.pages.all;
+  }
   return `${URLS.pages.communities}/${
     community.id > -1 ? community.id : community.name.toLowerCase()
   }`;

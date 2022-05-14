@@ -1,4 +1,3 @@
-import { User as FirebaseUser } from "firebase/auth";
 import { Dayjs } from "dayjs";
 
 export type ContentAuthorRes =
@@ -28,7 +27,7 @@ export type LocalUser = {
 };
 
 export type User = {
-  firebaseUser: FirebaseUser;
+  firebaseUser: { uid: string; email: string | null; emailVerified: boolean };
   profile: LocalUser | null;
 };
 

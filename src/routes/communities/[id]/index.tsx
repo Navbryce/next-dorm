@@ -1,5 +1,11 @@
-import { h } from "preact";
-import { useCallback, useLayoutEffect, useMemo, useState } from "preact/compat";
+import { Fragment, h } from "preact";
+import {
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "preact/compat";
 import { getPosts } from "src/actions/Post";
 import {
   CommunityPosInTree,
@@ -18,19 +24,21 @@ import CommunitiesList from "src/components/CommunitiesList";
 import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
 import StdLayout, { MainContent, Toolbar } from "src/components/StdLayout";
 import { SortBy } from "src/components/inputs/SortSelect";
+import { UserContext } from "src/contexts";
 
 const CommunityScreen = ({
   communityId: communityIdStr,
 }: {
   communityId: string;
 }) => {
+  const [user] = useContext(UserContext);
   const [community, setCommunity] = useState<
     CommunityWithSubStatus | undefined
   >();
   const [communityPos, setCommunityPos] = useState<
     CommunityPosInTree | undefined
   >(undefined);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [cursorType, setCursorType] = useState<CursorType>(
     CursorType.SUBBED_MOST_RECENT
@@ -85,44 +93,35 @@ const CommunityScreen = ({
         <CommunitiesList current={community} pos={communityPos} />
       </Toolbar>
       <MainContent>
-        <div class="flex w-full h-full">
-          <div class="w-4/5">
-            {community && (
-              <div>
-                <h2>{community.name}</h2>
-              </div>
-            )}
-            <div className="h-full">
-              <div>
-                <CommunityBreadcrumb pos={communityPos} current={community} />
-              </div>
-              <InfinitePostsList
-                posts={posts}
-                setPosts={setPosts}
-                fetchNextPage={fetchNextPageCb}
-                onSortChange={onSortChangeCb}
-              />
-            </div>
+        {community && (
+          <div>
+            <h2>{community.name}</h2>
           </div>
-        </div>
+        )}
+        <CommunityBreadcrumb pos={communityPos} current={community} />
+        <InfinitePostsList
+          beforePostsEl={
+            <div className="pt-6" onClick={createPostCb}>
+              <textarea className="resize-none">Write post...</textarea>
+            </div>
+          }
+          posts={posts}
+          setPosts={setPosts}
+          fetchNextPage={fetchNextPageCb}
+          onSortChange={onSortChangeCb}
+        />
       </MainContent>
       <Toolbar>
-        <div className="h-1/4 m-5 p-5 space-x-5 rounded outline flex justify-around items-center">
-          <div className="h-fit">
-            <button
-              type="button"
-              onClick={createPostCb}
-              className="btn inline-block"
-            >
-              Add Post
-            </button>
-          </div>
-          <div className="h-fit">
-            <SubscribeButton
-              onClick={subscribeCb}
-              isSubscribed={isSubscribed}
-            />
-          </div>
+        <div className="h-1/4 m-5 p-5 space-y-2 rounded outline flex flex-col justify-center items-center">
+          <h3>{community.name}</h3>
+          {user && (
+            <Fragment>
+              <SubscribeButton
+                onClick={subscribeCb}
+                isSubscribed={isSubscribed}
+              />
+            </Fragment>
+          )}
         </div>
       </Toolbar>
     </StdLayout>

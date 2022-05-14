@@ -1,12 +1,13 @@
 import {
   Alias,
+  Comment,
+  ContentAuthorRes,
   ContentMetadata,
   Creator,
-  ContentAuthorRes,
   KnownContentAuthor,
+  LocalUser,
   Post,
   User,
-  LocalUser,
 } from "src/types/types";
 
 export function currentUserToKnownContentAuthor(
@@ -83,4 +84,11 @@ function canModifyCm(user: User | null | undefined, cm: ContentMetadata) {
 
 export function canModifyPost(user: User | null | undefined, post: Post) {
   return canModifyCm(user, post);
+}
+
+export function canModifyComment(
+  user: User | null | undefined,
+  comment: Comment
+) {
+  return canModifyCm(user, comment);
 }

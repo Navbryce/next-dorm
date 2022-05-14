@@ -13,9 +13,10 @@ import { getCommunityPos } from "src/actions/Community";
 import { ALL_COMMUNITY } from "src/model/community";
 import StdLayout, { MainContent, Toolbar } from "src/components/StdLayout";
 import { SortBy } from "src/components/inputs/SortSelect";
+import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
 
 const AllScreen = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>();
   const [communityPos, setCommunityPos] = useState<
     CommunityPosInTree | undefined
   >(undefined);
@@ -48,9 +49,11 @@ const AllScreen = () => {
   return (
     <StdLayout>
       <Toolbar>
-        <CommunitiesList pos={communityPos} current={ALL_COMMUNITY} />
+        <CommunitiesList pos={communityPos} />
       </Toolbar>
       <MainContent>
+        <h2>All Communities</h2>
+        <CommunityBreadcrumb />
         <InfinitePostsList
           posts={posts}
           setPosts={setPosts}
@@ -58,6 +61,7 @@ const AllScreen = () => {
           onSortChange={onSortChangeCb}
         />
       </MainContent>
+      <Toolbar />
     </StdLayout>
   );
 };

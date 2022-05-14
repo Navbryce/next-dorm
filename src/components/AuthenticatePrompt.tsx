@@ -1,5 +1,6 @@
 import { useCallback, useContext } from "preact/compat";
-import { AuthService, UserContext } from "src/contexts";
+import { UserContext } from "src/contexts";
+import { AuthService } from "src/utils/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -66,7 +67,6 @@ const AuthenticatePrompt = ({
             default:
               throw new Error(message);
           }
-          // TODO: Catch login errors
         });
     },
     [setError]

@@ -14,7 +14,7 @@ import { SortBy } from "src/components/inputs/SortSelect";
 import StdLayout, { MainContent } from "src/components/StdLayout";
 
 const UserScreen = ({ userId }: { userId: string }) => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>();
   const [user, setUser] = useState<KnownContentAuthor | null | undefined>(
     undefined
   );

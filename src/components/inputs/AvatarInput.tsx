@@ -4,6 +4,7 @@ import { ImageUploadInput } from "src/components/inputs/Input";
 import { CameraIcon } from "@heroicons/react/solid";
 import { uploadContentImage } from "src/utils/upload";
 import { OnChangeProps } from "src/types/types";
+import { urlToBlob } from "src/utils/image";
 
 type ImageTypes = string;
 
@@ -88,7 +89,7 @@ const AvatarInput = ({
       drawImageOnCanvasAndGetUrl(files[0], targetDim, targetType).then(
         (imageBase64) => {
           setImage(imageBase64);
-          fetch(imageBase64).then((result) => result.blob().then(onChange));
+          urlToBlob(imageBase64).then(onChange);
         }
       );
     },

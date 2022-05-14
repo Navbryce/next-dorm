@@ -2,10 +2,11 @@ import { h } from "preact";
 
 import { useCallback, useEffect, useRef, useState } from "preact/compat";
 import VisibilitySelect from "./VisibilitySelect";
-import { Visibility } from "src/types/types";
+import { Stylable, Visibility } from "src/types/types";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
+import { classNames } from "src/utils/styling";
 
 const CommentSchema = z.object({
   content: z.string().nonempty(),
@@ -19,13 +20,14 @@ type Props = {
   submitButtonLabel: string;
   onSubmit: (content: Values) => Promise<void>;
   onCancel?: () => void;
-};
+} & Stylable;
 
 const CommentDialog = ({
   initialValues,
   onSubmit,
   onCancel,
   submitButtonLabel,
+  className,
 }: Props) => {
   const isMountedRef = useRef(false);
   const [shouldReset, setShouldReset] = useState(false);
@@ -59,7 +61,7 @@ const CommentDialog = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmitCb) as any}
-      className="border-b border-secondary-100"
+      className={classNames("border-b border-secondary-100", className ?? "")}
     >
       <input
         class="w-4/5"

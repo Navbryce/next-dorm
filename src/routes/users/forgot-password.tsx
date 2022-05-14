@@ -8,7 +8,8 @@ import {
 } from "firebase/auth";
 import { route } from "preact-router";
 import { URLS } from "src/urls";
-import { AuthService, UserContext } from "src/contexts";
+import { UserContext } from "src/contexts";
+import { AuthService } from "src/utils/auth";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

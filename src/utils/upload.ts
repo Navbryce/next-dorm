@@ -32,7 +32,7 @@ export function uploadImage(
 }
 
 export function uploadAvatar(user: User, blob: Blob, opts: UploadOpts) {
-  return uploadImage(`avatars/${user.firebaseUser.uid}`, blob, opts);
+  return uploadImage(`uploads/${user.firebaseUser.uid}/avatar`, blob, opts);
 }
 
 /**
@@ -49,13 +49,18 @@ export function uploadContentImage(
   opts: UploadOpts & { path?: string }
 ): Promise<string> {
   return uploadImage(
-    `uploads/${user.firebaseUser.uid}/${opts?.path ?? uuidv4()}/${file.name}`,
+    `uploads/${user.firebaseUser.uid}/content/${opts?.path ?? uuidv4()}/${
+      file.name
+    }`,
     file,
     opts
   );
 }
 
-// TODO: Assumes file allows public reads
-export function getUrl(blobName: string): Promise<string> {
-  return getDownloadURL(ref(getStorage(), blobName));
+// TODO: Assumes file allows public reads and is an image
+export function getPublicUrlForImage(blobName: string): string {
+  const storageRef = ref(getStorage(), blobName);
+  return `https://firebasestorage.googleapis.com/v0/b/${
+    storageRef.bucket
+  }/o/${encodeURIComponent(storageRef.fullPath)}?alt=media`;
 }

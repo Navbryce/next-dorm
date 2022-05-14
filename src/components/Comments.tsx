@@ -1,6 +1,6 @@
 import { Fragment } from "preact";
 
-import type { Comment, Creator, StateProps, Status } from "../types/types";
+import { Comment, Creator, StateProps, Status } from "../types/types";
 import { CommentVoteCounter } from "./VoteCounter";
 import { ProfileCardSm } from "./ProfileCard";
 import { ChatIcon } from "@heroicons/react/outline";
@@ -14,6 +14,7 @@ import { diff } from "src/utils/diff";
 import update from "immutability-helper";
 import { DocumentRemoveIcon, PencilIcon } from "@heroicons/react/solid";
 import { generateDeletedCommentFrom } from "src/utils/comment";
+import { canModifyComment } from "src/actions/user-parse";
 
 type HasReplyLock = StateProps<{ commentWithReplyLock: number | null }>;
 
@@ -139,27 +140,33 @@ const CommentComponent = ({
               {!isEditing ? (
                 <Fragment>
                   <div>
-                    <IconButton
-                      buttonType="text"
-                      startIcon={<ChatIcon />}
-                      onClick={onStartReplyCb}
-                    >
-                      Reply
-                    </IconButton>
-                    <IconButton
-                      buttonType="text"
-                      startIcon={<PencilIcon />}
-                      onClick={() => setIsEditing(true)}
-                    >
-                      Edit
-                    </IconButton>
-                    <IconButton
-                      buttonType="text"
-                      startIcon={<DocumentRemoveIcon />}
-                      onClick={() => onDeleteCb()}
-                    >
-                      Delete
-                    </IconButton>
+                    {user?.profile && (
+                      <IconButton
+                        buttonType="text"
+                        startIcon={<ChatIcon />}
+                        onClick={onStartReplyCb}
+                      >
+                        Reply
+                      </IconButton>
+                    )}
+                    {canModifyComment(user, comment) && (
+                      <Fragment>
+                        <IconButton
+                          buttonType="text"
+                          startIcon={<PencilIcon />}
+                          onClick={() => setIsEditing(true)}
+                        >
+                          Edit
+                        </IconButton>
+                        <IconButton
+                          buttonType="text"
+                          startIcon={<DocumentRemoveIcon />}
+                          onClick={() => onDeleteCb()}
+                        >
+                          Delete
+                        </IconButton>
+                      </Fragment>
+                    )}
                   </div>
                 </Fragment>
               ) : (

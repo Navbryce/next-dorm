@@ -8,7 +8,7 @@ import Comments from "./Comments";
 import CommentDialog, { Values } from "./inputs/CommentDialog";
 import { UserContext } from "src/contexts";
 import { PostVoteCounter } from "src/components/VoteCounter";
-import UploadedImage from "src/components/UploadedImage";
+import UploadedLazyLoadImage from "src/components/LazyUploadedImage";
 import { timeToDisplayStr } from "src/utils/display";
 import { genLinkToCommunity, genLinkToEditPost, genLinkToPost } from "src/urls";
 import { IconButton } from "src/components/inputs/Button";
@@ -135,7 +135,7 @@ const PostComponent = ({ post }: { post: Post }) => {
           <div>{post.content}</div>
           <div>
             {post.imageBlobNames.map((val, i) => (
-              <UploadedImage
+              <UploadedLazyLoadImage
                 blobName={val}
                 key={i}
                 className="max-w-full max-h-[90vh]"
@@ -171,8 +171,9 @@ const PostComponent = ({ post }: { post: Post }) => {
             <CommentDialog
               onSubmit={createCommentCb}
               submitButtonLabel="Reply"
+              className="z-20 relative"
             />
-            <div className="mt-5">
+            <div className="mt-5 z-0 relative">
               <div className="mb-5">
                 <SortSelect value={sortBy} onChange={setSortBy} />
               </div>

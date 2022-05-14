@@ -22,7 +22,12 @@ import { subscribe } from "src/actions/Subscription";
 import { route } from "preact-router";
 import { URLS } from "src/urls";
 import { UserContext } from "src/contexts";
-import { MainContent, StdLayout } from "src/components/StdLayout";
+import {
+  MainContent,
+  StdLayout,
+  withStandardPageElements,
+} from "src/components/StdLayout";
+import { withAuth } from "src/components/wrappers/Auth";
 
 const AddPostScreen = ({
   communityId: communityIdStr,
@@ -59,4 +64,6 @@ const AddPostScreen = ({
   );
 };
 
-export default AddPostScreen;
+export default withAuth(withStandardPageElements(AddPostScreen), {
+  requireProfile: true,
+});

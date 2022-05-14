@@ -1,15 +1,25 @@
-import { useCallback, useContext, useEffect, useState } from "preact/compat";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "preact/compat";
 import { UserContext } from "src/contexts";
 import AvatarInput from "src/components/inputs/AvatarInput";
-import { getUrl, uploadAvatar } from "src/utils/upload";
+import { getPublicUrlForImage, uploadAvatar } from "src/utils/upload";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import { Label } from "src/components/inputs/Input";
-import { updatePassword } from "firebase/auth";
+import { getAuth, updatePassword, User as FirebaseUser } from "firebase/auth";
 import { User } from "src/types/types";
 import { Dialog } from "@headlessui/react";
 import AuthenticatePrompt from "src/components/AuthenticatePrompt";
+import Alert from "src/components/Alert";
+import { withAuth } from "src/components/wrappers/Auth";
+import { withStandardPageElements } from "src/components/StdLayout";
+import { AVATAR_SETTINGS } from "src/components/ProfileCard";
 
 const UpdatePasswordSchema = z
   .object({
@@ -26,15 +36,18 @@ type UpdatePasswordForm = z.infer<typeof UpdatePasswordSchema>;
 const PasswordUpdateForm = ({
   user,
   reauthenticate,
+  showSaveDialog,
 }: {
   user: User;
   reauthenticate: (cb: () => void) => void;
+  showSaveDialog: (content: string) => void;
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
+    reset,
   } = useForm<UpdatePasswordForm>({
     resolver: zodResolver(UpdatePasswordSchema),
     reValidateMode: "onSubmit",
@@ -42,9 +55,10 @@ const PasswordUpdateForm = ({
 
   const onUpdateCb = useCallback(
     ({ password }: UpdatePasswordForm) => {
-      updatePassword(user.firebaseUser, password)
+      reset();
+      updatePassword(getAuth().currentUser as FirebaseUser, password)
         .then(() => {
-          console.log("updated");
+          showSaveDialog("Password updated");
         })
         .catch(({ message, code }) => {
           switch (code) {
@@ -62,7 +76,6 @@ const PasswordUpdateForm = ({
             default:
               throw new Error(message);
           }
-          // TODO: Catch login errors
         });
     },
     [setError, reauthenticate]
@@ -92,35 +105,31 @@ const PasswordUpdateForm = ({
           <div class="text-red-500">{errors.confirmPassword.message}</div>
         )}
       </div>
-      <button type="submit">Save</button>
+      <button type="submit">Update password</button>
     </form>
   );
 };
 
-const AVATAR_SETTINGS = {
-  targetDim: 256,
-  targetType: "png",
-};
-
 const SettingsScreen = () => {
   const [user] = useContext(UserContext);
-  const [loading, setLoading] = useState(true);
   const [reauthenticatePanel, setReauthenticatePanel] = useState<
     { cb:() => void } | undefined
   >();
 
   const [initialImage, setInitialImage] = useState<string | undefined>();
+  const [savedMessage, setSavedMessage] = useState<string | undefined>();
+
+  const userProfileBlobName = useMemo(
+    () => user?.profile?.avatarBlobName,
+    [user]
+  );
 
   useEffect(() => {
-    setLoading(true);
-    if (!user?.profile) {
-      throw new Error("user must be logged in");
+    if (!userProfileBlobName) {
+      return;
     }
-    getUrl(user.profile.avatarBlobName).then((url) => {
-      setInitialImage(url);
-      setLoading(false);
-    });
-  }, [user]);
+    setInitialImage(getPublicUrlForImage(userProfileBlobName));
+  }, [userProfileBlobName, setInitialImage]);
 
   const onAvatarCb = useCallback(
     (blob: Blob) => {
@@ -132,11 +141,20 @@ const SettingsScreen = () => {
     [user]
   );
 
-  if (!user?.profile || loading) {
+  const sendSettingsUpdateNotification = useCallback(
+    (content: string) => {
+      setSavedMessage(content);
+      setTimeout(() => setSavedMessage(undefined), 2000);
+    },
+    [setSavedMessage]
+  );
+
+  if (!user?.profile) {
     return <div />;
   }
   return (
     <div>
+      <Alert open={!!savedMessage}>{savedMessage}</Alert>
       <Dialog
         as="div"
         open={!!reauthenticatePanel}
@@ -178,7 +196,15 @@ const SettingsScreen = () => {
           <td>
             <PasswordUpdateForm
               user={user}
-              reauthenticate={(cb) => setReauthenticatePanel({ cb })}
+              reauthenticate={(cb) =>
+                setReauthenticatePanel({
+                  cb: () => {
+                    setReauthenticatePanel(undefined);
+                    cb();
+                  },
+                })
+              }
+              showSaveDialog={sendSettingsUpdateNotification}
             />
           </td>
         </tr>
@@ -187,4 +213,6 @@ const SettingsScreen = () => {
   );
 };
 
-export default SettingsScreen;
+export default withStandardPageElements(
+  withAuth(SettingsScreen, { requireProfile: true })
+);

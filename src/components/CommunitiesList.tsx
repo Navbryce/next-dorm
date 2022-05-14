@@ -1,7 +1,7 @@
 import { FunctionalComponent, h } from "preact";
 import { useEffect, useState } from "preact/compat";
 import { Community, CommunityPosInTree } from "../types/types";
-import { genLinkToCommunity } from "../urls";
+import { genLinkToCommunity, URLS } from "../urls";
 import {
   ArrowUpIcon,
   ExclamationCircleIcon,
@@ -25,9 +25,8 @@ function communityToNameAndURL(community: Community) {
 
 const CommunitiesList = ({ pos, current }: Props) => {
   // TODO: Change to only show child communities
-  const [namesAndPaths, setNamesAndURLs] = useState<
-    { name: string; url: string }[]
-  >([]);
+  const [namesAndPaths, setNamesAndURLs] =
+    useState<{ name: string; url: string }[]>();
 
   useEffect(() => {
     if (!pos) {
@@ -42,7 +41,7 @@ const CommunitiesList = ({ pos, current }: Props) => {
         <a href={genLinkToCommunity(pos?.path[-1] ?? ALL_COMMUNITY)}>
           <IconButton buttonType="text" startIcon={<ArrowUpIcon />} />
         </a>
-        <a href="/">
+        <a href={URLS.pages.feed}>
           <IconButton buttonType="text" startIcon={<HomeIcon />} />
         </a>
         <a href={genLinkToCommunity(ALL_COMMUNITY)}>

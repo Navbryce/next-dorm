@@ -2,7 +2,12 @@ import { cloneElement, FunctionalComponent } from "preact";
 import { Creator, KnownContentAuthor, Stylable } from "../types/types";
 import { genLinkToUser } from "src/urls";
 import { classNames } from "src/utils/styling";
-import UploadedImage from "src/components/UploadedImage";
+import UploadedLazyLoadImage from "src/components/LazyUploadedImage";
+
+export const AVATAR_SETTINGS = {
+  targetDim: 256,
+  targetType: "png",
+};
 
 export const Avatar = ({
   user,
@@ -17,7 +22,7 @@ export const Avatar = ({
   if (!user.avatar) {
     avatar = <img />;
   } else if ("blobName" in user.avatar) {
-    avatar = <UploadedImage blobName={user.avatar.blobName} />;
+    avatar = <UploadedLazyLoadImage blobName={user.avatar.blobName} />;
   } else {
     avatar = <img src={user.avatar.url} />;
   }
