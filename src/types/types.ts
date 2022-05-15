@@ -117,6 +117,10 @@ export enum CursorType {
   SUBBED_MOST_POPULAR = "SUBBED_MOST_POPULAR",
 }
 
+export enum Since {
+  TODAY = "TODAY",
+}
+
 export type PostCursor = unknown;
 
 export type PostPageRes = {

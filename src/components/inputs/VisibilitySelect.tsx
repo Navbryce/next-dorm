@@ -3,7 +3,7 @@ import { ListBox } from "./ListBox";
 import { OnChangeProps, Stylable, Visibility } from "src/types/types";
 
 const VISIBILITY_TO_DISPLAYABLE = {
-  [Visibility.NORMAL]: "Normal",
+  [Visibility.NORMAL]: "Public",
   [Visibility.HIDDEN]: "Hidden",
 };
 

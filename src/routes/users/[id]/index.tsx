@@ -10,7 +10,7 @@ import InfinitePostsList from "src/components/InfinitePostsList";
 import { getPosts } from "src/actions/Post";
 import { getContentAuthor } from "src/actions/User";
 import { Avatar } from "src/components/ProfileCard";
-import { SortBy } from "src/components/inputs/SortSelect";
+import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import StdLayout, { MainContent } from "src/components/StdLayout";
 
 const UserScreen = ({ userId }: { userId: string }) => {
@@ -18,20 +18,7 @@ const UserScreen = ({ userId }: { userId: string }) => {
   const [user, setUser] = useState<KnownContentAuthor | null | undefined>(
     undefined
   );
-  const [cursorType, setCursorType] = useState<CursorType>(
-    CursorType.MOST_RECENT
-  );
-
-  const onSortChangeCb = useCallback(
-    (sortBy: SortBy) => {
-      setCursorType(
-        sortBy == SortBy.MOST_RECENT
-          ? CursorType.MOST_RECENT
-          : CursorType.MOST_POPULAR
-      );
-    },
-    [setCursorType]
-  );
+  const [sort, setSort] = useState<Sort>({ sortBy: SortBy.MOST_RECENT });
 
   useEffect(() => {
     (async () => {
@@ -41,16 +28,22 @@ const UserScreen = ({ userId }: { userId: string }) => {
 
   const fetchNextPageCb = useCallback(
     (previousCursor?: PostCursor) => {
+      const cursorType =
+        sort.sortBy == SortBy.MOST_RECENT
+          ? CursorType.MOST_RECENT
+          : CursorType.MOST_POPULAR;
+
       return getPosts(
         cursorType,
         previousCursor ?? {
           byUser: {
             id: userId,
           },
+          since: sort.since,
         }
       );
     },
-    [userId, cursorType]
+    [userId, sort]
   );
 
   if (user === undefined) {
@@ -64,7 +57,7 @@ const UserScreen = ({ userId }: { userId: string }) => {
   return (
     <StdLayout>
       <MainContent>
-        <div class="flex items-center divider-b">
+        <div class="flex items-center divider-b pb-5 my-5 space-x-2">
           <Avatar user={user} width={100} height={100} />
           <h1>{user.displayName}</h1>
         </div>
@@ -72,7 +65,7 @@ const UserScreen = ({ userId }: { userId: string }) => {
           fetchNextPage={fetchNextPageCb}
           posts={posts}
           setPosts={setPosts}
-          onSortChange={onSortChangeCb}
+          onSortChange={setSort}
         />
       </MainContent>
     </StdLayout>

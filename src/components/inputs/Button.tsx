@@ -32,12 +32,14 @@ export function IconButton({
   startIcon,
   children,
   buttonType = ButtonType.CONTAINED,
+  className,
   ...rest
 }: RenderableProps<IconButtonProps> & h.JSX.HTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       class={classNames(
         "group p-2",
+        className ?? "",
         BUTTON_CLASSES_BY_TYPE[buttonType as ButtonType]
       )}
       {...rest}

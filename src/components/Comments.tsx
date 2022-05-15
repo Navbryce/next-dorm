@@ -22,7 +22,10 @@ type CommentProps = {
   comment: Comment;
   postId: number;
   onDelete: () => void;
+  onEdit: (newComment: Comment) => void;
 } & HasReplyLock;
+
+const ACTION_ICON_SIZE = { width: 15, height: 15 };
 
 const CommentComponent = ({
   comment,
@@ -30,15 +33,11 @@ const CommentComponent = ({
   commentWithReplyLock,
   setCommentWithReplyLock,
   onDelete,
+  onEdit,
 }: CommentProps) => {
   const [user] = useContext(UserContext);
   const [isEditing, setIsEditing] = useState(false);
   const [comments, setComments] = useState(comment.children);
-  // commentValues represents editable values
-  const [commentValues, setCommentValues] = useState<
-    Values & { creator: Creator }
-  >(comment);
-
   const onStartReplyCb = useCallback(() => {
     setCommentWithReplyLock(
       commentWithReplyLock != comment.id ? comment.id : null
@@ -82,9 +81,8 @@ const CommentComponent = ({
       );
       comment.visibility = visibility;
       comment.content = content;
-
+      onEdit(comment);
       setIsEditing(false);
-      setCommentValues(comment);
     },
     [user, comment, postId, setCommentWithReplyLock]
   );
@@ -121,6 +119,18 @@ const CommentComponent = ({
     [comments, setComments]
   );
 
+  const onEditChildCb = useCallback(
+    (i: number, newComment: Comment) => {
+      const comment = comments[i];
+      setComments(
+        update(comments, {
+          [i]: { $set: newComment },
+        })
+      );
+    },
+    [comments, setComments]
+  );
+
   return (
     <div>
       <div class="flex">
@@ -129,12 +139,12 @@ const CommentComponent = ({
         </div>
         <div>
           <div className="flex items-center space-x-2">
-            <ProfileCardSm user={commentValues.creator} />
+            <ProfileCardSm user={comment.creator} />
             <span className="text-gray-400 text-[11pt]">
               {timeToDisplayStr(comment.createdAt)}
             </span>
           </div>
-          <div>{commentValues.content}</div>
+          <div>{comment.content}</div>
           {comment.status != Status.DELETED && (
             <Fragment>
               {!isEditing ? (
@@ -143,8 +153,9 @@ const CommentComponent = ({
                     {user?.profile && (
                       <IconButton
                         buttonType="text"
-                        startIcon={<ChatIcon />}
+                        startIcon={<ChatIcon {...ACTION_ICON_SIZE} />}
                         onClick={onStartReplyCb}
+                        className="text-xs"
                       >
                         Reply
                       </IconButton>
@@ -153,15 +164,19 @@ const CommentComponent = ({
                       <Fragment>
                         <IconButton
                           buttonType="text"
-                          startIcon={<PencilIcon />}
+                          startIcon={<PencilIcon {...ACTION_ICON_SIZE} />}
                           onClick={() => setIsEditing(true)}
+                          className="text-xs"
                         >
                           Edit
                         </IconButton>
                         <IconButton
                           buttonType="text"
-                          startIcon={<DocumentRemoveIcon />}
+                          startIcon={
+                            <DocumentRemoveIcon {...ACTION_ICON_SIZE} />
+                          }
                           onClick={() => onDeleteCb()}
+                          className="text-xs"
                         >
                           Delete
                         </IconButton>
@@ -172,7 +187,7 @@ const CommentComponent = ({
               ) : (
                 <CommentDialog
                   onSubmit={onEditCb}
-                  initialValues={commentValues}
+                  initialValues={comment}
                   submitButtonLabel="Save"
                   onCancel={() => setIsEditing(false)}
                 />
@@ -190,13 +205,14 @@ const CommentComponent = ({
       )}
       {comments.length > 0 && (
         // TODO: Alternate border color between different levels of nesting
-        <div class="m-6 p-2 border-l border-secondary-100">
+        <div class="mx-6 my-1 border-l border-secondary-100 pl-2">
           <Comments
             comments={comments}
             postId={postId}
             commentWithReplyLock={commentWithReplyLock}
             setCommentWithReplyLock={setCommentWithReplyLock}
             onDelete={onDeleteChildCb}
+            onEdit={onEditChildCb}
           />
         </div>
       )}
@@ -208,6 +224,7 @@ type CommentsProps = {
   postId: number;
   comments: Comment[]; // initialComments because comments can be deleted
   onDelete: (i: number) => void;
+  onEdit: (i: number, newComment: Comment) => void;
 } & HasReplyLock;
 
 const Comments = ({
@@ -216,10 +233,11 @@ const Comments = ({
   commentWithReplyLock,
   setCommentWithReplyLock,
   onDelete,
+  onEdit,
 }: CommentsProps) => {
   return (
     <div>
-      <div class="space-y-4">
+      <div class="space-y-1">
         {comments.map((comment, i) => (
           <div key={comment.id}>
             <CommentComponent
@@ -228,6 +246,7 @@ const Comments = ({
               commentWithReplyLock={commentWithReplyLock}
               setCommentWithReplyLock={setCommentWithReplyLock}
               onDelete={() => onDelete(i)}
+              onEdit={(newComment) => onEdit(i, newComment)}
             />
           </div>
         ))}

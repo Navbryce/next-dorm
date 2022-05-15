@@ -1,19 +1,11 @@
-import { h } from "preact";
 import { Label } from "src/components/inputs/Input";
-import { useCallback, useContext, useState } from "preact/compat";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
-import { route } from "preact-router";
+import { useCallback, useState } from "preact/compat";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { URLS } from "src/urls";
-import { UserContext } from "src/contexts";
-import { AuthService } from "src/utils/auth";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { InboxIcon } from "@heroicons/react/solid";
+import { InboxIcon, LightningBoltIcon } from "@heroicons/react/solid";
 
 const ForgotPasswordFormSchema = z.object({
   email: z.string().nonempty("Enter an email").email(),
@@ -37,11 +29,21 @@ const ForgotPasswordScreen = () => {
   const onSignInCb = useCallback(
     ({ email }: ForgotPasswordForm) => {
       const auth = getAuth();
-      sendPasswordResetEmail(auth, email)
+      sendPasswordResetEmail(auth, email, {
+        url: `${URLS.feRoot}/${URLS.pages.users.signIn}`,
+      })
         .then(async () => {
           setEmailSent(true);
         })
         .catch(({ code }) => {
+          switch (code) {
+            case "auth/user-not-found":
+              setError("email", {
+                type: "custom",
+                message: "Account not found",
+              });
+              break;
+          }
           throw new Error(code);
         });
     },
@@ -53,17 +55,20 @@ const ForgotPasswordScreen = () => {
       {emailSent ? (
         <div className="rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit space-y-4">
           <div className="inline-middle">
-            <InboxIcon
-              width="30"
-              height="30"
-              className="inline-block align-middle"
-            />
-            Reset email sent!
-          </div>
-          <div>
-            <a href={URLS.pages.users.signIn} className="link">
-              Login
-            </a>
+            <h2>
+              <LightningBoltIcon
+                width="30"
+                height="30"
+                className="inline-block align-middle"
+              />
+              Reset email sent!
+            </h2>
+            <div>Check your inbox. Exciting stuff awaits you - a link!</div>
+            <div>
+              <a href={URLS.pages.users.signIn} className="link">
+                Login
+              </a>
+            </div>
           </div>
         </div>
       ) : (

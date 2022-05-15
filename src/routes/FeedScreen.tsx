@@ -10,33 +10,29 @@ import CommunitiesList from "src/components/CommunitiesList";
 import { getCommunityPos } from "src/actions/Community";
 import StdLayout, { MainContent, Toolbar } from "src/components/StdLayout";
 import { getPosts } from "src/actions/Post";
-import { SortBy } from "src/components/inputs/SortSelect";
+import { Sort, SortBy } from "src/components/inputs/SortSelect";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>();
   const [communityPos, setCommunityPos] = useState<
     CommunityPosInTree | undefined
   >(undefined);
-  const [cursorType, setCursorType] = useState<CursorType>(
-    CursorType.SUBBED_MOST_RECENT
-  );
-
-  const onSortChangeCb = useCallback(
-    (sortBy: SortBy) => {
-      setCursorType(
-        sortBy == SortBy.MOST_RECENT
-          ? CursorType.SUBBED_MOST_RECENT
-          : CursorType.SUBBED_MOST_POPULAR
-      );
-    },
-    [setCursorType]
-  );
-
+  const [sort, setSort] = useState<Sort>({ sortBy: SortBy.MOST_RECENT });
   const fetchNextPageCb = useCallback(
     async (cursor?: PostCursor) => {
-      return getPosts(cursorType, cursor);
+      const cursorType =
+        sort.sortBy == SortBy.MOST_RECENT
+          ? CursorType.SUBBED_MOST_RECENT
+          : CursorType.SUBBED_MOST_POPULAR;
+
+      return getPosts(
+        cursorType,
+        cursor ?? {
+          since: sort.since,
+        }
+      );
     },
-    [cursorType]
+    [sort]
   );
 
   useLayoutEffect(() => {
@@ -54,7 +50,7 @@ const FeedScreen = () => {
           posts={posts}
           setPosts={setPosts}
           fetchNextPage={fetchNextPageCb}
-          onSortChange={onSortChangeCb}
+          onSortChange={setSort}
           noPostsMessage="No posts. Are you subscribed to anything?"
         />
       </MainContent>

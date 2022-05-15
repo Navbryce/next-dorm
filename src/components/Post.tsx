@@ -1,6 +1,6 @@
-import { Fragment, FunctionalComponent, h } from "preact";
+import { Fragment } from "preact";
 
-import { Comment, KnownContentAuthor, Post } from "../types/types";
+import { Comment, Post, Since } from "../types/types";
 import { ProfileCard } from "./ProfileCard";
 import { useCallback, useContext, useEffect, useState } from "preact/compat";
 import { createComment, getComments } from "../actions/Comment";
@@ -10,7 +10,7 @@ import { UserContext } from "src/contexts";
 import { PostVoteCounter } from "src/components/VoteCounter";
 import UploadedLazyLoadImage from "src/components/LazyUploadedImage";
 import { timeToDisplayStr } from "src/utils/display";
-import { genLinkToCommunity, genLinkToEditPost, genLinkToPost } from "src/urls";
+import { genLinkToCommunity, genLinkToEditPost } from "src/urls";
 import { IconButton } from "src/components/inputs/Button";
 import { PencilIcon } from "@heroicons/react/outline";
 import { canModifyPost } from "src/actions/user-parse";
@@ -19,20 +19,37 @@ import { deletePost } from "src/actions/Post";
 import { route } from "preact-router";
 import update from "immutability-helper";
 import { generateDeletedCommentFrom } from "src/utils/comment";
-import SortSelect, { SortBy } from "src/components/inputs/SortSelect";
+import SortTypeSelect, { Sort, SortBy } from "src/components/inputs/SortSelect";
+import dayjs, { Dayjs } from "dayjs";
 
 const sortByToValueFunc = {
   [SortBy.MOST_POPULAR]: (comment: Comment) => -comment.voteTotal,
   [SortBy.MOST_RECENT]: (comment: Comment) => -comment.createdAt.unix(),
 };
 
-function sortComments(comments: Comment[], sort: SortBy): Comment[] {
-  const valFunc = sortByToValueFunc[sort];
+function sinceToDate(since: Since): Dayjs {
+  switch (since) {
+    case Since.TODAY:
+      return dayjs().subtract(1, "day");
+    default:
+      throw new Error(`unknown since value ${since}`);
+  }
+}
+
+function sortComments(comments: Comment[], { sortBy, since }: Sort): Comment[] {
+  const valFunc = sortByToValueFunc[sortBy];
+  if (sortBy == SortBy.MOST_POPULAR && since) {
+    const sinceDate = sinceToDate(since);
+    comments = comments.filter((comment) =>
+      comment.createdAt.isAfter(sinceDate)
+    );
+  }
   const sortedComments = [...comments].sort(
     (c1, c2) => valFunc(c1) - valFunc(c2)
   );
   sortedComments.forEach(
-    (comment) => (comment.children = sortComments(comment.children, sort))
+    (comment) =>
+      (comment.children = sortComments(comment.children, { sortBy, since }))
   );
   return sortedComments;
 }
@@ -40,25 +57,35 @@ function sortComments(comments: Comment[], sort: SortBy): Comment[] {
 const PostComponent = ({ post }: { post: Post }) => {
   const [user] = useContext(UserContext);
   const [commentsList, setCommentsList] =
-    useState<{ comments: Comment[]; sortedBy?: SortBy }>();
+    // enables us to easily show a new comment made by the user at the top  of the list
+    // despite the sort
+    useState<{
+      original: Comment[]; // preserve comments that are filtered out (e.g., with since)
+      comments: Comment[];
+      sortedUsing?: Sort;
+    }>();
   const [commentWithReplyLock, setCommentWithReplyLock] = useState<
     number | null
   >(null);
-  const [sortBy, setSortBy] = useState(SortBy.MOST_RECENT);
+  const [sort, setSort] = useState({ sortBy: SortBy.MOST_RECENT });
 
   useEffect(() => {
-    getComments(post.id).then((value) => setCommentsList({ comments: value }));
+    getComments(post.id).then((value) =>
+      setCommentsList({ original: value, comments: value })
+    );
   }, [post]);
 
   useEffect(() => {
-    if (!commentsList || commentsList.sortedBy == sortBy) {
+    // don't re-sort if already sorted (prevent new comments from being removed)
+    if (!commentsList || commentsList.sortedUsing == sort) {
       return;
     }
     setCommentsList({
-      comments: sortComments(commentsList.comments, sortBy),
-      sortedBy: sortBy,
+      original: commentsList.original,
+      comments: sortComments(commentsList.original, sort),
+      sortedUsing: sort,
     });
-  }, [commentsList, setCommentsList, sortBy]);
+  }, [commentsList, setCommentsList, sort]);
 
   const createCommentCb = useCallback(
     async (values: Values) => {
@@ -70,7 +97,8 @@ const PostComponent = ({ post }: { post: Post }) => {
       }
       const comment = await createComment(user, post.id, values);
       setCommentsList({
-        sortedBy: commentsList.sortedBy,
+        original: [comment, ...commentsList.original],
+        sortedUsing: commentsList.sortedUsing,
         comments: [comment, ...commentsList.comments],
       });
     },
@@ -86,28 +114,43 @@ const PostComponent = ({ post }: { post: Post }) => {
     });
   }, [post, user]);
 
-  const onDeleteChildCb = useCallback(
-    (i: number) => {
+  const replaceCommentInListCb = useCallback(
+    (indexInSorted: number, newComment: Comment) => {
       if (!commentsList) {
         return;
       }
-      const comment = commentsList.comments[i];
-      let newComments: Comment[];
-      if (comment.children.length == 0) {
-        newComments = update(commentsList.comments, {
-          $splice: [[i, 1]],
-        });
-      } else {
-        newComments = update(commentsList.comments, {
-          [i]: { $set: generateDeletedCommentFrom(comment) },
-        });
-      }
+      const newSortedComments = update(commentsList.comments, {
+        [indexInSorted]: { $set: newComment },
+      });
+
+      const originalComment = commentsList.comments[indexInSorted];
+      const indexInOriginal = commentsList.original.findIndex(
+        (val) => val.id === originalComment.id
+      );
+      const newOriginalComments = update(commentsList.original, {
+        [indexInOriginal]: { $set: newComment },
+      });
+
       setCommentsList({
-        comments: newComments,
-        sortedBy: commentsList.sortedBy,
+        sortedUsing: commentsList.sortedUsing,
+        comments: newSortedComments,
+        original: newOriginalComments,
       });
     },
     [commentsList, setCommentsList]
+  );
+
+  const onDeleteChildCb = useCallback(
+    (indexInSorted: number) => {
+      if (!commentsList) {
+        return;
+      }
+      replaceCommentInListCb(
+        indexInSorted,
+        generateDeletedCommentFrom(commentsList.comments[indexInSorted])
+      );
+    },
+    [commentsList, replaceCommentInListCb]
   );
 
   return (
@@ -175,7 +218,7 @@ const PostComponent = ({ post }: { post: Post }) => {
             />
             <div className="mt-5 z-0 relative">
               <div className="mb-5">
-                <SortSelect value={sortBy} onChange={setSortBy} />
+                <SortTypeSelect value={sort} onChange={setSort} />
               </div>
               <Comments
                 comments={commentsList.comments}
@@ -183,6 +226,7 @@ const PostComponent = ({ post }: { post: Post }) => {
                 commentWithReplyLock={commentWithReplyLock}
                 setCommentWithReplyLock={setCommentWithReplyLock}
                 onDelete={onDeleteChildCb}
+                onEdit={replaceCommentInListCb}
               />
             </div>
           </div>
@@ -191,5 +235,4 @@ const PostComponent = ({ post }: { post: Post }) => {
     </div>
   );
 };
-
 export default PostComponent;

@@ -12,7 +12,7 @@ import CommunitiesList from "src/components/CommunitiesList";
 import { getCommunityPos } from "src/actions/Community";
 import { ALL_COMMUNITY } from "src/model/community";
 import StdLayout, { MainContent, Toolbar } from "src/components/StdLayout";
-import { SortBy } from "src/components/inputs/SortSelect";
+import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
 
 const AllScreen = () => {
@@ -20,26 +20,18 @@ const AllScreen = () => {
   const [communityPos, setCommunityPos] = useState<
     CommunityPosInTree | undefined
   >(undefined);
-  const [cursorType, setCursorType] = useState<CursorType>(
-    CursorType.MOST_RECENT
-  );
-
-  const onSortChangeCb = useCallback(
-    (sortBy: SortBy) => {
-      setCursorType(
-        sortBy == SortBy.MOST_RECENT
-          ? CursorType.MOST_RECENT
-          : CursorType.MOST_POPULAR
-      );
-    },
-    [setCursorType]
-  );
+  const [sort, setSort] = useState<Sort>({ sortBy: SortBy.MOST_RECENT });
 
   const fetchNextPageCb = useCallback(
     async (cursor?: PostCursor) => {
-      return getPosts(cursorType, cursor);
+      const cursorType =
+        sort.sortBy == SortBy.MOST_RECENT
+          ? CursorType.MOST_RECENT
+          : CursorType.MOST_POPULAR;
+
+      return getPosts(cursorType, cursor ?? { since: sort.since });
     },
-    [cursorType]
+    [sort]
   );
 
   useLayoutEffect(() => {
@@ -58,7 +50,7 @@ const AllScreen = () => {
           posts={posts}
           setPosts={setPosts}
           fetchNextPage={fetchNextPageCb}
-          onSortChange={onSortChangeCb}
+          onSortChange={setSort}
         />
       </MainContent>
       <Toolbar />

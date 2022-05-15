@@ -23,7 +23,7 @@ import { URLS } from "src/urls";
 import CommunitiesList from "src/components/CommunitiesList";
 import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
 import StdLayout, { MainContent, Toolbar } from "src/components/StdLayout";
-import { SortBy } from "src/components/inputs/SortSelect";
+import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import { UserContext } from "src/contexts";
 
 const CommunityScreen = ({
@@ -40,20 +40,7 @@ const CommunityScreen = ({
   >(undefined);
   const [posts, setPosts] = useState<Post[]>();
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [cursorType, setCursorType] = useState<CursorType>(
-    CursorType.SUBBED_MOST_RECENT
-  );
-
-  const onSortChangeCb = useCallback(
-    (sortBy: SortBy) => {
-      setCursorType(
-        sortBy == SortBy.MOST_RECENT
-          ? CursorType.MOST_RECENT
-          : CursorType.MOST_POPULAR
-      );
-    },
-    [setCursorType]
-  );
+  const [sort, setSort] = useState<Sort>({ sortBy: SortBy.MOST_RECENT });
 
   const communityId = useMemo(() => parseInt(communityIdStr), [communityIdStr]);
 
@@ -67,9 +54,14 @@ const CommunityScreen = ({
 
   const fetchNextPageCb = useCallback(
     async (cursor?: PostCursor) => {
-      return getPosts(cursorType, cursor ?? { communities: [communityId] });
+      const cursorType =
+        sort.sortBy == SortBy.MOST_RECENT
+          ? CursorType.MOST_RECENT
+          : CursorType.MOST_POPULAR;
+
+      return getPosts(cursorType, cursor ?? { since: sort.since });
     },
-    [communityId, cursorType]
+    [communityId, sort]
   );
 
   const createPostCb = useCallback(() => {
@@ -108,7 +100,7 @@ const CommunityScreen = ({
           posts={posts}
           setPosts={setPosts}
           fetchNextPage={fetchNextPageCb}
-          onSortChange={onSortChangeCb}
+          onSortChange={setSort}
         />
       </MainContent>
       <Toolbar>

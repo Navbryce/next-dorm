@@ -1,4 +1,3 @@
-import { withStandardPageElements } from "src/components/StdLayout";
 import { withAuth } from "src/components/wrappers/Auth";
 import { useCallback, useContext, useEffect, useState } from "preact/compat";
 import { UserContext } from "src/contexts";

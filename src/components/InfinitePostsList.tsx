@@ -3,7 +3,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useCallback, useEffect, useRef, useState } from "preact/compat";
 import { CursorType, Post, PostCursor, StateProps } from "src/types/types";
 import PostsList from "./PostsList";
-import SortSelect, { SortBy } from "src/components/inputs/SortSelect";
+import SortTypeSelect, { Sort, SortBy } from "src/components/inputs/SortSelect";
 
 type Props<CURSOR_TYPE extends PostCursor> = {
   /*
@@ -14,7 +14,7 @@ type Props<CURSOR_TYPE extends PostCursor> = {
   fetchNextPage: (
     previousCursor?: CURSOR_TYPE
   ) => Promise<{ posts: Post[]; nextCursor: CURSOR_TYPE | null }>;
-  onSortChange: (sort: SortBy) => void;
+  onSortChange: (sort: Sort) => void;
   // inject posts so new posts can be added outside this component
   noPostsMessage?: string;
   beforePostsEl?: VNode<any>;
@@ -28,7 +28,7 @@ function InfinitePostsList<CURSOR_TYPE>({
   beforePostsEl,
   ...rest
 }: Props<CURSOR_TYPE>) {
-  const [sortBy, setSortBy] = useState<SortBy>(SortBy.MOST_RECENT);
+  const [sort, setSort] = useState<Sort>({ sortBy: SortBy.MOST_RECENT });
   const [nextCursor, setNextCursor] = useState<CURSOR_TYPE>();
   const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +39,7 @@ function InfinitePostsList<CURSOR_TYPE>({
     setHasMore(true);
     setNextCursor(undefined);
     setIsLoading(false);
-  }, [fetchNextPage, sortBy, setPosts, setHasMore, setNextCursor]);
+  }, [fetchNextPage, sort, setPosts, setHasMore, setNextCursor]);
 
   const fetchDataCb = useCallback(async () => {
     if (isLoading) {
@@ -69,7 +69,7 @@ function InfinitePostsList<CURSOR_TYPE>({
     setIsLoading(false);
   }, [
     fetchNextPage,
-    sortBy,
+    sort,
     setPosts,
     posts,
     setNextCursor,
@@ -79,16 +79,16 @@ function InfinitePostsList<CURSOR_TYPE>({
   ]);
 
   const onSortChangeCb = useCallback(
-    (sort: SortBy) => {
-      setSortBy(sort);
+    (sort: Sort) => {
+      setSort(sort);
       onSortChange(sort);
     },
-    [setSortBy]
+    [setSort]
   );
 
   return (
     <div class="w-full h-full" ref={scrollDiv}>
-      <SortSelect value={sortBy} onChange={onSortChangeCb} />
+      <SortTypeSelect value={sort} onChange={onSortChangeCb} />
       {beforePostsEl}
       <InfiniteScroll
         useWindow={false}
