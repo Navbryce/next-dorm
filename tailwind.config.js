@@ -22,7 +22,9 @@ module.exports = {
         }
     },
     darkMode: "class",
-    plugins: [],
+    plugins: [
+        require('@tailwindcss/line-clamp'),
+    ],
     future: {
         removeDeprecatedGapUtilities: true,
         purgeLayersByDefault: true,

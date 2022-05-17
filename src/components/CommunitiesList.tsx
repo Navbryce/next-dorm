@@ -36,7 +36,7 @@ const CommunitiesList = ({ pos, current }: Props) => {
   }, [pos]);
   return (
     <div className="w-4/5 mt-5">
-      <div className="flex justify-between">
+      <div className="flex">
         <a href={genLinkToCommunity(pos?.path[-1] ?? ALL_COMMUNITY)}>
           <IconButton
             buttonType="text"

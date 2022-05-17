@@ -65,7 +65,10 @@ const CommunityScreen = ({
           ? CursorType.MOST_RECENT
           : CursorType.MOST_POPULAR;
 
-      return getPosts(cursorType, cursor ?? { since: sort.since });
+      return getPosts(
+        cursorType,
+        cursor ?? { since: sort.since, communities: [communityId] }
+      );
     },
     [communityId, sort]
   );

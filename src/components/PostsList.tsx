@@ -8,6 +8,7 @@ import UploadedLazyLoadImage from "src/components/LazyUploadedImage";
 import { ProfileCardSm } from "src/components/ProfileCard";
 import { timeToDisplayStr } from "src/utils/display";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
+import UploadedImageSlider from "src/components/Slider";
 
 type Props = {
   posts: Post[];
@@ -56,14 +57,16 @@ const PostsList = ({ posts, noPostsMessage }: Props) => {
                     </span>
                   </a>
                 </div>
-                <div>
-                  {post.imageBlobNames.length > 0 && (
-                    <UploadedLazyLoadImage
-                      blobName={post.imageBlobNames[0]}
-                      className="max-w-screen-sm max-h-[350px] object-contain rounded"
-                    />
-                  )}
-                </div>
+                {post.content.length > 0 && (
+                  <p className="line-clamp-3">{post.content}</p>
+                )}
+                {post.imageBlobNames.length > 0 && (
+                  <UploadedImageSlider
+                    className="max-w-[300px] max-h-[400px]"
+                    cardClassName="max-w-[300px] max-h-[400px]"
+                    blobNames={post.imageBlobNames}
+                  />
+                )}
                 <div>{post.commentCount} Comments</div>
               </div>
             </div>

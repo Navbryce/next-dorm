@@ -43,7 +43,6 @@ export function IconButton({
         BUTTON_CLASSES_BY_TYPE[buttonType as ButtonType]
       )}
       {...rest}
-      disabled={true}
       type={BUTTON_TYPE_BY_TYPE[buttonType as ButtonType]}
     >
       {cloneElement(startIcon, {
