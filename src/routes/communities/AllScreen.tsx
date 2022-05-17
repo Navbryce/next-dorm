@@ -11,7 +11,11 @@ import InfinitePostsList from "src/components/InfinitePostsList";
 import CommunitiesList from "src/components/CommunitiesList";
 import { getCommunityPos } from "src/actions/Community";
 import { ALL_COMMUNITY } from "src/model/community";
-import StdLayout, { MainContent, Toolbar } from "src/components/StdLayout";
+import StdLayout, {
+  MainContent,
+  Title,
+  Toolbar,
+} from "src/components/StdLayout";
 import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
 
@@ -44,7 +48,7 @@ const AllScreen = () => {
         <CommunitiesList pos={communityPos} />
       </Toolbar>
       <MainContent>
-        <h2>All Communities</h2>
+        <Title>All Communities</Title>
         <CommunityBreadcrumb />
         <InfinitePostsList
           posts={posts}

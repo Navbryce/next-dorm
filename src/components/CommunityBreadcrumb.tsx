@@ -16,7 +16,7 @@ const CommunityBreadcrumb = ({ pos, current }: Props) => {
         <a href={genLinkToCommunity(ALL_COMMUNITY)}>All</a>
       </BreadcrumbItem>
       {pos &&
-        pos.children.map((community) => (
+        pos.path.map((community) => (
           <BreadcrumbItem key={community.id}>
             <a href={genLinkToCommunity(community)}>{community.name}</a>
           </BreadcrumbItem>

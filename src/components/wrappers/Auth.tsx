@@ -25,16 +25,11 @@ export function withAuth<T>(
       return <div />;
     }
 
-    if (requireProfile) {
-      if (!user?.firebaseUser.emailVerified) {
-        route(URLS.pages.users.verify);
-        return <div />;
-      }
-
-      if (!user?.profile) {
-        route(URLS.pages.users.createProfile);
-        return <div />;
-      }
+    if (
+      requireProfile &&
+      (!user?.firebaseUser.emailVerified || !user?.profile)
+    ) {
+      return <div />;
     }
     if (!renderedPage.current) {
       renderedPage.current = h(component, props);

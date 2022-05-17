@@ -1,9 +1,19 @@
 import { FunctionalComponent } from "preact";
-import { Route as PreactRoute, Router } from "preact-router";
+import {
+  route,
+  Route as PreactRoute,
+  Router,
+  RouterOnChangeArgs,
+} from "preact-router";
 
 import CommunityScreen from "src/routes/communities/[id]/index";
 import NotFoundPage from "../routes/notfound";
-import { useEffect, useLayoutEffect, useState } from "preact/compat";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "preact/compat";
 import { UserContext } from "src/contexts";
 import { AuthService } from "src/utils/auth";
 import "src/utils/firebase";
@@ -38,13 +48,33 @@ const App: FunctionalComponent = () => {
     });
   }, []);
 
+  const handleRouteChangeCb = useCallback(
+    (e: RouterOnChangeArgs) => {
+      if (user) {
+        if (!user.firebaseUser.emailVerified) {
+          if (e.url != URLS.pages.users.verify) {
+            route(URLS.pages.users.verify);
+          }
+          return;
+        }
+        if (!user.profile) {
+          if (e.url != URLS.pages.users.createProfile) {
+            route(URLS.pages.users.createProfile);
+          }
+          return;
+        }
+      }
+    },
+    [user]
+  );
+
   return (
     <UserContext.Provider value={[user, setUser]}>
       <div class="h-screen">
         <div class="dark:bg-gradient-to-r dark:bg-primary-900 dark:from-primary-800 h-screen overflow-y-auto flex flex-col justify-between">
           <div class="h-full">
             {new AuthService(user, setUser).authStateEstablished && (
-              <Router>
+              <Router onChange={handleRouteChangeCb}>
                 <Route
                   path={URLS.pages.all}
                   requireSession={false}

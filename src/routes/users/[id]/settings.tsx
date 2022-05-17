@@ -82,7 +82,7 @@ const PasswordUpdateForm = ({
   );
 
   return (
-    <form onSubmit={handleSubmit(onUpdateCb) as any}>
+    <form className="space-y-4" onSubmit={handleSubmit(onUpdateCb) as any}>
       <div>
         <Label htmlFor="password" className="block">
           Password

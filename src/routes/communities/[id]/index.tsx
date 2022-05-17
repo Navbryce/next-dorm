@@ -1,4 +1,4 @@
-import { Fragment, h } from "preact";
+import { Fragment } from "preact";
 import {
   useCallback,
   useContext,
@@ -13,6 +13,7 @@ import {
   CursorType,
   Post,
   PostCursor,
+  Visibility,
 } from "src/types/types";
 import InfinitePostsList from "src/components/InfinitePostsList";
 import { getCommunity, getCommunityPos } from "src/actions/Community";
@@ -22,9 +23,14 @@ import { route } from "preact-router";
 import { URLS } from "src/urls";
 import CommunitiesList from "src/components/CommunitiesList";
 import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
-import StdLayout, { MainContent, Toolbar } from "src/components/StdLayout";
+import StdLayout, {
+  MainContent,
+  Title,
+  Toolbar,
+} from "src/components/StdLayout";
 import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import { UserContext } from "src/contexts";
+import VisibilitySelect from "src/components/inputs/VisibilitySelect";
 
 const CommunityScreen = ({
   communityId: communityIdStr,
@@ -85,16 +91,25 @@ const CommunityScreen = ({
         <CommunitiesList current={community} pos={communityPos} />
       </Toolbar>
       <MainContent>
-        {community && (
-          <div>
-            <h2>{community.name}</h2>
-          </div>
-        )}
+        {community && <Title>{community.name}</Title>}
         <CommunityBreadcrumb pos={communityPos} current={community} />
         <InfinitePostsList
           beforePostsEl={
-            <div className="pt-6" onClick={createPostCb}>
-              <textarea className="resize-none">Write post...</textarea>
+            <div
+              className="flex flex-col p-8 m-4 border-b border-secondary-100"
+              onClick={createPostCb}
+            >
+              <textarea className="resize-none">What's got you upset?</textarea>
+              <div className="flex justify-end items-center mt-4">
+                <VisibilitySelect
+                  value={Visibility.NORMAL}
+                  onChange={
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    () => {}
+                  }
+                />
+                <button className="btn ml-4">Post!</button>
+              </div>
             </div>
           }
           posts={posts}

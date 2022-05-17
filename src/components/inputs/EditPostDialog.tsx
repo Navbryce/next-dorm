@@ -3,13 +3,14 @@ import { ImageUploadInput, Label } from "src/components/inputs/Input";
 import UploadedImagePreview from "src/components/UploadedImagePreview";
 import VisibilitySelect from "src/components/inputs/VisibilitySelect";
 import { useCallback, useContext, useEffect, useState } from "preact/compat";
-import { Visibility } from "src/types/types";
+import { Stylable, Visibility } from "src/types/types";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import update from "immutability-helper";
 import { uploadContentImage } from "src/utils/upload";
 import { UserContext } from "src/contexts";
+import { classNames } from "src/utils/styling";
 
 const EditPostSchema = z.object({
   title: z.string().nonempty(),
@@ -26,9 +27,9 @@ export type Values = {
 type Props = {
   initialValues: Values;
   onSubmit: (values: Values) => void;
-};
+} & Stylable;
 
-const EditPostDialog = ({ initialValues, onSubmit }: Props) => {
+const EditPostDialog = ({ initialValues, onSubmit, className }: Props) => {
   const [user] = useContext(UserContext);
 
   const [imageBlobNames, setImageBlobNames] = useState<
@@ -103,7 +104,10 @@ const EditPostDialog = ({ initialValues, onSubmit }: Props) => {
    */
 
   return (
-    <form className="form max-w-4xl" onSubmit={handleSubmit(onSubmitCb) as any}>
+    <form
+      className={classNames("space-y-2", className ?? "")}
+      onSubmit={handleSubmit(onSubmitCb) as any}
+    >
       <div>
         <Label className="block font-bold" htmlFor="title">
           Title
@@ -115,9 +119,12 @@ const EditPostDialog = ({ initialValues, onSubmit }: Props) => {
           Content
         </Label>
         <textarea className="w-full" {...register("content")} />
-        <ImageUploadInput onChange={onImageChangeCb} />
+        <ImageUploadInput
+          onChange={onImageChangeCb}
+          buttonContent="Add a picture!"
+        />
       </div>
-      <div>
+      <div className="flex flex-wrap">
         {imageBlobNames
           .filter((blobName) => blobName != null)
           .map((blobName, i) => (
@@ -137,7 +144,7 @@ const EditPostDialog = ({ initialValues, onSubmit }: Props) => {
         />
       </div>
       <div>
-        <button type="submit">Submit</button>
+        <button type="submit">Save changes!</button>
       </div>
     </form>
   );

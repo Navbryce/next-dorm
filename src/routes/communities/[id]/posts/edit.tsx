@@ -14,7 +14,7 @@ import { UserContext } from "src/contexts";
 import { route } from "preact-router";
 import { genLinkToPost } from "src/urls";
 import { canModifyPost } from "src/actions/user-parse";
-import StdLayout, { MainContent } from "src/components/StdLayout";
+import StdLayout, { MainContent, Title } from "src/components/StdLayout";
 
 const EditPostScreen = ({
   communityId: communityIdStr,
@@ -72,6 +72,8 @@ const EditPostScreen = ({
   return (
     <StdLayout>
       <MainContent>
+        <Title>Edit post</Title>
+        <p>Now's the time to fix that typo</p>
         <EditPostDialog initialValues={post} onSubmit={onEditPostCb} />
       </MainContent>
     </StdLayout>

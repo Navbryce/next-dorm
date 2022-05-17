@@ -25,6 +25,7 @@ import { UserContext } from "src/contexts";
 import {
   MainContent,
   StdLayout,
+  Title,
   withStandardPageElements,
 } from "src/components/StdLayout";
 import { withAuth } from "src/components/wrappers/Auth";
@@ -58,6 +59,8 @@ const AddPostScreen = ({
   return (
     <StdLayout>
       <MainContent>
+        <Title>Write your post!</Title>
+        <p>This is your time to complain or to point someting weird out.</p>
         <PostDialog onSubmit={createPostCb} />
       </MainContent>
     </StdLayout>

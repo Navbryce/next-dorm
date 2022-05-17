@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { ComponentChild, h, VNode } from "preact";
 import { classNames } from "src/utils/styling";
 import { IconButton } from "src/components/inputs/Button";
 import { PhotographIcon } from "@heroicons/react/outline";
@@ -33,9 +33,12 @@ export const TextArea = ({
 };
 
 export const ImageUploadInput = ({
+  buttonContent,
   className,
   ...rest
-}: h.JSX.HTMLAttributes<HTMLInputElement>) => {
+}: {
+  buttonContent?: ComponentChild;
+} & h.JSX.HTMLAttributes<HTMLInputElement>) => {
   const fileUploadEl = useRef<HTMLInputElement | null>(null);
   return (
     <div class={className}>
@@ -45,7 +48,9 @@ export const ImageUploadInput = ({
         onClick={() => {
           fileUploadEl.current && fileUploadEl.current.click();
         }}
-      />
+      >
+        {buttonContent}
+      </IconButton>
       <input type="file" ref={fileUploadEl} className="hidden" {...rest} />
     </div>
   );

@@ -8,6 +8,7 @@ import { genLinkToUser, URLS } from "src/urls";
 import { getPublicUrlForImage } from "src/utils/upload";
 import { Stylable } from "src/types/types";
 import { classNames } from "src/utils/styling";
+import { MainContent, Toolbar } from "src/components/StdLayout";
 
 const Header: FunctionalComponent<Stylable> = ({ className }) => {
   const [user] = useContext(UserContext);
@@ -15,52 +16,59 @@ const Header: FunctionalComponent<Stylable> = ({ className }) => {
   return (
     <header
       className={classNames(
-        "shadow-lg bg:shadow-slate-900 p-5 flex justify-between",
+        "border-b border-secondary-100 flex justify-center p-5",
         className ?? ""
       )}
     >
-      <a href="/" class="no-underline dark:text-blue-100">
-        <h1 class="text-3xl flex flex-row items-center">NextDorm</h1>
-      </a>
-      {!user && (
-        <button
-          type="button"
-          class="btn"
-          onClick={() => route(URLS.pages.users.signIn)}
-        >
-          Sign in
-        </button>
-      )}
-      {user && (
-        <div>
-          <DropdownMenu
-            title={
-              <div class="flex items-center">
-                {user.profile && (
-                  <img
-                    width={25}
-                    height={25}
-                    src={getPublicUrlForImage(user.profile.avatarBlobName)}
-                  />
-                )}
-                {user?.profile?.displayName ?? "No profile"}
-              </div>
-            }
+      <Toolbar>
+        <a href="/" className="no-underline dark:text-blue-100">
+          <div className="flex items-center">
+            <h1 className="text-3xl inline">NextDorm</h1>
+          </div>
+        </a>
+      </Toolbar>
+      <MainContent />
+      <Toolbar>
+        {!user && (
+          <button
+            type="button"
+            class="btn"
+            onClick={() => route(URLS.pages.users.signIn)}
           >
-            {user.profile && (
-              <Fragment>
-                <MenuItem href={genLinkToUser(user.profile)}>
-                  View Profile
-                </MenuItem>
-                <MenuItem href={`${URLS.pages.users.settings}`}>
-                  Settings
-                </MenuItem>
-              </Fragment>
-            )}
-            <MenuItem onClick={() => signOut(getAuth())}>Logout</MenuItem>
-          </DropdownMenu>
-        </div>
-      )}
+            Sign in
+          </button>
+        )}
+        {user && (
+          <div>
+            <DropdownMenu
+              title={
+                <div class="flex items-center">
+                  {user.profile && (
+                    <img
+                      width={25}
+                      height={25}
+                      src={getPublicUrlForImage(user.profile.avatarBlobName)}
+                    />
+                  )}
+                  {user?.profile?.displayName ?? "No profile"}
+                </div>
+              }
+            >
+              {user.profile && (
+                <Fragment>
+                  <MenuItem href={genLinkToUser(user.profile)}>
+                    View Profile
+                  </MenuItem>
+                  <MenuItem href={`${URLS.pages.users.settings}`}>
+                    Settings
+                  </MenuItem>
+                </Fragment>
+              )}
+              <MenuItem onClick={() => signOut(getAuth())}>Logout</MenuItem>
+            </DropdownMenu>
+          </div>
+        )}
+      </Toolbar>
     </header>
   );
 };

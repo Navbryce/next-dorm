@@ -34,12 +34,15 @@ const CommunitiesList = ({ pos, current }: Props) => {
     }
     setNamesAndURLs(pos.children.map(communityToNameAndURL));
   }, [pos]);
-
   return (
-    <div>
-      <div className="space-x-2">
+    <div className="w-4/5 mt-5">
+      <div className="flex justify-between">
         <a href={genLinkToCommunity(pos?.path[-1] ?? ALL_COMMUNITY)}>
-          <IconButton buttonType="text" startIcon={<ArrowUpIcon />} />
+          <IconButton
+            buttonType="text"
+            startIcon={<ArrowUpIcon />}
+            disabled={pos != undefined && pos.path.length == 0}
+          />
         </a>
         <a href={URLS.pages.feed}>
           <IconButton buttonType="text" startIcon={<HomeIcon />} />
@@ -48,26 +51,27 @@ const CommunitiesList = ({ pos, current }: Props) => {
           <IconButton buttonType="text" startIcon={<CollectionIcon />} />
         </a>
       </div>
-      <div className="border-b border-secondary-100 w-4/5" />
-      {namesAndPaths &&
-        namesAndPaths.map(({ name, url }) => (
-          <div key={name}>
-            <a
-              href={url}
-              class="
+      <div className="relative top-[-8px]">
+        {namesAndPaths &&
+          namesAndPaths.map(({ name, url }) => (
+            <div key={name}>
+              <a
+                href={url}
+                class="
       block border-l pl-4 -ml-px border-transparent hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300
       "
-            >
-              <h2>{name}</h2>
-            </a>
+              >
+                <h2>{name}</h2>
+              </a>
+            </div>
+          ))}
+        {namesAndPaths && namesAndPaths.length == 0 && (
+          <div className="flex items-center">
+            <ExclamationCircleIcon width={25} height={25} className="inline" />
+            No child communities
           </div>
-        ))}
-      {namesAndPaths && namesAndPaths.length == 0 && (
-        <div className="flex items-center">
-          <ExclamationCircleIcon width={25} height={25} className="inline" />
-          No children
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

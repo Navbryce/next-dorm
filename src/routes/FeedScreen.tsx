@@ -8,7 +8,11 @@ import {
 import InfinitePostsList from "../components/InfinitePostsList";
 import CommunitiesList from "src/components/CommunitiesList";
 import { getCommunityPos } from "src/actions/Community";
-import StdLayout, { MainContent, Toolbar } from "src/components/StdLayout";
+import StdLayout, {
+  MainContent,
+  Title,
+  Toolbar,
+} from "src/components/StdLayout";
 import { getPosts } from "src/actions/Post";
 import { Sort, SortBy } from "src/components/inputs/SortSelect";
 
@@ -45,7 +49,7 @@ const FeedScreen = () => {
         <CommunitiesList current={undefined} pos={communityPos} />
       </Toolbar>
       <MainContent>
-        <h2>Your feed</h2>
+        <Title>Your feed</Title>
         <InfinitePostsList
           posts={posts}
           setPosts={setPosts}
@@ -54,6 +58,7 @@ const FeedScreen = () => {
           noPostsMessage="No posts. Are you subscribed to anything?"
         />
       </MainContent>
+      <Toolbar />
     </StdLayout>
   );
 };

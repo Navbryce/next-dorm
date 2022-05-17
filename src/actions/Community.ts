@@ -20,7 +20,7 @@ export async function getCommunityPos(
   id?: number
 ): Promise<CommunityPosInTree> {
   // treat null as 0
-  return execInternalReq(`${basePath}/${id ?? 0}/pos`, {
+  return execInternalReq(`${basePath}/${id ?? -1}/pos`, {
     method: HttpMethod.GET,
   });
 }

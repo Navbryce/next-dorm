@@ -10,6 +10,10 @@ export const MainContent: FunctionalComponent = ({ children }) => {
   return <div className="max-w-4xl w-full">{children}</div>;
 };
 
+export const Title: FunctionalComponent = ({ children }) => {
+  return <h1>{children}</h1>;
+};
+
 export const StdLayout: FunctionalComponent = ({ children }) => {
   return <div className="w-full flex justify-center">{children}</div>;
 };

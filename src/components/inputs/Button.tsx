@@ -18,7 +18,7 @@ const BUTTON_TYPE_BY_TYPE = {
 
 const BUTTON_CLASSES_BY_TYPE = {
   [ButtonType.TEXT]:
-    "text-cyan-400 hover:bg-cyan-400/20 rounded-full transition-all duration-200",
+    "text-cyan-400 hover:bg-cyan-400/20 rounded-full transition-all duration-200 disabled:!bg-red",
   [ButtonType.CONTAINED]: "",
 };
 
@@ -43,6 +43,7 @@ export function IconButton({
         BUTTON_CLASSES_BY_TYPE[buttonType as ButtonType]
       )}
       {...rest}
+      disabled={true}
       type={BUTTON_TYPE_BY_TYPE[buttonType as ButtonType]}
     >
       {cloneElement(startIcon, {
