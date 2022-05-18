@@ -36,6 +36,7 @@ import SettingsScreen from "src/routes/users/[id]/settings";
 import { withStandardPageElements } from "src/components/StdLayout";
 import VerifyScreen from "src/routes/users/verify";
 import { AlertService } from "src/utils/Alert";
+import AboutScreen from "src/routes/Landing";
 
 // Register error lsiteners
 function registerErrorListeners(alertService: AlertService) {
@@ -89,7 +90,7 @@ const App: FunctionalComponent = () => {
   return (
     <UserContext.Provider value={[user, setUser]}>
       <div class="h-screen">
-        <div class="dark:bg-gradient-to-r dark:bg-primary-900 dark:from-primary-800 h-screen overflow-y-auto flex flex-col justify-between">
+        <div class="app-bg h-screen overflow-y-auto flex flex-col justify-between">
           <div class="h-full">
             {new AuthService(user, setUser).authStateEstablished && (
               <Router onChange={handleRouteChangeCb}>
@@ -162,6 +163,7 @@ const App: FunctionalComponent = () => {
                   path={URLS.pages.users.verify}
                   component={VerifyScreen}
                 />
+                <PreactRoute path={URLS.pages.about} component={AboutScreen} />
                 <NotFoundPage default />
               </Router>
             )}

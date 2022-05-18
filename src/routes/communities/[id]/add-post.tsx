@@ -23,6 +23,7 @@ import { route } from "preact-router";
 import { URLS } from "src/urls";
 import { UserContext } from "src/contexts";
 import {
+  BackButton,
   MainContent,
   StdLayout,
   Title,
@@ -59,6 +60,7 @@ const AddPostScreen = ({
   return (
     <StdLayout>
       <MainContent>
+        <BackButton />
         <Title>Write your post!</Title>
         <p>This is your time to complain or to point someting weird out.</p>
         <PostDialog onSubmit={createPostCb} />

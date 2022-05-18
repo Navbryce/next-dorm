@@ -2,6 +2,17 @@ import { cloneElement, h, RenderableProps, VNode } from "preact";
 import { classNames } from "src/utils/styling";
 import Tooltip, { TooltipConfig } from "src/components/Tooltip";
 
+function getClassesForStatus(
+  {
+    all,
+    enabled = "",
+    disabled = "",
+  }: { all: string; enabled?: string; disabled?: string },
+  isDisabled = false
+) {
+  return classNames(all, isDisabled ? disabled : enabled);
+}
+
 export enum ButtonType {
   TEXT = "text",
   CONTAINED = "contained",
@@ -12,22 +23,30 @@ type IconButtonProps = {
   startIcon: VNode<any>;
   tooltip?: TooltipConfig;
 };
-
 const BUTTON_TYPE_BY_TYPE = {
   [ButtonType.TEXT]: "button",
   [ButtonType.CONTAINED]: "button",
 };
 
 const BUTTON_CLASSES_BY_TYPE = {
-  [ButtonType.TEXT]:
-    "text-cyan-400 hover:bg-cyan-400/20 rounded-full transition-all duration-200 disabled:!bg-red",
-  [ButtonType.CONTAINED]: "",
+  [ButtonType.TEXT]: {
+    all: "rounded-full",
+    enabled: "text-cyan-400 hover:bg-cyan-400/20 transition-all duration-200",
+    disabled: "text-primary-600",
+  },
+  [ButtonType.CONTAINED]: {
+    all: "",
+  },
 };
-
 const ICON_CLASSES_BY_TYPE = {
-  [ButtonType.TEXT]:
-    "rounded-full p-1 bg-cyan-400/0 group-hover:bg-cyan-400/20 transition-all duration-200",
-  [ButtonType.CONTAINED]: "",
+  [ButtonType.TEXT]: {
+    all: "rounded-full p-1",
+    enabled:
+      "bg-cyan-400/0 group-hover:bg-cyan-400/20 transition-all duration-200",
+  },
+  [ButtonType.CONTAINED]: {
+    all: "",
+  },
 };
 
 export function IconButton({
@@ -41,23 +60,32 @@ export function IconButton({
   const button = (
     <button
       class={classNames(
-        "group p-2",
+        "group p-2 inline",
         className ?? "",
-        BUTTON_CLASSES_BY_TYPE[buttonType as ButtonType]
+        BUTTON_CLASSES_BY_TYPE[buttonType as ButtonType]?.all ?? "",
+        getClassesForStatus(
+          BUTTON_CLASSES_BY_TYPE[buttonType as ButtonType],
+          rest.disabled
+        )
       )}
       {...rest}
       type={BUTTON_TYPE_BY_TYPE[buttonType as ButtonType]}
     >
-      {cloneElement(startIcon, {
-        className: classNames(
-          "box-content inline",
-          ICON_CLASSES_BY_TYPE[buttonType as ButtonType],
-          startIcon.props.className
-        ),
-        width: startIcon.props.width ?? 20,
-        height: startIcon.props.height ?? 20,
-      })}{" "}
-      {children}
+      <div className="flex items-center">
+        {cloneElement(startIcon, {
+          className: classNames(
+            "box-content inline",
+            getClassesForStatus(
+              ICON_CLASSES_BY_TYPE[buttonType as ButtonType],
+              rest.disabled
+            ),
+            startIcon.props.className
+          ),
+          width: startIcon.props.width ?? 20,
+          height: startIcon.props.height ?? 20,
+        })}{" "}
+        {children}
+      </div>
     </button>
   );
   if (!tooltip || rest.disabled) {

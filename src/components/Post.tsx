@@ -4,7 +4,7 @@ import { Comment, Post, Since } from "../types/types";
 import { ProfileCard } from "./ProfileCard";
 import { useCallback, useContext, useEffect, useState } from "preact/compat";
 import { createComment, getComments } from "../actions/Comment";
-import Comments from "./Comments";
+import CommentList from "src/components/CommentList";
 import CommentDialog, { Values } from "./inputs/CommentDialog";
 import { UserContext } from "src/contexts";
 import { PostVoteCounter } from "src/components/VoteCounter";
@@ -156,7 +156,7 @@ const PostComponent = ({ post }: { post: Post }) => {
   return (
     <div class="h-full w-full">
       <div>
-        <h1>{post.title}</h1>
+        <h1 className="mt-0">{post.title}</h1>
       </div>
       <div class="flex">
         <div>
@@ -218,7 +218,7 @@ const PostComponent = ({ post }: { post: Post }) => {
               <div className="mb-5">
                 <SortTypeSelect value={sort} onChange={setSort} />
               </div>
-              <Comments
+              <CommentList
                 comments={commentsList.comments}
                 postId={post.id}
                 commentWithReplyLock={commentWithReplyLock}

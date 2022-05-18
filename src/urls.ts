@@ -13,6 +13,7 @@ export const URLS = {
   },
   pages: {
     all: "/",
+    about: "/about",
     feed: "/feed",
     communities: "/communities",
     users: {

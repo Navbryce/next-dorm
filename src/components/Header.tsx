@@ -16,7 +16,7 @@ const Header: FunctionalComponent<Stylable> = ({ className }) => {
   return (
     <header
       className={classNames(
-        "border-b border-secondary-100 flex justify-center p-5",
+        "app-bg border-b border-secondary-100 flex justify-center p-5",
         className ?? ""
       )}
     >

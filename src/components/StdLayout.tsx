@@ -1,9 +1,53 @@
-import { Fragment, FunctionalComponent, h } from "preact";
+import { cloneElement, Fragment, FunctionalComponent, h } from "preact";
 import { RouteProps } from "preact-router";
 import Header from "src/components/Header";
+import { IconButton } from "src/components/inputs/Button";
+import { ChevronLeftIcon } from "@heroicons/react/outline";
+import { Children } from "preact/compat";
+import { Stylable } from "src/types/types";
+import { URLS } from "src/urls";
+import { classNames } from "src/utils/styling";
 
-export const Toolbar: FunctionalComponent = ({ children }) => {
-  return <div className="w-[300px] sticky h-min top-0">{children}</div>;
+export const BackButton = () => (
+  <IconButton
+    buttonType="text"
+    className="mt-5 relative left-[-25px]"
+    startIcon={<ChevronLeftIcon width={25} height={25} />}
+    onClick={() => history.back()}
+  >
+    <h3 className="mt-0 inline">Back</h3>
+  </IconButton>
+);
+
+export const Toolbar: FunctionalComponent<{ isRight?: boolean }> = ({
+  children,
+  isRight,
+}) => {
+  const content = isRight ? (
+    <div className="w-full h-[calc(100vh-100px)] flex flex-col justify-between">
+      <div>{children}</div>
+      <RightToolbarFooter />
+    </div>
+  ) : (
+    children
+  );
+
+  // self-start to make sticky work within a flexbox
+  return (
+    <div className="w-[300px] self-start sticky top-[101px] min-content">
+      {content}
+    </div>
+  );
+};
+
+export const RightToolbarFooter = ({ className }: Stylable) => {
+  return (
+    <div className={classNames("w-full", className ?? "")}>
+      <a href={URLS.pages.about} className="float-right link">
+        <h3>About NextDorm</h3>
+      </a>
+    </div>
+  );
 };
 
 export const MainContent: FunctionalComponent = ({ children }) => {
@@ -15,7 +59,18 @@ export const Title: FunctionalComponent = ({ children }) => {
 };
 
 export const StdLayout: FunctionalComponent = ({ children }) => {
-  return <div className="w-full flex justify-center">{children}</div>;
+  const childrenArray = Children.toArray(children);
+  return (
+    <div className="w-full relative flex justify-center">
+      {childrenArray.slice(0, 2)}
+      {childrenArray.length > 2 &&
+        childrenArray[2].type == Toolbar &&
+        cloneElement(childrenArray[2], {
+          isRight: true,
+          ...childrenArray[2].props,
+        })}
+    </div>
+  );
 };
 
 export default StdLayout;
@@ -28,8 +83,8 @@ export function withStandardPageElements<T>(
   return ({ ...rest }) => {
     return (
       <div class="w-full h-full">
-        <Header className="z-20 relative" />
-        <div class="h-[calc(100%-120px) w-full] flex justify-center">
+        <Header className="z-40 relative top-0 left-0 w-full" />
+        <div class="relative h-[calc(100%-101px) w-full] flex justify-center">
           {h(component, rest)}
         </div>
       </div>

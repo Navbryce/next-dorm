@@ -55,8 +55,9 @@ const CommentComponent = ({
       });
       setCommentWithReplyLock(null);
       comment.children = [...comment.children, newComment];
+      setComments(comment.children);
     },
-    [user, comment, postId, setCommentWithReplyLock]
+    [user, comment, postId, setCommentWithReplyLock, setComments]
   );
 
   const onEditCb = useCallback(
@@ -91,7 +92,7 @@ const CommentComponent = ({
     if (!user) {
       throw new Error("must be logged in to delete");
     }
-    await deleteComment(user, postId, comment.id);
+    await deleteComment(postId, comment.id);
     onDelete();
   }, [user, onDelete]);
 
@@ -135,7 +136,7 @@ const CommentComponent = ({
     <div>
       <div class="flex">
         <div>
-          <CommentVoteCounter comment={comment} />
+          <CommentVoteCounter postId={postId} comment={comment} />
         </div>
         <div>
           <div className="flex items-center space-x-2">
@@ -206,7 +207,7 @@ const CommentComponent = ({
       {comments.length > 0 && (
         // TODO: Alternate border color between different levels of nesting
         <div class="mx-6 my-1 border-l border-secondary-100 pl-2">
-          <Comments
+          <CommentList
             comments={comments}
             postId={postId}
             commentWithReplyLock={commentWithReplyLock}
@@ -227,7 +228,7 @@ type CommentsProps = {
   onEdit: (i: number, newComment: Comment) => void;
 } & HasReplyLock;
 
-const Comments = ({
+const CommentList = ({
   comments,
   postId,
   commentWithReplyLock,
@@ -255,4 +256,4 @@ const Comments = ({
   );
 };
 
-export default Comments;
+export default CommentList;

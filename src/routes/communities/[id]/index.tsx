@@ -122,7 +122,7 @@ const CommunityScreen = ({
         />
       </MainContent>
       <Toolbar>
-        <div className="h-1/4 m-5 p-5 space-y-2 rounded outline flex flex-col justify-center items-center">
+        <div className="mt-5 p-5 space-y-2 rounded outline flex flex-col justify-center items-center">
           <h3>{community.name}</h3>
           {user && (
             <Fragment>

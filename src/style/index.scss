@@ -33,9 +33,6 @@
   button[type="submit"] {
     @apply bg-gradient-to-tl dark:bg-secondary-500 dark:from-secondary-200 p-3 rounded-md shadow-lg dark:shadow-primary-900;
   }
-  .form {
-    @apply rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit space-y-4;
-  }
 
   input,
   textarea {
@@ -58,6 +55,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.app-bg {
+  @apply dark:bg-gradient-to-r dark:bg-primary-900 dark:from-primary-800;
+}
 .avatar {
   @apply rounded-full;
+}
+.form {
+  @apply rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit space-y-4;
+}
+.link {
+  @apply text-cyan-500 hover:text-cyan-300;
 }

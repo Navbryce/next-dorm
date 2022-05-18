@@ -3,7 +3,8 @@ import { FunctionalComponent, h } from "preact";
 import { Comment, ContentMetadata, Post } from "../types/types";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/solid";
 import { useCallback, useContext, useState } from "preact/compat";
-import { vote } from "../actions/Post";
+import { vote as voteForPost } from "../actions/Post";
+import { vote as voteForComment } from "../actions/Comment";
 import { classNames } from "../utils/styling";
 
 type Props = {
@@ -54,19 +55,25 @@ const VoteCounter: FunctionalComponent<Props> = ({ content, onVote }) => {
 export const PostVoteCounter = ({ post }: { post: Post }) => {
   const voteOnPostCb = useCallback(
     (voteValue: number) => {
-      return vote(post.id, voteValue);
+      return voteForPost(post.id, voteValue);
     },
     [post]
   );
   return <VoteCounter content={post} onVote={voteOnPostCb} />;
 };
 
-export const CommentVoteCounter = ({ comment }: { comment: Comment }) => {
+export const CommentVoteCounter = ({
+  postId,
+  comment,
+}: {
+  postId: number;
+  comment: Comment;
+}) => {
   const voteOnCommentCb = useCallback(
     (voteValue: number) => {
-      return Promise.resolve();
+      return voteForComment(postId, comment.id, voteValue);
     },
-    [comment]
+    [postId, comment]
   );
   return <VoteCounter content={comment} onVote={voteOnCommentCb} />;
 };

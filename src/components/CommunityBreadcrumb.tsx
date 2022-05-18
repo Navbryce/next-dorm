@@ -1,7 +1,5 @@
-import { FunctionalComponent, h } from "preact";
 import { Community, CommunityPosInTree } from "src/types/types";
 import Breadcrumb, { BreadcrumbItem } from "src/components/Breadcrumb";
-import { ALL_COMMUNITY } from "src/model/community";
 import { genLinkToCommunity } from "src/urls";
 
 type Props = {
@@ -15,12 +13,16 @@ const CommunityBreadcrumb = ({ pos, current }: Props) => {
       {pos &&
         pos.path.map((community) => (
           <BreadcrumbItem key={community.id}>
-            <a href={genLinkToCommunity(community)}>{community.name}</a>
+            <a href={genLinkToCommunity(community)} className="link">
+              {community.name}
+            </a>
           </BreadcrumbItem>
         ))}
       {current && (
         <BreadcrumbItem>
-          <a href={genLinkToCommunity(current)}>{current.name}</a>
+          <a href={genLinkToCommunity(current)} className="link">
+            {current.name}
+          </a>
         </BreadcrumbItem>
       )}
     </Breadcrumb>

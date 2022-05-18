@@ -16,7 +16,7 @@ export function ListBox<T>({
   ...rest
 }: RenderableProps<ListBoxProps<T>> & Stylable) {
   return (
-    <div className={classNames("relative z-50 w-72", className ?? "")}>
+    <div className={classNames("relative z-20 w-72", className ?? "")}>
       <HeadlessListBox {...rest}>{children}</HeadlessListBox>
     </div>
   );

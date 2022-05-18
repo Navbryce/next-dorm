@@ -31,7 +31,7 @@ const PostsList = ({ posts, noPostsMessage }: Props) => {
               <PostVoteCounter post={post} />
               {/*overflow-hidden to fix image slider bug*/}
               <div
-                className="flex-grow overflow-hidden"
+                className="flex-grow overflow-hidden hover:cursor-pointer"
                 onClick={() => route(genLinkToPost(post))}
               >
                 <ProfileCardSm user={post.creator} />

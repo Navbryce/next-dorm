@@ -1,5 +1,3 @@
-import { h } from "preact";
-
 import { useCallback, useEffect, useRef, useState } from "preact/compat";
 import VisibilitySelect from "./VisibilitySelect";
 import { Stylable, Visibility } from "src/types/types";

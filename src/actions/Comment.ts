@@ -14,13 +14,13 @@ import dayjs from "dayjs";
 import { Diff } from "src/utils/diff";
 
 // TODO: Update how this calculated
-function basePathForPost(postId: number): string {
+function baseCommentPathForPost(postId: number): string {
   return `${URLS.api.posts}/${postId}/comments`;
 }
 
 export async function getComments(postId: number): Promise<Comment[]> {
   const comments = await execInternalReq<CommentRes[]>(
-    basePathForPost(postId),
+    baseCommentPathForPost(postId),
     {
       method: HttpMethod.GET,
       queryParams: { limit: 100 },
@@ -39,7 +39,7 @@ export async function createComment(
   req: CreateCommentReq
 ): Promise<Comment> {
   const { id, alias } = await execInternalReq<{ id: number; alias: Alias }>(
-    basePathForPost(postId),
+    baseCommentPathForPost(postId),
     {
       method: HttpMethod.PUT,
       body: req,
@@ -71,7 +71,7 @@ export async function editComment(
     user,
     (
       await execInternalReq<{ alias?: Alias }>(
-        `${basePathForPost(postId)}/${commentId}`,
+        `${baseCommentPathForPost(postId)}/${commentId}`,
         {
           method: HttpMethod.PUT,
           body: req,
@@ -82,11 +82,29 @@ export async function editComment(
 }
 
 export async function deleteComment(
-  user: User,
   postId: number,
   commentId: number
 ): Promise<void> {
-  return execInternalReq<void>(`${basePathForPost(postId)}/${commentId}`, {
-    method: HttpMethod.DELETE,
-  });
+  return execInternalReq<void>(
+    `${baseCommentPathForPost(postId)}/${commentId}`,
+    {
+      method: HttpMethod.DELETE,
+    }
+  );
+}
+
+export async function vote(
+  postId: number,
+  commentId: number,
+  value: number
+): Promise<void> {
+  return execInternalReq<void>(
+    `${baseCommentPathForPost(postId)}/${commentId}/votes`,
+    {
+      method: HttpMethod.PUT,
+      body: {
+        value,
+      },
+    }
+  );
 }

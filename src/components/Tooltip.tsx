@@ -39,7 +39,9 @@ const Tooltip = ({ contents, children }: RenderableProps<TooltipConfig>) => {
       })}
       {tooltipContainer &&
         createPortal(
-          <ReactTooltip id={id}>{contents}</ReactTooltip>,
+          <ReactTooltip id={id} className="!opacity-100" effect="solid">
+            {contents}
+          </ReactTooltip>,
           tooltipContainer
         )}
     </Fragment>
