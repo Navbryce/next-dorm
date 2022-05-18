@@ -13,8 +13,12 @@ export type TooltipConfig = {
   contents: ComponentChild;
 };
 
-const tooltipContainer = document.createElement("div");
-document.body.appendChild(tooltipContainer);
+let tooltipContainer: Element | null = null;
+// check if window is defined (preact pre-rendering)
+if (typeof window !== "undefined") {
+  tooltipContainer = document.createElement("div");
+  document.body.appendChild(tooltipContainer);
+}
 
 const Tooltip = ({ contents, children }: RenderableProps<TooltipConfig>) => {
   const [id] = useState(uuidv4());
@@ -33,10 +37,11 @@ const Tooltip = ({ contents, children }: RenderableProps<TooltipConfig>) => {
         "data-tip": "",
         "data-for": id,
       })}
-      {createPortal(
-        <ReactTooltip id={id}>{contents}</ReactTooltip>,
-        tooltipContainer
-      )}
+      {tooltipContainer &&
+        createPortal(
+          <ReactTooltip id={id}>{contents}</ReactTooltip>,
+          tooltipContainer
+        )}
     </Fragment>
   );
 };
