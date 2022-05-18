@@ -33,10 +33,17 @@ const CommunitiesList = ({ pos, current }: Props) => {
     }
     setNamesAndURLs(pos.children.map(communityToNameAndURL));
   }, [pos]);
+
   return (
     <div className="w-4/5 mt-5">
       <div className="flex">
-        <a href={genLinkToCommunity(pos?.path[-1] ?? ALL_COMMUNITY)}>
+        <a
+          href={genLinkToCommunity(
+            pos?.path
+              ? pos.path[pos.path.length - 1] ?? ALL_COMMUNITY
+              : ALL_COMMUNITY
+          )}
+        >
           <IconButton
             buttonType="text"
             startIcon={<ArrowUpIcon />}

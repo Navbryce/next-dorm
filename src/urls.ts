@@ -32,9 +32,7 @@ export function genLinkToCommunity(community: Community): string {
   if (community == ALL_COMMUNITY) {
     return URLS.pages.all;
   }
-  return `${URLS.pages.communities}/${
-    community.id > -1 ? community.id : community.name.toLowerCase()
-  }`;
+  return `${URLS.pages.communities}/${community.id}`;
 }
 
 export function genLinkToPost(post: Post): string {

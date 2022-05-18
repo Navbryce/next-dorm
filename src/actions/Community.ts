@@ -5,6 +5,7 @@ import {
 } from "src/types/types";
 import { URLS } from "src/urls";
 import { execInternalReq, HttpMethod } from "src/utils/request";
+import { ALL_COMMUNITY } from "src/model/community";
 
 const basePath = URLS.api.communities;
 
@@ -16,11 +17,20 @@ export async function getCommunity(
   });
 }
 
+function normalizePos(pos: CommunityPosInTree): CommunityPosInTree {
+  return {
+    ...pos,
+    path: pos.path.length == 0 ? [] : [ALL_COMMUNITY, ...pos.path.slice(1)],
+  };
+}
+
 export async function getCommunityPos(
   id?: number
 ): Promise<CommunityPosInTree> {
   // treat null as 0
-  return execInternalReq(`${basePath}/${id ?? -1}/pos`, {
-    method: HttpMethod.GET,
-  });
+  return normalizePos(
+    await execInternalReq(`${basePath}/${id ?? -1}/pos`, {
+      method: HttpMethod.GET,
+    })
+  );
 }

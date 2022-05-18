@@ -12,9 +12,6 @@ type Props = {
 const CommunityBreadcrumb = ({ pos, current }: Props) => {
   return (
     <Breadcrumb>
-      <BreadcrumbItem>
-        <a href={genLinkToCommunity(ALL_COMMUNITY)}>All</a>
-      </BreadcrumbItem>
       {pos &&
         pos.path.map((community) => (
           <BreadcrumbItem key={community.id}>
