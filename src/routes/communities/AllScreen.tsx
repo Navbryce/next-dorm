@@ -45,7 +45,7 @@ const AllScreen = () => {
   return (
     <StdLayout>
       <Toolbar>
-        <CommunitiesList pos={communityPos} />
+        <CommunitiesList current={ALL_COMMUNITY} pos={communityPos} />
       </Toolbar>
       <MainContent>
         <Title>All Communities</Title>

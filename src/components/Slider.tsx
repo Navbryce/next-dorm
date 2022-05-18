@@ -8,33 +8,37 @@ import "swiper/swiper.scss"; // core Swiper
 import "swiper/modules/navigation/navigation.scss"; // Navigation module
 import "swiper/modules/pagination/pagination.scss"; // Pagination module
 import "swiper/modules/effect-cards/effect-cards.scss";
+import { classNames } from "src/utils/styling";
 
 type Props = {
   blobNames: string[];
-  cardClassName?: string;
+  imageClassName?: string;
 } & Stylable;
 
 export const UploadedImageSlider = ({
   blobNames,
   className,
-  cardClassName,
+  imageClassName,
 }: Props) => {
   return (
     <Swiper
-      className={className}
+      className={classNames("min-w-0 min-h-0", className ?? "")}
+      pagination={true}
       effect="cards"
       modules={[EffectCards, Pagination]}
       cardsEffect={{
         slideShadows: false,
       }}
-      pagination={true}
       grabCursor
     >
       {blobNames.map((blobName) => (
-        <SwiperSlide key={blobName}>
+        <SwiperSlide
+          key={blobName}
+          className="flex justify-center w-full h-full"
+        >
           <UploadedLazyLoadImage
-            className={cardClassName}
             blobName={blobName}
+            className={imageClassName}
           />
         </SwiperSlide>
       ))}

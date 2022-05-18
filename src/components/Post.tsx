@@ -8,7 +8,6 @@ import Comments from "./Comments";
 import CommentDialog, { Values } from "./inputs/CommentDialog";
 import { UserContext } from "src/contexts";
 import { PostVoteCounter } from "src/components/VoteCounter";
-import UploadedLazyLoadImage from "src/components/LazyUploadedImage";
 import { timeToDisplayStr } from "src/utils/display";
 import { genLinkToCommunity, genLinkToEditPost } from "src/urls";
 import { IconButton } from "src/components/inputs/Button";
@@ -21,6 +20,7 @@ import update from "immutability-helper";
 import { generateDeletedCommentFrom } from "src/utils/comment";
 import SortTypeSelect, { Sort, SortBy } from "src/components/inputs/SortSelect";
 import dayjs, { Dayjs } from "dayjs";
+import UploadedImageSlider from "src/components/Slider";
 
 const sortByToValueFunc = {
   [SortBy.MOST_POPULAR]: (comment: Comment) => -comment.voteTotal,
@@ -162,7 +162,8 @@ const PostComponent = ({ post }: { post: Post }) => {
         <div>
           <PostVoteCounter post={post} />
         </div>
-        <div>
+        {/*overflow-hidden to fix image slider bug*/}
+        <div className="overflow-hidden">
           <ProfileCard user={post.creator} />
           <div className="text-gray-400 text-[12pt]">
             <span className="text-gray-400">
@@ -176,15 +177,12 @@ const PostComponent = ({ post }: { post: Post }) => {
             </a>
           </div>
           <div>{post.content}</div>
-          <div>
-            {post.imageBlobNames.map((val, i) => (
-              <UploadedLazyLoadImage
-                blobName={val}
-                key={i}
-                className="max-w-full max-h-[90vh]"
-              />
-            ))}
-          </div>
+          {post.imageBlobNames.length > 0 && (
+            <UploadedImageSlider
+              imageClassName="max-w-[90%] max-h-[400px]"
+              blobNames={post.imageBlobNames}
+            />
+          )}
           <div className="pt-2">
             {canModifyPost(user, post) && (
               <Fragment>

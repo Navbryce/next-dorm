@@ -1,5 +1,6 @@
 import { cloneElement, h, RenderableProps, VNode } from "preact";
 import { classNames } from "src/utils/styling";
+import Tooltip, { TooltipConfig } from "src/components/Tooltip";
 
 export enum ButtonType {
   TEXT = "text",
@@ -9,6 +10,7 @@ export enum ButtonType {
 type IconButtonProps = {
   buttonType?: ButtonType | ButtonType[keyof ButtonType];
   startIcon: VNode<any>;
+  tooltip?: TooltipConfig;
 };
 
 const BUTTON_TYPE_BY_TYPE = {
@@ -32,10 +34,11 @@ export function IconButton({
   startIcon,
   children,
   buttonType = ButtonType.CONTAINED,
+  tooltip,
   className,
   ...rest
 }: RenderableProps<IconButtonProps> & h.JSX.HTMLAttributes<HTMLButtonElement>) {
-  return (
+  const button = (
     <button
       class={classNames(
         "group p-2",
@@ -57,4 +60,8 @@ export function IconButton({
       {children}
     </button>
   );
+  if (!tooltip || rest.disabled) {
+    return button;
+  }
+  return <Tooltip {...tooltip}>{button}</Tooltip>;
 }

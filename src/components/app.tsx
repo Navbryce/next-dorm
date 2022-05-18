@@ -10,11 +10,12 @@ import CommunityScreen from "src/routes/communities/[id]/index";
 import NotFoundPage from "../routes/notfound";
 import {
   useCallback,
+  useContext,
   useEffect,
   useLayoutEffect,
   useState,
 } from "preact/compat";
-import { UserContext } from "src/contexts";
+import { AlertContext, UserContext } from "src/contexts";
 import { AuthService } from "src/utils/auth";
 import "src/utils/firebase";
 import SignInScreen from "src/routes/users/sign-in";
@@ -34,12 +35,29 @@ import EditPostScreen from "src/routes/communities/[id]/posts/edit";
 import SettingsScreen from "src/routes/users/[id]/settings";
 import { withStandardPageElements } from "src/components/StdLayout";
 import VerifyScreen from "src/routes/users/verify";
+import { AlertService } from "src/utils/Alert";
+
+// Register error lsiteners
+function registerErrorListeners(alertService: AlertService) {
+  window.addEventListener("error", (error) =>
+    alertService.alert({ title: "Error", text: error.message })
+  );
+  window.addEventListener("unhandledrejection", (error) =>
+    alertService.alert({ title: "Error", text: error.reason })
+  );
+}
 
 const App: FunctionalComponent = () => {
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const alertService = useContext(AlertContext);
+
   useLayoutEffect(() => {
     document.documentElement.classList.add("dark");
   }, []);
+  useLayoutEffect(() => {
+    registerErrorListeners(alertService);
+  }, [alertService]);
+
   useEffect(() => {
     onAuthStateChanged(getAuth(), (firebaseUser) => {
       void new AuthService(user, setUser).setFirebaseUserAndUpdateProfile(

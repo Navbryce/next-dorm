@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { ComponentChild } from "preact";
 
 export type ContentAuthorRes =
   | {

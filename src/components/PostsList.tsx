@@ -16,8 +16,6 @@ type Props = {
 };
 
 const PostsList = ({ posts, noPostsMessage }: Props) => {
-  const [selected, setSelected] = useState<Post | null>(null);
-
   return (
     <div class="divide-y-2 divide-secondary-400">
       <div>
@@ -28,17 +26,12 @@ const PostsList = ({ posts, noPostsMessage }: Props) => {
           </div>
         )}
         {posts.map((post) => (
-          <div
-            key={post.id}
-            class={classNames(
-              "p-6 cursor-pointer border-b border-secondary-100",
-              selected == post ? "bg-primary-600" : ""
-            )}
-          >
+          <div key={post.id}>
             <div className="flex space-x-5">
               <PostVoteCounter post={post} />
+              {/*overflow-hidden to fix image slider bug*/}
               <div
-                className="flex-grow"
+                className="flex-grow overflow-hidden"
                 onClick={() => route(genLinkToPost(post))}
               >
                 <ProfileCardSm user={post.creator} />
@@ -62,8 +55,7 @@ const PostsList = ({ posts, noPostsMessage }: Props) => {
                 )}
                 {post.imageBlobNames.length > 0 && (
                   <UploadedImageSlider
-                    className="max-w-[300px] max-h-[400px]"
-                    cardClassName="max-w-[300px] max-h-[400px]"
+                    imageClassName="max-w-90% max-h-[400px]"
                     blobNames={post.imageBlobNames}
                   />
                 )}

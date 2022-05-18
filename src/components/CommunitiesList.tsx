@@ -1,4 +1,3 @@
-import { FunctionalComponent, h } from "preact";
 import { useEffect, useState } from "preact/compat";
 import { Community, CommunityPosInTree } from "../types/types";
 import { genLinkToCommunity, URLS } from "../urls";
@@ -41,14 +40,23 @@ const CommunitiesList = ({ pos, current }: Props) => {
           <IconButton
             buttonType="text"
             startIcon={<ArrowUpIcon />}
-            disabled={pos != undefined && pos.path.length == 0}
+            disabled={current == ALL_COMMUNITY}
+            tooltip={{ contents: "Previous community" }}
           />
         </a>
         <a href={URLS.pages.feed}>
-          <IconButton buttonType="text" startIcon={<HomeIcon />} />
+          <IconButton
+            buttonType="text"
+            startIcon={<HomeIcon />}
+            tooltip={{ contents: "Your feed" }}
+          />
         </a>
         <a href={genLinkToCommunity(ALL_COMMUNITY)}>
-          <IconButton buttonType="text" startIcon={<CollectionIcon />} />
+          <IconButton
+            buttonType="text"
+            startIcon={<CollectionIcon />}
+            tooltip={{ contents: "All" }}
+          />
         </a>
       </div>
       <div className="relative top-[-8px]">

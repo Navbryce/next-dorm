@@ -21,7 +21,7 @@ export function withAuth<T>(
     const renderedPage = useRef<VNode | undefined>();
 
     if ((requireSession || requireProfile) && !user) {
-      route(URLS.pages.users.signIn);
+      route(URLS.pages.users.signIn, true);
       return <div />;
     }
 
