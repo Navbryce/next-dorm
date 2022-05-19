@@ -1,4 +1,4 @@
-import { cloneElement, Fragment, FunctionalComponent, h } from "preact";
+import { cloneElement, FunctionalComponent, h } from "preact";
 import { RouteProps } from "preact-router";
 import Header from "src/components/Header";
 import { IconButton } from "src/components/inputs/Button";
@@ -43,7 +43,7 @@ export const Toolbar: FunctionalComponent<{ isRight?: boolean }> = ({
 export const RightToolbarFooter = ({ className }: Stylable) => {
   return (
     <div className={classNames("w-full", className ?? "")}>
-      <a href={URLS.pages.about} className="float-right link">
+      <a href={URLS.pages.about} className="link">
         <h3>About NextDorm</h3>
       </a>
     </div>

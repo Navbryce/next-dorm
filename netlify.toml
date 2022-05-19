@@ -8,4 +8,4 @@
     API_URL = "https://next-dorm-be.fly.dev"
 [build]
   publish = "build/"
-  command = "FE_URL=$DEPLOY_URL npm run build"
+  command = "FE_URL=$URL npm run build"
