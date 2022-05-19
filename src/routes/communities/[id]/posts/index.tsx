@@ -1,9 +1,11 @@
 import { h } from "preact";
-import { useEffect, useMemo, useState } from "preact/compat";
+import { useContext, useEffect, useMemo, useState } from "preact/compat";
 import { getPost } from "src/actions/Post";
 import { Post } from "src/types/types";
 import PostComponent from "src/components/Post";
 import StdLayout, { BackButton, MainContent } from "src/components/StdLayout";
+import { ReferringScreenContext } from "src/contexts";
+import { genLinkToCommunity } from "src/urls";
 
 const PostScreen = ({
   communityId: communityIdStr,
@@ -12,6 +14,7 @@ const PostScreen = ({
   communityId: string;
   postId: string;
 }) => {
+  const [referringScreenURL] = useContext(ReferringScreenContext);
   const postId = useMemo(() => parseInt(postIdStr), [postIdStr]);
   const [post, setPost] = useState<Post | undefined>(undefined);
 
@@ -28,7 +31,9 @@ const PostScreen = ({
   return (
     <StdLayout>
       <MainContent>
-        <BackButton />
+        <BackButton
+          url={referringScreenURL ?? genLinkToCommunity(post.communities[0].id)}
+        />
         <PostComponent post={post} />
       </MainContent>
     </StdLayout>

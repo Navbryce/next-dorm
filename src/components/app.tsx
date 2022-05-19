@@ -15,7 +15,11 @@ import {
   useLayoutEffect,
   useState,
 } from "preact/compat";
-import { AlertContext, UserContext } from "src/contexts";
+import {
+  AlertContext,
+  ReferringScreenContext,
+  UserContext,
+} from "src/contexts";
 import { AuthService } from "src/utils/auth";
 import "src/utils/firebase";
 import SignInScreen from "src/routes/users/sign-in";
@@ -50,6 +54,7 @@ function registerErrorListeners(alertService: AlertService) {
 
 const App: FunctionalComponent = () => {
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [referringScreenURL, setReferringScreenURL] = useState<string>();
   const alertService = useContext(AlertContext);
 
   useLayoutEffect(() => {
@@ -89,87 +94,94 @@ const App: FunctionalComponent = () => {
 
   return (
     <UserContext.Provider value={[user, setUser]}>
-      <div class="h-screen">
-        <div class="app-bg h-screen overflow-y-auto flex flex-col justify-between">
-          <div class="h-full">
-            {new AuthService(user, setUser).authStateEstablished && (
-              <Router onChange={handleRouteChangeCb}>
-                <Route
-                  path={URLS.pages.all}
-                  requireSession={false}
-                  requireProfile={false}
-                  component={withStandardPageElements(AllScreen, {})}
-                />
-                <Route
-                  path="/feed"
-                  component={withStandardPageElements(FeedScreen, {})}
-                />
-                <Route
-                  path="/communities/:communityId"
-                  requireSession={false}
-                  requireProfile={false}
-                  component={withStandardPageElements(CommunityScreen, {})}
-                />
-                <PreactRoute
-                  path="/communities/:communityId/add-post"
-                  component={AddPostScreen}
-                />
-                <Route
-                  path="/communities/:communityId/posts/:postId"
-                  requireSession={false}
-                  requireProfile={false}
-                  component={withStandardPageElements(PostScreen, {})}
-                />
-                <Route
-                  path="/communities/:communityId/posts/:postId/edit"
-                  requireProfile={true}
-                  component={withStandardPageElements(EditPostScreen, {})}
-                />
-                <Route
-                  path={`${URLS.pages.users.root}/:userId`}
-                  requireSession={false}
-                  requireProfile={false}
-                  component={withStandardPageElements(UserScreen, {})}
-                />
-                <PreactRoute
-                  path={`${URLS.pages.users.root}/settings`}
-                  component={SettingsScreen}
-                />
-                <Route
-                  path={URLS.pages.users.signIn}
-                  requireSession={false}
-                  requireProfile={false}
-                  component={SignInScreen}
-                />
-                <Route
-                  requireSession={false}
-                  requireProfile={false}
-                  path={URLS.pages.users.register}
-                  component={RegisterScreen}
-                />
-                <Route
-                  requireSession={false}
-                  requireProfile={false}
-                  path={URLS.pages.users.forgotPassword}
-                  component={ForgotPasswordScreen}
-                />
-                <Route
-                  requireSession={true}
-                  requireProfile={false}
-                  path={URLS.pages.users.createProfile}
-                  component={CreateProfileScreen}
-                />
-                <PreactRoute
-                  path={URLS.pages.users.verify}
-                  component={VerifyScreen}
-                />
-                <PreactRoute path={URLS.pages.about} component={AboutScreen} />
-                <NotFoundPage default />
-              </Router>
-            )}
+      <ReferringScreenContext.Provider
+        value={[referringScreenURL, setReferringScreenURL]}
+      >
+        <div class="h-screen">
+          <div class="app-bg h-screen overflow-y-auto flex flex-col justify-between">
+            <div class="h-full">
+              {new AuthService(user, setUser).authStateEstablished && (
+                <Router onChange={handleRouteChangeCb}>
+                  <Route
+                    path={URLS.pages.all}
+                    requireSession={false}
+                    requireProfile={false}
+                    component={withStandardPageElements(AllScreen, {})}
+                  />
+                  <Route
+                    path="/feed"
+                    component={withStandardPageElements(FeedScreen, {})}
+                  />
+                  <Route
+                    path="/communities/:communityId"
+                    requireSession={false}
+                    requireProfile={false}
+                    component={withStandardPageElements(CommunityScreen, {})}
+                  />
+                  <PreactRoute
+                    path="/communities/:communityId/add-post"
+                    component={AddPostScreen}
+                  />
+                  <Route
+                    path="/communities/:communityId/posts/:postId"
+                    requireSession={false}
+                    requireProfile={false}
+                    component={withStandardPageElements(PostScreen, {})}
+                  />
+                  <Route
+                    path="/communities/:communityId/posts/:postId/edit"
+                    requireProfile={true}
+                    component={withStandardPageElements(EditPostScreen, {})}
+                  />
+                  <Route
+                    path={`${URLS.pages.users.root}/:userId`}
+                    requireSession={false}
+                    requireProfile={false}
+                    component={withStandardPageElements(UserScreen, {})}
+                  />
+                  <PreactRoute
+                    path={`${URLS.pages.users.root}/settings`}
+                    component={SettingsScreen}
+                  />
+                  <Route
+                    path={URLS.pages.users.signIn}
+                    requireSession={false}
+                    requireProfile={false}
+                    component={SignInScreen}
+                  />
+                  <Route
+                    requireSession={false}
+                    requireProfile={false}
+                    path={URLS.pages.users.register}
+                    component={RegisterScreen}
+                  />
+                  <Route
+                    requireSession={false}
+                    requireProfile={false}
+                    path={URLS.pages.users.forgotPassword}
+                    component={ForgotPasswordScreen}
+                  />
+                  <Route
+                    requireSession={true}
+                    requireProfile={false}
+                    path={URLS.pages.users.createProfile}
+                    component={CreateProfileScreen}
+                  />
+                  <PreactRoute
+                    path={URLS.pages.users.verify}
+                    component={VerifyScreen}
+                  />
+                  <PreactRoute
+                    path={URLS.pages.about}
+                    component={AboutScreen}
+                  />
+                  <NotFoundPage default />
+                </Router>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </ReferringScreenContext.Provider>
     </UserContext.Provider>
   );
 };

@@ -1,26 +1,8 @@
-import { FunctionalComponent, h } from "preact";
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from "preact/compat";
-import { createPost, getPosts } from "src/actions/Post";
-import {
-  Community,
-  CommunityWithSubStatus,
-  Post,
-  PostCursor,
-} from "src/types/types";
+import { useCallback, useContext, useMemo } from "preact/compat";
+import { createPost } from "src/actions/Post";
 import PostDialog, { Values } from "src/components/inputs/PostDialog";
-import InfinitePostsList from "src/components/InfinitePostsList";
-import { getCommunity } from "src/actions/Community";
-import SubscribeButton from "src/components/SubscribeButton";
-import { subscribe } from "src/actions/Subscription";
 import { route } from "preact-router";
-import { URLS } from "src/urls";
+import { genLinkToCommunity, URLS } from "src/urls";
 import { UserContext } from "src/contexts";
 import {
   BackButton,
@@ -60,7 +42,7 @@ const AddPostScreen = ({
   return (
     <StdLayout>
       <MainContent>
-        <BackButton />
+        <BackButton url={genLinkToCommunity(communityId)} />
         <Title>Write your post!</Title>
         <p>This is your time to complain or to point someting weird out.</p>
         <PostDialog onSubmit={createPostCb} />

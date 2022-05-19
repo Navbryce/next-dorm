@@ -35,7 +35,7 @@ const BUTTON_CLASSES_BY_TYPE = {
     disabled: "text-primary-600",
   },
   [ButtonType.CONTAINED]: {
-    all: "",
+    all: "btn",
   },
 };
 const ICON_CLASSES_BY_TYPE = {

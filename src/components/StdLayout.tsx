@@ -1,5 +1,5 @@
 import { cloneElement, FunctionalComponent, h } from "preact";
-import { RouteProps } from "preact-router";
+import { route, RouteProps } from "preact-router";
 import Header from "src/components/Header";
 import { IconButton } from "src/components/inputs/Button";
 import { ChevronLeftIcon } from "@heroicons/react/outline";
@@ -8,12 +8,12 @@ import { Stylable } from "src/types/types";
 import { URLS } from "src/urls";
 import { classNames } from "src/utils/styling";
 
-export const BackButton = () => (
+export const BackButton = ({ url }: { url: string }) => (
   <IconButton
     buttonType="text"
     className="mt-5 relative left-[-25px]"
     startIcon={<ChevronLeftIcon width={25} height={25} />}
-    onClick={() => history.back()}
+    onClick={() => route(url)}
   >
     <h3 className="mt-0 inline">Back</h3>
   </IconButton>

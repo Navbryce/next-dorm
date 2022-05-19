@@ -1,4 +1,3 @@
-import { Fragment } from "preact";
 import {
   useCallback,
   useContext,
@@ -20,7 +19,7 @@ import { getCommunity, getCommunityPos } from "src/actions/Community";
 import SubscribeButton from "src/components/SubscribeButton";
 import { subscribe } from "src/actions/Subscription";
 import { route } from "preact-router";
-import { URLS } from "src/urls";
+import { genLinkToCommunity, URLS } from "src/urls";
 import CommunitiesList from "src/components/CommunitiesList";
 import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
 import StdLayout, {
@@ -31,6 +30,8 @@ import StdLayout, {
 import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import { UserContext } from "src/contexts";
 import VisibilitySelect from "src/components/inputs/VisibilitySelect";
+import { IconButton } from "src/components/inputs/Button";
+import { PlusSmIcon } from "@heroicons/react/solid";
 
 const CommunityScreen = ({
   communityId: communityIdStr,
@@ -78,6 +79,9 @@ const CommunityScreen = ({
   }, [communityIdStr]);
 
   const subscribeCb = useCallback(async () => {
+    if (!user) {
+      route(URLS.pages.users.signIn);
+    }
     await subscribe({
       [communityId]: !isSubscribed,
     });
@@ -124,14 +128,14 @@ const CommunityScreen = ({
       <Toolbar>
         <div className="mt-5 p-5 space-y-2 rounded outline flex flex-col justify-center items-center">
           <h3>{community.name}</h3>
-          {user && (
-            <Fragment>
-              <SubscribeButton
-                onClick={subscribeCb}
-                isSubscribed={isSubscribed}
-              />
-            </Fragment>
-          )}
+          <SubscribeButton onClick={subscribeCb} isSubscribed={isSubscribed} />
+          <IconButton
+            buttonType="contained"
+            startIcon={<PlusSmIcon />}
+            onClick={createPostCb}
+          >
+            Post
+          </IconButton>
         </div>
       </Toolbar>
     </StdLayout>

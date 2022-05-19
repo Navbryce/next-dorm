@@ -1,4 +1,9 @@
-import { useCallback, useLayoutEffect, useState } from "preact/compat";
+import {
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useState,
+} from "preact/compat";
 import {
   CommunityPosInTree,
   CursorType,
@@ -15,8 +20,12 @@ import StdLayout, {
 } from "src/components/StdLayout";
 import { getPosts } from "src/actions/Post";
 import { Sort, SortBy } from "src/components/inputs/SortSelect";
+import { URLS } from "src/urls";
+import { ReferringScreenContext } from "src/contexts";
 
 const FeedScreen = () => {
+  const [, setReferringScreenURL] = useContext(ReferringScreenContext);
+
   const [posts, setPosts] = useState<Post[]>();
   const [communityPos, setCommunityPos] = useState<
     CommunityPosInTree | undefined
@@ -40,8 +49,9 @@ const FeedScreen = () => {
   );
 
   useLayoutEffect(() => {
+    setReferringScreenURL(URLS.pages.feed);
     getCommunityPos(undefined).then(setCommunityPos);
-  }, []);
+  }, [setCommunityPos, setReferringScreenURL]);
 
   return (
     <StdLayout>

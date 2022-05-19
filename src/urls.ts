@@ -29,11 +29,19 @@ export const URLS = {
 };
 
 // TODO: Add wrapper around Communitya and move into own class?
-export function genLinkToCommunity(community: Community): string {
-  if (community == ALL_COMMUNITY) {
+export function genLinkToCommunity(
+  community: Community | string | number
+): string {
+  if (community == ALL_COMMUNITY || community == -1 || community == "-1") {
     return URLS.pages.all;
   }
-  return `${URLS.pages.communities}/${community.id}`;
+  let communityId;
+  if (typeof community == "object") {
+    communityId = community.id;
+  } else {
+    communityId = community;
+  }
+  return `${URLS.pages.communities}/${communityId}`;
 }
 
 export function genLinkToPost(post: Post): string {

@@ -1,5 +1,10 @@
 import { h } from "preact";
-import { useCallback, useLayoutEffect, useState } from "preact/compat";
+import {
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useState,
+} from "preact/compat";
 import { getPosts } from "src/actions/Post";
 import {
   CommunityPosInTree,
@@ -18,8 +23,12 @@ import StdLayout, {
 } from "src/components/StdLayout";
 import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
+import { ReferringScreenContext } from "src/contexts";
+import { URLS } from "src/urls";
 
 const AllScreen = () => {
+  const [, setReferringScreenURL] = useContext(ReferringScreenContext);
+
   const [posts, setPosts] = useState<Post[]>();
   const [communityPos, setCommunityPos] = useState<
     CommunityPosInTree | undefined
@@ -39,8 +48,9 @@ const AllScreen = () => {
   );
 
   useLayoutEffect(() => {
+    setReferringScreenURL(URLS.pages.all);
     getCommunityPos(undefined).then(setCommunityPos);
-  }, []);
+  }, [setCommunityPos, setReferringScreenURL]);
 
   return (
     <StdLayout>

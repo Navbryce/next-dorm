@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { useCallback, useEffect, useState } from "preact/compat";
+import { useCallback, useContext, useEffect, useState } from "preact/compat";
 import {
   CursorType,
   KnownContentAuthor,
@@ -12,8 +12,10 @@ import { getContentAuthor } from "src/actions/User";
 import { Avatar } from "src/components/ProfileCard";
 import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import StdLayout, { MainContent } from "src/components/StdLayout";
+import { ReferringScreenContext } from "src/contexts";
 
 const UserScreen = ({ userId }: { userId: string }) => {
+  const [, setReferringScreenURL] = useContext(ReferringScreenContext);
   const [posts, setPosts] = useState<Post[]>();
   const [user, setUser] = useState<KnownContentAuthor | null | undefined>(
     undefined
@@ -24,7 +26,8 @@ const UserScreen = ({ userId }: { userId: string }) => {
     (async () => {
       setUser(await getContentAuthor(userId));
     })();
-  }, [setUser, userId]);
+    setReferringScreenURL(userId);
+  }, [setUser, userId, setReferringScreenURL]);
 
   const fetchNextPageCb = useCallback(
     (previousCursor?: PostCursor) => {

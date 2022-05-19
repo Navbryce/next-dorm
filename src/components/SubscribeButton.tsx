@@ -1,4 +1,3 @@
-import { h } from "preact";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 
 type Props = {
@@ -12,12 +11,10 @@ const SubscribeButton = ({ isSubscribed, onClick }: Props) => {
       {isSubscribed ? (
         <div>
           <CheckCircleIcon className="inline" width="15" height="15" />
-          <span class="inline">Following</span>
+          Following
         </div>
       ) : (
-        <div>
-          <span class="inline">Follow</span>
-        </div>
+        <div>Follow</div>
       )}
     </button>
   );

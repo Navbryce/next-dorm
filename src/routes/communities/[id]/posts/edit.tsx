@@ -11,7 +11,7 @@ import EditPostDialog, { Values } from "src/components/inputs/EditPostDialog";
 import { diff } from "src/utils/diff";
 import { UserContext } from "src/contexts";
 import { route } from "preact-router";
-import { genLinkToPost } from "src/urls";
+import { genLinkToCommunity, genLinkToPost } from "src/urls";
 import { canModifyPost } from "src/actions/user-parse";
 import StdLayout, {
   BackButton,
@@ -75,7 +75,7 @@ const EditPostScreen = ({
   return (
     <StdLayout>
       <MainContent>
-        <BackButton />
+        <BackButton url={genLinkToCommunity(post.id)} />
         <Title>Edit post</Title>
         <p>Now's the time to fix that typo</p>
         <EditPostDialog initialValues={post} onSubmit={onEditPostCb} />
