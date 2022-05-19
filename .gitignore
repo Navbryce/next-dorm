@@ -83,4 +83,4 @@ node_modules
 .env
 
 # macos
-**/.DS_Store
+.DS_Store
