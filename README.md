@@ -1,21 +1,18 @@
 # Next Dorm
-A social network
+A social network with hierarchical communities for localized complaining. 
+It's a Reddit-clone with option to post anonymously*.
+I created it because I always wanted to complain about issues with my dorm in college.
+The hall group chat was too niche to complain in, and the subreddit was too broad.
+The idea of NextDorm was born.
 
-# Stack
+**Anonymous to other users, not admins*
+
+# FE Stack
 - Preact
-- Golang (Backend)
+- Tailwind CSS
+ 
+# Backend
+[See backend repo](https://github.com/Navbryce/next-dorm-be)
 
-## CLI Commands
-*   `npm install`: Installs dependencies
-
-*   `npm run dev`: Run a development, HMR server
-
-*   `npm run serve`: Run a production-like server
-
-*   `npm run build`: Production-ready build
-
-*   `npm run lint`: Pass TypeScript files using ESLint
-
-*   `npm run test`: Run Jest and Enzyme with
-    [`enzyme-adapter-preact-pure`](https://github.com/preactjs/enzyme-adapter-preact-pure) for
-    your tests
+# Deployed
+Site [deployed here](https://nextdorm.netlify.app)

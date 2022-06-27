@@ -9,7 +9,7 @@ import CommentDialog, { Values } from "./inputs/CommentDialog";
 import { UserContext } from "src/contexts";
 import { PostVoteCounter } from "src/components/VoteCounter";
 import { timeToDisplayStr } from "src/utils/display";
-import { genLinkToCommunity, genLinkToEditPost } from "src/urls";
+import { genLinkToCommunity, genLinkToEditPost, genLinkToPost } from "src/urls";
 import { IconButton } from "src/components/inputs/Button";
 import { PencilIcon } from "@heroicons/react/outline";
 import { canModifyPost } from "src/actions/user-parse";
@@ -21,6 +21,7 @@ import { generateDeletedCommentFrom } from "src/utils/comment";
 import SortTypeSelect, { Sort, SortBy } from "src/components/inputs/SortSelect";
 import dayjs, { Dayjs } from "dayjs";
 import UploadedImageSlider from "src/components/Slider";
+import ReportButton from "src/components/inputs/ReportButton";
 
 const sortByToValueFunc = {
   [SortBy.MOST_POPULAR]: (comment: Comment) => -comment.voteTotal,
@@ -202,6 +203,11 @@ const PostComponent = ({ post }: { post: Post }) => {
                   Delete
                 </IconButton>
               </Fragment>
+            )}
+            {user && (
+              <ReportButton
+                onClick={() => route(`${genLinkToPost(post)}/report`)}
+              />
             )}
           </div>
         </div>

@@ -6,7 +6,7 @@ import {
   RouterOnChangeArgs,
 } from "preact-router";
 
-import CommunityScreen from "src/routes/communities/[id]/index";
+import CommunityScreen from "src/routes/comm/[id]/index";
 import NotFoundPage from "../routes/notfound";
 import {
   useCallback,
@@ -24,23 +24,25 @@ import { AuthService } from "src/utils/auth";
 import "src/utils/firebase";
 import SignInScreen from "src/routes/users/sign-in";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import AllScreen from "src/routes/communities/AllScreen";
+import AllScreen from "src/routes/comm/AllScreen";
 import FeedScreen from "src/routes/FeedScreen";
 import RegisterScreen from "src/routes/users/register";
 import CreateProfileScreen from "src/routes/users/create-profile";
 import { URLS } from "src/urls";
 import { User } from "src/types/types";
 import Route from "src/components/Route";
-import AddPostScreen from "src/routes/communities/[id]/add-post";
-import PostScreen from "src/routes/communities/[id]/posts/index";
+import AddPostScreen from "src/routes/comm/[id]/add-post";
+import PostScreen from "src/routes/comm/[id]/posts/index";
 import UserScreen from "src/routes/users/[id]/index";
 import ForgotPasswordScreen from "src/routes/users/forgot-password";
-import EditPostScreen from "src/routes/communities/[id]/posts/edit";
+import EditPostScreen from "src/routes/comm/[id]/posts/edit";
 import SettingsScreen from "src/routes/users/[id]/settings";
 import { withStandardPageElements } from "src/components/StdLayout";
 import VerifyScreen from "src/routes/users/verify";
 import { AlertService } from "src/utils/Alert";
 import AboutScreen from "src/routes/Landing";
+import ReportCommentScreen from "src/routes/comm/[id]/posts/comments/[id]/report";
+import ReportPostScreen from "src/routes/comm/[id]/posts/report";
 
 // Register error lsiteners
 function registerErrorListeners(alertService: AlertService) {
@@ -113,25 +115,33 @@ const App: FunctionalComponent = () => {
                     component={withStandardPageElements(FeedScreen, {})}
                   />
                   <Route
-                    path="/communities/:communityId"
+                    path="/comm/:communityId"
                     requireSession={false}
                     requireProfile={false}
                     component={withStandardPageElements(CommunityScreen, {})}
                   />
                   <PreactRoute
-                    path="/communities/:communityId/add-post"
+                    path="/comm/:communityId/add-post"
                     component={AddPostScreen}
                   />
                   <Route
-                    path="/communities/:communityId/posts/:postId"
+                    path="/comm/:communityId/posts/:postId"
                     requireSession={false}
                     requireProfile={false}
                     component={withStandardPageElements(PostScreen, {})}
                   />
                   <Route
-                    path="/communities/:communityId/posts/:postId/edit"
+                    path="/comm/:communityId/posts/:postId/edit"
                     requireProfile={true}
                     component={withStandardPageElements(EditPostScreen, {})}
+                  />
+                  <PreactRoute
+                    path="/comm/:communityId/posts/:postId/report"
+                    component={ReportPostScreen}
+                  />
+                  <PreactRoute
+                    path="/comm/:communityId/posts/:postId/comments/:commentId/report"
+                    component={ReportCommentScreen}
                   />
                   <Route
                     path={`${URLS.pages.users.root}/:userId`}

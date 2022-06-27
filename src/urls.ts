@@ -15,7 +15,7 @@ export const URLS = {
     all: "/",
     about: "/about",
     feed: "/feed",
-    communities: "/communities",
+    communities: "/comm",
     users: {
       root: "/users",
       createProfile: "/users/create-profile",

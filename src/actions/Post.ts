@@ -70,7 +70,7 @@ export async function createPost(
       value: 0,
     },
     ...req,
-    communities: [], // TODO: Properly populate communities
+    communities: [], // TODO: Properly populate comm
     commentCount: 0,
     createdAt: dayjs(),
     updatedAt: dayjs(),

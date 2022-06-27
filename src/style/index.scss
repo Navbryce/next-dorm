@@ -61,8 +61,11 @@ body {
 .avatar {
   @apply rounded-full;
 }
+.form-layout {
+  @apply space-y-4;
+}
 .form {
-  @apply rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit space-y-4;
+  @apply form-layout rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit;
 }
 .link {
   @apply text-cyan-500 hover:text-cyan-300;

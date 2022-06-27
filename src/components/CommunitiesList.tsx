@@ -23,7 +23,7 @@ function communityToNameAndURL(community: Community) {
 }
 
 const CommunitiesList = ({ pos, current }: Props) => {
-  // TODO: Change to only show child communities
+  // TODO: Change to only show child comm
   const [namesAndPaths, setNamesAndURLs] =
     useState<{ name: string; url: string }[]>();
 
