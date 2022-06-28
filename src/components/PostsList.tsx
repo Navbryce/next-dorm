@@ -20,9 +20,9 @@ const PostsList = ({ posts, noPostsMessage }: Props) => {
     <div class="divide-y-2 divide-secondary-400">
       <div>
         {posts.length == 0 && (
-          <div className="flex items-center">
-            <ExclamationCircleIcon width={25} height={25} className="inline" />
-            {noPostsMessage ?? "No posts"}
+          <div className="flex">
+            <ExclamationCircleIcon width={50} height={50} />
+            <span className="italic">{noPostsMessage ?? "No posts"}</span>
           </div>
         )}
         {posts.map((post) => (

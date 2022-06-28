@@ -1,4 +1,4 @@
-import { useEffect, useState } from "preact/compat";
+import { useEffect, useMemo, useState } from "preact/compat";
 import { Community, CommunityPosInTree } from "../types/types";
 import { genLinkToCommunity, URLS } from "../urls";
 import {
@@ -27,6 +27,14 @@ const CommunitiesList = ({ pos, current }: Props) => {
   const [namesAndPaths, setNamesAndURLs] =
     useState<{ name: string; url: string }[]>();
 
+  const parent = useMemo(
+    () =>
+      pos?.path
+        ? pos.path[pos.path.length - 1] ?? ALL_COMMUNITY
+        : ALL_COMMUNITY,
+    [pos]
+  );
+
   useEffect(() => {
     if (!pos) {
       return;
@@ -37,18 +45,12 @@ const CommunitiesList = ({ pos, current }: Props) => {
   return (
     <div className="w-4/5 mt-5">
       <div className="flex">
-        <a
-          href={genLinkToCommunity(
-            pos?.path
-              ? pos.path[pos.path.length - 1] ?? ALL_COMMUNITY
-              : ALL_COMMUNITY
-          )}
-        >
+        <a href={genLinkToCommunity(parent)}>
           <IconButton
             buttonType="text"
             startIcon={<ArrowUpIcon />}
             disabled={current == ALL_COMMUNITY}
-            tooltip={{ contents: "Previous community" }}
+            tooltip={{ contents: `To ${parent?.name}` }}
           />
         </a>
         <a href={URLS.pages.feed}>

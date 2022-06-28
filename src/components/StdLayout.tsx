@@ -34,8 +34,15 @@ export const Toolbar: FunctionalComponent<{ isRight?: boolean }> = ({
 
   // self-start to make sticky work within a flexbox
   return (
-    <div className="w-[300px] self-start sticky top-[101px] min-content">
-      {content}
+    <div
+      className={classNames(
+        "w-[300px] h-full box-border",
+        !isRight ? "mr-20 border-r border-secondary-100 box-border" : ""
+      )}
+    >
+      <div className="w-full h-[calc(100vh-100px)] self-start sticky top-[101px] min-content">
+        {content}
+      </div>
     </div>
   );
 };

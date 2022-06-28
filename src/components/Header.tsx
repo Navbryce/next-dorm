@@ -20,15 +20,15 @@ const Header: FunctionalComponent<Stylable> = ({ className }) => {
         className ?? ""
       )}
     >
-      <Toolbar>
+      <div className="w-[300px]">
         <a href="/" className="no-underline dark:text-blue-100">
           <div className="flex items-center">
             <h1 className="text-3xl inline">NextDorm</h1>
           </div>
         </a>
-      </Toolbar>
-      <MainContent />
-      <Toolbar>
+      </div>
+      <div className="max-w-4xl w-full" />
+      <div className="w-[300px]">
         {!user && (
           <button
             type="button"
@@ -68,7 +68,7 @@ const Header: FunctionalComponent<Stylable> = ({ className }) => {
             </DropdownMenu>
           </div>
         )}
-      </Toolbar>
+      </div>
     </header>
   );
 };

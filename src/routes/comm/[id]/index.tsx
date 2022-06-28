@@ -123,6 +123,10 @@ const CommunityScreen = ({
           setPosts={setPosts}
           fetchNextPage={fetchNextPageCb}
           onSortChange={setSort}
+          noPostsMessage={
+            "No posts. Each community and sub-community has an independent message board. Maybe someone" +
+            "has something to say in one of it's child communities."
+          }
         />
       </MainContent>
       <Toolbar>
