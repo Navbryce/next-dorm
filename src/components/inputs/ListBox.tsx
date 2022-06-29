@@ -37,7 +37,7 @@ export namespace ListBox {
         }
         {...rest}
       >
-        {({ active, selected }) => (
+        {({ selected }: { selected: boolean }) => (
           <div>
             <span
               className={classNames(
@@ -60,7 +60,7 @@ export namespace ListBox {
 
   export function Button({ children }: RenderableProps<unknown>) {
     return (
-      <div class="relative mt-1">
+      <div className="relative mt-1">
         <HeadlessListBox.Button
           className="
           !bg-none !bg-slate-700

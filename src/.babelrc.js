@@ -1,7 +1,0 @@
-module.exports = {
-  presets: ["preact-cli/babel"],
-  plugins: [
-    "@babel/plugin-transform-react-jsx",
-    { runtime: "automatic", importSource: "preact" },
-  ],
-};

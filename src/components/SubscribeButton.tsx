@@ -7,7 +7,7 @@ type Props = {
 
 const SubscribeButton = ({ isSubscribed, onClick }: Props) => {
   return (
-    <button class="inline-block btn" type="button" onClick={onClick}>
+    <button className="inline-block btn" type="button" onClick={onClick}>
       {isSubscribed ? (
         <div>
           <CheckCircleIcon className="inline" width="15" height="15" />

@@ -99,7 +99,7 @@ const PostDialog = ({ onSubmit, className }: Props) => {
   );
 
   return (
-    <form class={classNames("space-y-2", className ?? "")}>
+    <form className={classNames("space-y-2", className ?? "")}>
       <div>
         <Label className="block font-bold" htmlFor="title">
           Title

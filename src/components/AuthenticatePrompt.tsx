@@ -83,7 +83,9 @@ const AuthenticatePrompt = ({
           {...register("email")}
           {...(user?.firebaseUser.email ? { readonly: true } : {})}
         />
-        {errors.email && <div class="text-red-500">{errors.email.message}</div>}
+        {errors.email && (
+          <div className="text-red-500">{errors.email.message}</div>
+        )}
       </div>
       <div>
         <Label htmlFor="password" className="block">
@@ -95,10 +97,10 @@ const AuthenticatePrompt = ({
           {...register("password")}
         />
         {errors.password && (
-          <div class="text-red-500">{errors.password.message}</div>
+          <div className="text-red-500">{errors.password.message}</div>
         )}
       </div>
-      <div class="space-x-2 space-y-2">
+      <div className="space-x-2 space-y-2">
         <button type="submit">Sign In</button>
         {includeRegister && (
           <div>

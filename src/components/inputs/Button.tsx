@@ -59,7 +59,7 @@ export function IconButton({
 }: RenderableProps<IconButtonProps> & h.JSX.HTMLAttributes<HTMLButtonElement>) {
   const button = (
     <button
-      class={classNames(
+      className={classNames(
         "group p-2 inline",
         className ?? "",
         BUTTON_CLASSES_BY_TYPE[buttonType as ButtonType]?.all ?? "",

@@ -26,10 +26,10 @@ const VoteCounter: FunctionalComponent<Props> = ({ content, onVote }) => {
     [content]
   );
   return (
-    <div class="inline-block">
-      <div class="flex flex-col justify-center">
+    <div className="inline-block">
+      <div className="flex flex-col justify-center">
         <div
-          class={classNames(
+          className={classNames(
             "h-5 w-5 cursor-pointer",
             userVote == 1 ? "text-violet-400" : ""
           )}
@@ -37,9 +37,9 @@ const VoteCounter: FunctionalComponent<Props> = ({ content, onVote }) => {
         >
           <ArrowUpIcon />
         </div>
-        <span class="text-center">{voteCount}</span>
+        <span className="text-center">{voteCount}</span>
         <div
-          class={classNames(
+          className={classNames(
             "h-5 w-5 cursor-pointer",
             userVote == -1 ? "text-violet-400" : ""
           )}

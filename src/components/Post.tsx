@@ -155,11 +155,11 @@ const PostComponent = ({ post }: { post: Post }) => {
   );
 
   return (
-    <div class="h-full w-full">
+    <div className="h-full w-full">
       <div>
         <h1 className="mt-0">{post.title}</h1>
       </div>
-      <div class="flex">
+      <div className="flex">
         <div>
           <PostVoteCounter post={post} />
         </div>
@@ -212,7 +212,7 @@ const PostComponent = ({ post }: { post: Post }) => {
           </div>
         </div>
       </div>
-      <div class="my-5 py-5 border-t border-secondary-100">
+      <div className="my-5 py-5 border-t border-secondary-100">
         {commentsList && (
           <div>
             <CommentDialog

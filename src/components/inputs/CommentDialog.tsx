@@ -62,11 +62,11 @@ const CommentDialog = ({
       className={classNames("border-b border-secondary-100", className ?? "")}
     >
       <input
-        class="w-4/5"
+        className="w-4/5"
         placeholder="This is a comment..."
         {...register("content")}
       />
-      <div class="flex space-x-2 py-4">
+      <div className="flex space-x-2 py-4">
         <div>
           <Controller
             render={({ field }) => <VisibilitySelect {...field} />}
@@ -76,13 +76,13 @@ const CommentDialog = ({
           />
         </div>
         <div>
-          <button type="submit" class="btn">
+          <button type="submit" className="btn">
             {submitButtonLabel}
           </button>
         </div>
         {onCancel && (
           <div onClick={onCancel} className="inline">
-            <button type="button" class="btn">
+            <button type="button" className="btn">
               Cancel
             </button>
           </div>

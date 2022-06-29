@@ -3,7 +3,7 @@ import AuthenticatePrompt from "src/components/AuthenticatePrompt";
 
 const SignInScreen = () => {
   return (
-    <div class="fixed w-full h-full flex justify-center items-center">
+    <div className="fixed w-full h-full flex justify-center items-center">
       <AuthenticatePrompt
         className="form"
         onSignIn={() => route("/")}

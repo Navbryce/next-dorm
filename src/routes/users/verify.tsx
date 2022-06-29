@@ -33,7 +33,7 @@ const VerifyScreen = () => {
   }
 
   return (
-    <div class="fixed inset-0 z-10 w-screen h-screen flex justify-center items-center">
+    <div className="fixed inset-0 z-10 w-screen h-screen flex justify-center items-center">
       <div className="form max-w-screen-lg">
         <h2 className="align-middle">
           <LightningBoltIcon

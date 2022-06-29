@@ -32,7 +32,7 @@ const Header: FunctionalComponent<Stylable> = ({ className }) => {
         {!user && (
           <button
             type="button"
-            class="btn"
+            className="btn"
             onClick={() => route(URLS.pages.users.signIn)}
           >
             Sign in
@@ -42,7 +42,7 @@ const Header: FunctionalComponent<Stylable> = ({ className }) => {
           <div>
             <DropdownMenu
               title={
-                <div class="flex items-center">
+                <div className="flex items-center">
                   {user.profile && (
                     <img
                       width={25}

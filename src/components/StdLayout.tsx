@@ -89,9 +89,9 @@ export function withStandardPageElements<T>(
 ): FunctionalComponent<T> {
   return ({ ...rest }) => {
     return (
-      <div class="w-full h-full">
+      <div className="w-full h-full">
         <Header className="z-40 relative top-0 left-0 w-full" />
-        <div class="relative h-[calc(100%-101px) w-full] flex justify-center">
+        <div className="relative h-[calc(100%-101px) w-full] flex justify-center">
           {h(component, rest)}
         </div>
       </div>

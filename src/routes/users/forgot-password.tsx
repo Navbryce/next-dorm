@@ -51,7 +51,7 @@ const ForgotPasswordScreen = () => {
   );
 
   return (
-    <div class="fixed w-full h-full flex justify-center items-center">
+    <div className="fixed w-full h-full flex justify-center items-center">
       {emailSent ? (
         <div className="rounded bg-slate-900 p-6 m-6 w-full max-w-xs shadow-lg h-fit space-y-4">
           <div className="inline-middle">
@@ -82,10 +82,10 @@ const ForgotPasswordScreen = () => {
               {...register("email")}
             />
             {errors.email && (
-              <div class="text-red-500">{errors.email.message}</div>
+              <div className="text-red-500">{errors.email.message}</div>
             )}
           </div>
-          <div class="py-2 space-x-2 space-y-2">
+          <div className="py-2 space-x-2 space-y-2">
             <button type="submit">Reset</button>
             <div>
               <a href={URLS.pages.users.register} className="link">

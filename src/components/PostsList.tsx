@@ -17,7 +17,7 @@ type Props = {
 
 const PostsList = ({ posts, noPostsMessage }: Props) => {
   return (
-    <div class="divide-y-2 divide-secondary-400">
+    <div className="divide-y-2 divide-secondary-400">
       <div>
         {posts.length == 0 && (
           <div className="flex">

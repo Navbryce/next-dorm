@@ -89,7 +89,7 @@ const PasswordUpdateForm = ({
         </Label>
         <input type="password" {...register("password")} />
         {errors.password && (
-          <div class="text-red-500">{errors.password.message}</div>
+          <div className="text-red-500">{errors.password.message}</div>
         )}
       </div>
       <div>
@@ -102,7 +102,7 @@ const PasswordUpdateForm = ({
           {...register("confirmPassword")}
         />
         {errors.confirmPassword && (
-          <div class="text-red-500">{errors.confirmPassword.message}</div>
+          <div className="text-red-500">{errors.confirmPassword.message}</div>
         )}
       </div>
       <button type="submit">Update password</button>
@@ -155,6 +155,9 @@ const SettingsScreen = () => {
   return (
     <div>
       <Alert open={!!savedMessage}>{savedMessage}</Alert>
+      {/*
+       tslint:disable-next-line: ban-ts-comment
+       // @ts-ignore */}
       <Dialog
         as="div"
         open={!!reauthenticatePanel}

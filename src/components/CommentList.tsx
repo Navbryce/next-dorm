@@ -134,7 +134,7 @@ const CommentComponent = ({
 
   return (
     <div>
-      <div class="flex">
+      <div className="flex">
         <div>
           <CommentVoteCounter postId={postId} comment={comment} />
         </div>
@@ -206,7 +206,7 @@ const CommentComponent = ({
       )}
       {comments.length > 0 && (
         // TODO: Alternate border color between different levels of nesting
-        <div class="mx-6 my-1 border-l border-secondary-100 pl-2">
+        <div className="mx-6 my-1 border-l border-secondary-100 pl-2">
           <CommentList
             comments={comments}
             postId={postId}
@@ -238,7 +238,7 @@ const CommentList = ({
 }: CommentsProps) => {
   return (
     <div>
-      <div class="space-y-1">
+      <div className="space-y-1">
         {comments.map((comment, i) => (
           <div key={comment.id}>
             <CommentComponent

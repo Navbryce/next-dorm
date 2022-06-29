@@ -93,15 +93,15 @@ const CreateProfileScreen = () => {
     [user, setUser, currentAvatarBlob]
   );
   return (
-    <div class="h-full w-full flex items-center justify-center">
-      <div class="form max-w-md space-y-4">
+    <div className="h-full w-full flex items-center justify-center">
+      <div className="form max-w-md space-y-4">
         <div>
           <h3>
             Please enter your display name. This cannot be changed. And choose
             an avatar!
           </h3>
         </div>
-        <div class="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <form onSubmit={handleSubmit(onSubmitCb) as any}>
             <div>
               <Label htmlFor="username" className="block">
@@ -112,10 +112,10 @@ const CreateProfileScreen = () => {
                 className={errors.displayName ? "border border-red-500" : ""}
               />
               {errors.displayName && (
-                <div class="text-red-500">{errors.displayName.message}</div>
+                <div className="text-red-500">{errors.displayName.message}</div>
               )}
             </div>
-            <div class="py-2">
+            <div className="py-2">
               <button type="submit">Create!</button>
             </div>
           </form>

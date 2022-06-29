@@ -99,9 +99,9 @@ const App: FunctionalComponent = () => {
       <ReferringScreenContext.Provider
         value={[referringScreenURL, setReferringScreenURL]}
       >
-        <div class="h-screen">
-          <div class="app-bg h-screen overflow-y-auto flex flex-col justify-between">
-            <div class="h-full">
+        <div className="h-screen">
+          <div className="app-bg text-gray-100 h-screen overflow-y-auto flex flex-col justify-between">
+            <div className="h-full">
               {new AuthService(user, setUser).authStateEstablished && (
                 <Router onChange={handleRouteChangeCb}>
                   <Route

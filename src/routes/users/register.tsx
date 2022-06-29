@@ -67,7 +67,7 @@ const RegisterScreen = () => {
     [setError]
   );
   return (
-    <div class="w-full h-full flex justify-center items-center">
+    <div className="w-full h-full flex justify-center items-center">
       <form className="form" onSubmit={handleSubmit(onRegisterCb) as any}>
         <div>
           <Label htmlFor="email" className="block">
@@ -78,7 +78,7 @@ const RegisterScreen = () => {
             {...register("email")}
           />
           {errors.email && (
-            <div class="text-red-500">{errors.email.message}</div>
+            <div className="text-red-500">{errors.email.message}</div>
           )}
         </div>
         <div>
@@ -91,7 +91,7 @@ const RegisterScreen = () => {
             {...register("password")}
           />
           {errors.password && (
-            <div class="text-red-500">{errors.password.message}</div>
+            <div className="text-red-500">{errors.password.message}</div>
           )}
         </div>
         <div>
@@ -104,10 +104,10 @@ const RegisterScreen = () => {
             {...register("confirmPassword")}
           />
           {errors.confirmPassword && (
-            <div class="text-red-500">{errors.confirmPassword.message}</div>
+            <div className="text-red-500">{errors.confirmPassword.message}</div>
           )}
         </div>
-        <div class="py-2">
+        <div className="py-2">
           <button type="submit">Register</button>
           <div>
             <a href={URLS.pages.users.signIn} className="link">

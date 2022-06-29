@@ -60,7 +60,7 @@ const UserScreen = ({ userId }: { userId: string }) => {
   return (
     <StdLayout>
       <MainContent>
-        <div class="flex items-center divider-b pb-5 my-5 space-x-2">
+        <div className="flex items-center divider-b pb-5 my-5 space-x-2">
           <Avatar user={user} width={100} height={100} />
           <h1>{user.displayName}</h1>
         </div>

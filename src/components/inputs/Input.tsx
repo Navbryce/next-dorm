@@ -41,7 +41,7 @@ export const ImageUploadInput = ({
 } & h.JSX.HTMLAttributes<HTMLInputElement>) => {
   const fileUploadEl = useRef<HTMLInputElement | null>(null);
   return (
-    <div class={className}>
+    <div className={className}>
       <IconButton
         buttonType="text"
         startIcon={<PhotographIcon />}
