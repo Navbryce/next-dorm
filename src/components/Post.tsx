@@ -9,7 +9,12 @@ import CommentDialog, { Values } from "./inputs/CommentDialog";
 import { UserContext } from "src/contexts";
 import { PostVoteCounter } from "src/components/VoteCounter";
 import { timeToDisplayStr } from "src/utils/display";
-import { genLinkToCommunity, genLinkToEditPost, genLinkToPost } from "src/urls";
+import {
+  genLinkToCommunity,
+  genLinkToEditPost,
+  genLinkToPost,
+  URLS,
+} from "src/urls";
 import { IconButton } from "src/components/inputs/Button";
 import { PencilIcon } from "@heroicons/react/outline";
 import { canModifyPost } from "src/actions/user-parse";
@@ -217,6 +222,9 @@ const PostComponent = ({ post }: { post: Post }) => {
           <div>
             <CommentDialog
               onSubmit={createCommentCb}
+              onClick={() => {
+                user || route(URLS.pages.users.signIn);
+              }}
               submitButtonLabel="Reply"
               className="z-20 relative"
             />

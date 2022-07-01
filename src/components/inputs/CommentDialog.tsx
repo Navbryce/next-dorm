@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod";
 import { classNames } from "src/utils/styling";
+import { h } from "preact";
 
 const CommentSchema = z.object({
   content: z.string().nonempty(),
@@ -18,12 +19,14 @@ type Props = {
   submitButtonLabel: string;
   onSubmit: (content: Values) => Promise<void>;
   onCancel?: () => void;
+  onClick?: h.JSX.MouseEventHandler<HTMLFormElement>;
 } & Stylable;
 
 const CommentDialog = ({
   initialValues,
   onSubmit,
   onCancel,
+  onClick,
   submitButtonLabel,
   className,
 }: Props) => {
@@ -59,6 +62,7 @@ const CommentDialog = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmitCb) as any}
+      onClick={onClick}
       className={classNames("border-b border-secondary-100", className ?? "")}
     >
       <input
