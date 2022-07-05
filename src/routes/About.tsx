@@ -1,4 +1,3 @@
-import { FunctionalComponent, h } from "preact";
 import { withStandardPageElements } from "src/components/StdLayout";
 
 const AboutScreen = () => {
@@ -12,6 +11,12 @@ const AboutScreen = () => {
       <p>
         The website is basically a reddit-clone with hierarchical communities
         and the ability to post anonymously.
+      </p>
+      <p>
+        If you want a community added,{" "}
+        <a className="link" href="https://github.com/Navbryce/next-dorm">
+          create an issue on Github
+        </a>
       </p>
     </div>
   );

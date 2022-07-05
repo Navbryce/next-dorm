@@ -40,7 +40,7 @@ import SettingsScreen from "src/routes/users/[id]/settings";
 import { withStandardPageElements } from "src/components/StdLayout";
 import VerifyScreen from "src/routes/users/verify";
 import { AlertService } from "src/utils/Alert";
-import AboutScreen from "src/routes/Landing";
+import AboutScreen from "src/routes/About";
 import ReportCommentScreen from "src/routes/comm/[id]/posts/comments/[id]/report";
 import ReportPostScreen from "src/routes/comm/[id]/posts/report";
 
