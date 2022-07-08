@@ -43,7 +43,7 @@ const CommunitiesList = ({ pos, current }: Props) => {
   }, [pos]);
 
   return (
-    <div className="w-4/5 mt-5">
+    <div className="box w-4/5 mt-5">
       <div className="flex">
         <a href={genLinkToCommunity(parent)}>
           <IconButton

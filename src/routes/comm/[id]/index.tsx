@@ -98,12 +98,14 @@ const CommunityScreen = ({
         <CommunitiesList current={community} pos={communityPos} />
       </Toolbar>
       <MainContent>
-        {community && <Title>{community.name}</Title>}
-        <CommunityBreadcrumb pos={communityPos} current={community} />
+        <div className="p-6">
+          {community && <Title>{community.name}</Title>}
+          <CommunityBreadcrumb pos={communityPos} current={community} />
+        </div>
         <InfinitePostsList
           beforePostsEl={
             <div
-              className="flex flex-col p-8 m-4 border-b border-secondary-100"
+              className="flex flex-col p-6 box-border"
               onClick={createPostCb}
             >
               <textarea className="resize-none">What's got you upset?</textarea>
@@ -130,7 +132,7 @@ const CommunityScreen = ({
         />
       </MainContent>
       <Toolbar>
-        <div className="mt-5 p-5 space-y-2 rounded outline flex flex-col justify-center items-center">
+        <div className="box mt-5 p-5 space-y-2 rounded flex flex-col justify-center items-center">
           <h3>{community.name}</h3>
           <SubscribeButton onClick={subscribeCb} isSubscribed={isSubscribed} />
           <IconButton

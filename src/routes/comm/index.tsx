@@ -1,4 +1,3 @@
-import { h } from "preact";
 import {
   useCallback,
   useContext,
@@ -26,7 +25,7 @@ import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
 import { ReferringScreenContext } from "src/contexts";
 import { URLS } from "src/urls";
 
-const AllScreen = () => {
+const Index = () => {
   const [, setReferringScreenURL] = useContext(ReferringScreenContext);
 
   const [posts, setPosts] = useState<Post[]>();
@@ -58,8 +57,10 @@ const AllScreen = () => {
         <CommunitiesList current={ALL_COMMUNITY} pos={communityPos} />
       </Toolbar>
       <MainContent>
-        <Title>All Communities</Title>
-        <CommunityBreadcrumb />
+        <div className="p-6">
+          <Title>All Communities</Title>
+          <CommunityBreadcrumb />
+        </div>
         <InfinitePostsList
           posts={posts}
           setPosts={setPosts}
@@ -72,4 +73,4 @@ const AllScreen = () => {
   );
 };
 
-export default AllScreen;
+export default Index;

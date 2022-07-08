@@ -36,8 +36,8 @@ export const Toolbar: FunctionalComponent<{ isRight?: boolean }> = ({
   return (
     <div
       className={classNames(
-        "w-[300px] h-full box-border",
-        !isRight ? "mr-20 border-r border-secondary-100 box-border" : ""
+        "w-[250px] h-full box-border border-secondary-100 box-border",
+        isRight ? "border-l" : "border-r"
       )}
     >
       <div className="w-full h-[calc(100vh-100px)] self-start sticky top-[101px] min-content">

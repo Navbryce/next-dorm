@@ -20,14 +20,14 @@ const PostsList = ({ posts, noPostsMessage }: Props) => {
     <div className="divide-y-2 divide-secondary-400">
       <div>
         {posts.length == 0 && (
-          <div className="flex">
+          <div className="flex p-6 items-center">
             <ExclamationCircleIcon width={50} height={50} />
             <span className="italic">{noPostsMessage ?? "No posts"}</span>
           </div>
         )}
         {posts.map((post) => (
-          <div key={post.id}>
-            <div className="flex space-x-5">
+          <div key={post.id} className="my-4">
+            <div className="box flex space-x-5">
               <PostVoteCounter post={post} />
               {/*overflow-hidden to fix image slider bug*/}
               <div

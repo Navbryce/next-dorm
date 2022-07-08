@@ -88,7 +88,9 @@ function InfinitePostsList<CURSOR_TYPE>({
 
   return (
     <div className="w-full" ref={scrollDiv}>
-      <SortTypeSelect value={sort} onChange={onSortChangeCb} />
+      <div className="pl-6">
+        <SortTypeSelect value={sort} onChange={onSortChangeCb} />
+      </div>
       {beforePostsEl}
       <InfiniteScroll
         useWindow={false}

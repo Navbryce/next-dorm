@@ -59,7 +59,9 @@ const FeedScreen = () => {
         <CommunitiesList current={undefined} pos={communityPos} />
       </Toolbar>
       <MainContent>
-        <Title>Your feed</Title>
+        <div className="p-6">
+          <Title>Your feed</Title>
+        </div>
         <InfinitePostsList
           posts={posts}
           setPosts={setPosts}

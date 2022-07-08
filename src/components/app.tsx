@@ -24,7 +24,7 @@ import { AuthService } from "src/utils/auth";
 import "src/utils/firebase";
 import SignInScreen from "src/routes/users/sign-in";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import AllScreen from "src/routes/comm/AllScreen";
+import Index from "src/routes/comm/index";
 import FeedScreen from "src/routes/FeedScreen";
 import RegisterScreen from "src/routes/users/register";
 import CreateProfileScreen from "src/routes/users/create-profile";
@@ -108,7 +108,7 @@ const App: FunctionalComponent = () => {
                     path={URLS.pages.all}
                     requireSession={false}
                     requireProfile={false}
-                    component={withStandardPageElements(AllScreen, {})}
+                    component={withStandardPageElements(Index, {})}
                   />
                   <Route
                     path="/feed"
