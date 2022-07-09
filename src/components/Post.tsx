@@ -239,6 +239,7 @@ const PostComponent = ({ post }: { post: Post }) => {
                 setCommentWithReplyLock={setCommentWithReplyLock}
                 onDelete={onDeleteChildCb}
                 onEdit={replaceCommentInListCb}
+                isRoot={true}
               />
             </div>
           </div>

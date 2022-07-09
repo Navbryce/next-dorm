@@ -3,7 +3,11 @@ import { useContext, useEffect, useMemo, useState } from "preact/compat";
 import { getPost } from "src/actions/Post";
 import { Post } from "src/types/types";
 import PostComponent from "src/components/Post";
-import StdLayout, { BackButton, MainContent } from "src/components/StdLayout";
+import StdLayout, {
+  BackButton,
+  MainContent,
+  Toolbar,
+} from "src/components/StdLayout";
 import { ReferringScreenContext } from "src/contexts";
 import { genLinkToCommunity } from "src/urls";
 
@@ -30,12 +34,18 @@ const PostScreen = ({
 
   return (
     <StdLayout>
+      <Toolbar />
       <MainContent>
-        <BackButton
-          url={referringScreenURL ?? genLinkToCommunity(post.communities[0].id)}
-        />
-        <PostComponent post={post} />
+        <div className="mx-6">
+          <BackButton
+            url={
+              referringScreenURL ?? genLinkToCommunity(post.communities[0].id)
+            }
+          />
+          <PostComponent post={post} />
+        </div>
       </MainContent>
+      <Toolbar />
     </StdLayout>
   );
 };

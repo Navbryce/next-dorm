@@ -32,6 +32,7 @@ import { UserContext } from "src/contexts";
 import VisibilitySelect from "src/components/inputs/VisibilitySelect";
 import { IconButton } from "src/components/inputs/Button";
 import { PlusSmIcon } from "@heroicons/react/solid";
+import PageBanner from "src/components/PageBanner";
 
 const CommunityScreen = ({
   communityId: communityIdStr,
@@ -98,8 +99,12 @@ const CommunityScreen = ({
         <CommunitiesList current={community} pos={communityPos} />
       </Toolbar>
       <MainContent>
+        {community && (
+          <PageBanner>
+            <Title>{community.name}</Title>
+          </PageBanner>
+        )}
         <div className="p-6">
-          {community && <Title>{community.name}</Title>}
           <CommunityBreadcrumb pos={communityPos} current={community} />
         </div>
         <InfinitePostsList

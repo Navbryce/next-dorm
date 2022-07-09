@@ -22,6 +22,7 @@ import { getPosts } from "src/actions/Post";
 import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import { URLS } from "src/urls";
 import { ReferringScreenContext } from "src/contexts";
+import PageBanner from "src/components/PageBanner";
 
 const FeedScreen = () => {
   const [, setReferringScreenURL] = useContext(ReferringScreenContext);
@@ -59,9 +60,9 @@ const FeedScreen = () => {
         <CommunitiesList current={undefined} pos={communityPos} />
       </Toolbar>
       <MainContent>
-        <div className="p-6">
+        <PageBanner>
           <Title>Your feed</Title>
-        </div>
+        </PageBanner>
         <InfinitePostsList
           posts={posts}
           setPosts={setPosts}

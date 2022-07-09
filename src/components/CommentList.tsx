@@ -1,6 +1,6 @@
 import { Fragment } from "preact";
 
-import { Comment, Creator, StateProps, Status } from "../types/types";
+import { Comment, StateProps, Status } from "../types/types";
 import { CommentVoteCounter } from "./VoteCounter";
 import { ProfileCardSm } from "./ProfileCard";
 import { ChatIcon } from "@heroicons/react/outline";
@@ -226,6 +226,7 @@ type CommentsProps = {
   comments: Comment[]; // initialComments because comments can be deleted
   onDelete: (i: number) => void;
   onEdit: (i: number, newComment: Comment) => void;
+  isRoot?: boolean;
 } & HasReplyLock;
 
 const CommentList = ({
@@ -235,10 +236,11 @@ const CommentList = ({
   setCommentWithReplyLock,
   onDelete,
   onEdit,
+  isRoot,
 }: CommentsProps) => {
   return (
     <div>
-      <div className="space-y-1">
+      <div>
         {comments.map((comment, i) => (
           <div key={comment.id}>
             <CommentComponent

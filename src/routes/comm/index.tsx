@@ -24,8 +24,9 @@ import { Sort, SortBy } from "src/components/inputs/SortSelect";
 import CommunityBreadcrumb from "src/components/CommunityBreadcrumb";
 import { ReferringScreenContext } from "src/contexts";
 import { URLS } from "src/urls";
+import PageBanner from "src/components/PageBanner";
 
-const Index = () => {
+const AllScreen = () => {
   const [, setReferringScreenURL] = useContext(ReferringScreenContext);
 
   const [posts, setPosts] = useState<Post[]>();
@@ -57,8 +58,10 @@ const Index = () => {
         <CommunitiesList current={ALL_COMMUNITY} pos={communityPos} />
       </Toolbar>
       <MainContent>
-        <div className="p-6">
+        <PageBanner>
           <Title>All Communities</Title>
+        </PageBanner>
+        <div className="p-6">
           <CommunityBreadcrumb />
         </div>
         <InfinitePostsList
@@ -73,4 +76,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default AllScreen;
